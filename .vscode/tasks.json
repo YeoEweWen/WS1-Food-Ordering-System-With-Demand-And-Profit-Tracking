@@ -1,0 +1,32 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build all",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "main.cpp",
+                "database.cpp",
+                "functions.cpp",
+
+                // Include directory
+                "-I", "C:/Program Files/MySQL/MySQL Server 8.0/include",
+
+                // Library directory
+                "-L", "C:/Program Files/MySQL/MySQL Server 8.0/lib",
+
+                // Link MySQL library
+                "-lmysql",
+
+                // C++ standard
+                "-std=c++17",
+
+                // Output file
+                "-o", "main.exe"
+            ],
+            "group": "build",
+            "problemMatcher": ["$gcc"]
+        }
+    ]
+}
