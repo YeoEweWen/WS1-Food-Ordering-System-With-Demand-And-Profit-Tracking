@@ -7,8 +7,6 @@
 #include <mysql.h>
 #include <iostream>
 
-//using namespace std;
-
 class Database {
 private:
     // Variables
