@@ -6,12 +6,17 @@
             "type": "shell",
             "command": "g++",
             "args": [
-                "main.cpp",
-                "database.cpp",
-                "functions.cpp",
+                "src/main.cpp",
+                "src/core/auth.cpp",
+                "src/core/config.cpp",
+                "src/core/database.cpp",
+                "src/core/functions.cpp",
+                "src/core/users.cpp",
+                "src/core/validation.cpp",
 
                 // Include directory
                 "-I", "C:/Program Files/MySQL/MySQL Server 8.0/include",
+                "-I", "include",
 
                 // Library directory
                 "-L", "C:/Program Files/MySQL/MySQL Server 8.0/lib",
@@ -23,7 +28,7 @@
                 "-std=c++17",
 
                 // Output file
-                "-o", "main.exe"
+                "-o", "build/main.exe"
             ],
             "group": "build",
             "problemMatcher": ["$gcc"]

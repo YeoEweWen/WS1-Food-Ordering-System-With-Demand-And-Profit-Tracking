@@ -1,16 +1,19 @@
 #ifndef USERS_H
 #define USERS_H
 
+#include "database.h"
 #include <string>
 #include <vector>
 #include <map>
 #include <iostream>
 
-class Users {    
+class Users {     
+private:
+    std::string generateUsername(std::string name);
+
 public:
     // Admin Only
-    bool registerUser(std::string name, std::string username, std::string role, std::string password);
-    bool updateUsername(int id, std::string newUsername);
+    bool registerUser(std::string name, std::string role, std::string password);
     bool updateRole(int id, std::string newRole);
     bool deactivate(int id);
     bool activate(int id);
