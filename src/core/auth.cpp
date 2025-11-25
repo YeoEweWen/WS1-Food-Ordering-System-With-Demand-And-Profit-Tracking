@@ -4,8 +4,37 @@
 
 using namespace std;
 
-string Auth::userRole = "Guest"; // Default Value
-int Auth::userID = -1; // Default value, -1 = Guest
+string Auth::userRole = "Admin"; // Default Value
+int Auth::userID = 14; // Default value, -1 = Guest
+
+string Auth::toHexString(const unsigned char* data, size_t length) {
+    stringstream ss;
+    for (size_t i = 0; i < length; ++i)
+        ss << hex << setw(2) << setfill('0') << (int)data[i];
+    return ss.str();
+}
+
+// Generate a random salt of given length
+string Auth::generateSalt(size_t length) {
+    unsigned char salt[16];
+    if (!RAND_bytes(salt, length)) {
+        throw runtime_error("Failed to generate salt");
+    }
+    return toHexString(salt, length);
+}
+
+// Hash password + salt
+string Auth::hashPassword(const string &password, const string &salt) {
+    string input = password + salt;
+    unsigned char hash[SHA256_DIGEST_LENGTH];
+    SHA256(reinterpret_cast<const unsigned char*>(input.c_str()), input.size(), hash);
+    return toHexString(hash, SHA256_DIGEST_LENGTH);
+}
+
+// Verify password
+bool Auth::verifyPassword(const string &password, const string &salt, const string &hash) {
+    return hashPassword(password, salt) == hash;
+}
 
 map<string, string> Auth::login(string username, string password){
     return {};
@@ -18,6 +47,10 @@ void Auth::logout(){
 
 bool Auth::isLoggedIn(){
     return (userRole != "Guest" && userID != -1);
+}
+
+bool usingPresetPassword(){
+    return false;
 }
 
 Auth::UserDetails Auth::retrieveLoggedUserDetails(){
@@ -38,30 +71,4 @@ bool Auth::isAdmin() {
         return false;
     }
     return (userRole == "Admin");
-}
-
-bool Auth::validatePasswordRules(string password){
-    /*
-    1. Length > 8 characters.
-    2. Must have at least one uppercase character.
-    3. Must have at least one lowercase character.
-    4. Must have at least one digit.
-    5. Must have at least one special character.
-    */
-
-    if (password.length() < 8) return false;
-
-    bool hasUpper = false;
-    bool hasLower = false;
-    bool hasDigit = false;
-    bool hasSpecial = false;
-
-    for (char c : password) {
-        if (isupper(c)) hasUpper = true;
-        else if (islower(c)) hasLower = true;
-        else if (isdigit(c)) hasDigit = true;
-        else hasSpecial = true;
-    }
-
-    return hasUpper && hasLower && hasDigit && hasSpecial;
 }

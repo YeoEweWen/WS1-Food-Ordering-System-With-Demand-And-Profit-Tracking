@@ -1,22 +1,15 @@
 #include "functions.h"
-#include <string>
-#include <map>
-#include <vector>
-#include <cstdlib> // for stoi, stod
-#include <iostream>
-#include <fstream>
-#include <ctime>
 
 using namespace std;
 
 // ----- Logger -----
 void logError(string message){
-    std::ofstream out("logs/error.log", std::ios::app);
+    ofstream out("logs/error.log", ios::app);
     out << "[" << timestamp() << "]   " << message << "\n";
 }
 
 void logInfo(string message){
-    std::ofstream out("logs/info.log", std::ios::app);
+    ofstream out("logs/info.log", ios::app);
     out << "[" << timestamp() << "]   " << message << "\n";
 }
 
@@ -60,3 +53,24 @@ void printVectorValues(const vector<map<string, string>>& mapValue){
         cout << endl;
     }
 }
+
+string toProperCase(const string& input) {
+    string result = input;
+
+    bool newWord = true; // flag to detect the first character of a word
+    for (auto& c : result) {
+        if (isspace(static_cast<unsigned char>(c))) {
+            newWord = true;  // next character is new word
+        } else {
+            if (newWord) {
+                c = toupper(static_cast<unsigned char>(c));
+                newWord = false;
+            } else {
+                c = tolower(static_cast<unsigned char>(c));
+            }
+        }
+    }
+
+    return result;
+}
+

@@ -16,13 +16,20 @@
 
                 // Include directory
                 "-I", "C:/Program Files/MySQL/MySQL Server 8.0/include",
+                "-I", "C:/OpenSSL-Win64/include",
                 "-I", "include",
+                "-I", "lib",
 
                 // Library directory
                 "-L", "C:/Program Files/MySQL/MySQL Server 8.0/lib",
+                "-L", "C:/OpenSSL-Win64/lib",
 
                 // Link MySQL library
                 "-lmysql",
+
+                // Link OpenSSL library
+                "-lssl",
+                "-lcrypto",
 
                 // C++ standard
                 "-std=c++17",

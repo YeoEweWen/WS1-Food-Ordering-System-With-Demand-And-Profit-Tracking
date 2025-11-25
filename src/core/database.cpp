@@ -5,7 +5,6 @@
 using namespace std;
 
 Database::Database() {
-    conn = mysql_init(NULL);
     retrievedData = nullptr;
     
     auto cfg = Config::load("config/db.conf");
@@ -18,6 +17,8 @@ Database::Database() {
 }
 
 bool Database::initConnection() {
+    conn = mysql_init(NULL);
+
     // Connect to database
     if (!mysql_real_connect(conn, host.c_str(), username.c_str(), password.c_str(), dbName.c_str(), port, NULL, 0)) {
         logError("MySQL connection error: " + string(mysql_error(conn)));
@@ -56,7 +57,7 @@ string Database::generateCompletedQuery(string query, const map<string, string> 
             }
         }
     }
-    logInfo(query);
+    logInfo("MYSQL Query: " + query);
 
     return query;
 };
@@ -81,7 +82,7 @@ bool Database::runQuery(string query, const map<string, string> &params) {
 
     query = generateCompletedQuery(query, params);
 
-    if (mysql_query(conn, query.c_str()) == 0){
+    if (mysql_query(conn, query.c_str()) != 0){
         logError("MySQL Error: " + string(mysql_error(conn)));
         closeConnection();
 
