@@ -7,8 +7,6 @@
 #include <mysql.h>
 #include <iostream>
 
-//using namespace std;
-
 class Database {
 private:
     // Variables
@@ -28,7 +26,6 @@ private:
 
 public:
     Database();           // constructor
-    ~Database();          // destructor
 
     // Methods
     bool runQuery(std::string query, const std::map<std::string, std::string> &params = {});

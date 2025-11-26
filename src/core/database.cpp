@@ -1,26 +1,27 @@
+#include "config.h"
 #include "database.h"
 #include "functions.h"
 
 using namespace std;
 
 Database::Database() {
-    conn = mysql_init(NULL);
     retrievedData = nullptr;
-    host = "localhost";
-    username = "root";
-    password = "root";
-    dbName = "sample_db";
-    port = 3306;
-}
+    
+    auto cfg = Config::load("config/app.conf");
 
-Database::~Database() {
-    closeConnection();
+    host     = cfg["db_host"];
+    username = cfg["db_username"];
+    password = cfg["db_password"];
+    dbName   = cfg["db_database"];
+    port     = std::stoi(cfg["db_port"]);
 }
 
 bool Database::initConnection() {
+    conn = mysql_init(NULL);
+
     // Connect to database
     if (!mysql_real_connect(conn, host.c_str(), username.c_str(), password.c_str(), dbName.c_str(), port, NULL, 0)) {
-        cerr << "MySQL connection error: " << mysql_error(conn) << endl;
+        logError("MySQL connection error: " + string(mysql_error(conn)));
         return false;
     }
 
@@ -28,8 +29,14 @@ bool Database::initConnection() {
 }
 
 void Database::closeConnection() {
-    mysql_free_result(retrievedData);
-    mysql_close(conn);
+    if (retrievedData != nullptr) {
+        mysql_free_result(retrievedData);
+        retrievedData = nullptr;
+    }
+    if (conn != nullptr) {
+        mysql_close(conn);
+        conn = nullptr;
+    }
 }
 
 string Database::generateCompletedQuery(string query, const map<string, string> &params) {
@@ -40,7 +47,7 @@ string Database::generateCompletedQuery(string query, const map<string, string> 
             toReplace = ':' + p.first;
             value = p.second;
             
-            if (!(isInteger(value) || isFloat(value))){ // Later add filter, to avoid sql injection
+            if (!(isInteger(value) || isFloat(value) || value == "NULL")){ // Later add filter, to avoid sql injection, check for :parameter with no provided value
                 value = "'" + value + "'";
             }
 
@@ -50,6 +57,7 @@ string Database::generateCompletedQuery(string query, const map<string, string> 
             }
         }
     }
+    logInfo("MYSQL Query: " + query);
 
     return query;
 };
@@ -73,11 +81,16 @@ bool Database::runQuery(string query, const map<string, string> &params) {
     }
 
     query = generateCompletedQuery(query, params);
-    bool isSuccess = (mysql_query(conn, query.c_str()) == 0);
 
+    if (mysql_query(conn, query.c_str()) != 0){
+        logError("MySQL Error: " + string(mysql_error(conn)));
+        closeConnection();
+
+        return false;
+    }
     closeConnection();
 
-    return isSuccess;
+    return true;
 }
 
 vector<map<string, string>> Database::fetchData(string query, const map<string, string> &params) {
@@ -96,6 +109,7 @@ vector<map<string, string>> Database::fetchData(string query, const map<string, 
 
     retrievedData = mysql_store_result(conn);
     if (!retrievedData) {
+        logError("MySQL Error: " + string(mysql_error(conn)));
         closeConnection();
         return {};
     }
@@ -112,3 +126,37 @@ vector<map<string, string>> Database::fetchData(string query, const map<string, 
 
     return results;
 }
+
+/*
+Database db;
+map<string, string> params;
+
+// Usage Examples
+// CREATE
+params = {
+    {"name", "Mohd Faizal Bin Mohd Safuan"},
+    {"email", "faizal@email.com"},
+    {"department_id", "3"},
+};
+db.runQuery("INSERT INTO employee (name, email, department_id) VALUES (:name, :email, :department_id);", params); // Return bool, Success = true, Fail = false.
+
+// READ
+params = {
+    {"department_id", "1"},
+};
+vector<map<string, string>> retrievedRows = db.fetchData("SELECT * FROM employee WHERE department_id = :department_id;", params);
+printVectorValues(retrievedRows);
+
+// UPDATE
+params = {
+    {"id", "1"},
+    {"name", "Mohd Faizal Shamil Bin Mohd Safuan"},
+};
+db.runQuery("UPDATE employee SET name = :name WHERE id = :id;", params); // Return bool, Success = true, Fail = false.
+
+// DELETE
+params = {
+    {"id", "5"},
+};
+db.runQuery("DELETE FROM employee WHERE id = :id;", params); // Return bool, Success = true, Fail = false.
+*/

@@ -6,24 +6,36 @@
             "type": "shell",
             "command": "g++",
             "args": [
-                "main.cpp",
-                "database.cpp",
-                "functions.cpp",
+                "src/main.cpp",
+                "src/core/auth.cpp",
+                "src/core/config.cpp",
+                "src/core/database.cpp",
+                "src/core/functions.cpp",
+                "src/core/users.cpp",
+                "src/core/validation.cpp",
 
                 // Include directory
                 "-I", "C:/Program Files/MySQL/MySQL Server 8.0/include",
+                "-I", "C:/OpenSSL-Win64/include",
+                "-I", "include",
+                "-I", "lib",
 
                 // Library directory
                 "-L", "C:/Program Files/MySQL/MySQL Server 8.0/lib",
+                "-L", "C:/OpenSSL-Win64/lib",
 
                 // Link MySQL library
                 "-lmysql",
+
+                // Link OpenSSL library
+                "-lssl",
+                "-lcrypto",
 
                 // C++ standard
                 "-std=c++17",
 
                 // Output file
-                "-o", "main.exe"
+                "-o", "build/main.exe"
             ],
             "group": "build",
             "problemMatcher": ["$gcc"]
