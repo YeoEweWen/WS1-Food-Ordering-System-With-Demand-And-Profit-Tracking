@@ -1,7 +1,8 @@
-//#include "database.h"
 #include "auth.h"
+#include "menu.h"
 #include "users.h"
 #include "functions.h"
+
 #include <iostream>
 #include <sstream>
 #include <algorithm>
