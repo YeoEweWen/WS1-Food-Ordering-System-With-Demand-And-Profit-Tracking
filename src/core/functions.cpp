@@ -1,16 +1,27 @@
+#include "config.h"
 #include "functions.h"
 
 using namespace std;
 
 // ----- Logger -----
 void logError(string message){
-    ofstream out("logs/error.log", ios::app);
-    out << "[" << timestamp() << "]   " << message << "\n";
+    auto cfg = Config::load("config/app.conf");
+    string debugMode = cfg["debug_mode"];
+
+    if (debugMode == "ON" || debugMode == "on"){
+        ofstream out("logs/error.log", ios::app);
+        out << "[" << timestamp() << "]   " << message << "\n";
+    } 
 }
 
 void logInfo(string message){
-    ofstream out("logs/info.log", ios::app);
-    out << "[" << timestamp() << "]   " << message << "\n";
+    auto cfg = Config::load("config/app.conf");
+    string debugMode = cfg["debug_mode"];
+
+    if (debugMode == "ON" || debugMode == "on"){
+        ofstream out("logs/info.log", ios::app);
+        out << "[" << timestamp() << "]   " << message << "\n";
+    }
 }
 
 // ----- Universal -----

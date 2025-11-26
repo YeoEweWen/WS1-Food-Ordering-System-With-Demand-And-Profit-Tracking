@@ -62,13 +62,12 @@ bool Users::isValidRole(string role){
 /*---------- ADMIN ONLY ----------*/
 map<string, string> Users::registerUser(string name, string role){
     Database db;
-    Auth auth;
 
     string username = generateUsername(name);
-    string salt = auth.generateSalt();
-    string password = auth.hashPassword(username, salt);
+    string salt = Auth::generateSalt();
+    string password = Auth::hashPassword(username, salt);
 
-    Auth::UserDetails userDetails = auth.retrieveLoggedUserDetails();
+    Auth::UserDetails userDetails = Auth::retrieveLoggedUserDetails();
 
     string query = "INSERT INTO user (name, username, role, password, salt, created_by) VALUES (:name, :username, :role, :password, :salt, :created_by);";
     map<string, string> params = {
@@ -137,7 +136,7 @@ bool Users::activate(int id){
     return db.runQuery(query, params);
 }
 
-bool Users::resetPassword(int id){ // Add password hashing
+bool Users::resetPassword(int id){
     Database db;
     Auth auth;
 
@@ -165,8 +164,8 @@ bool Users::resetPassword(int id){ // Add password hashing
         return false;
     }
 
-    newSalt = auth.generateSalt();
-    newPassword = auth.hashPassword(username, newSalt);
+    newSalt = Auth::generateSalt();
+    newPassword = Auth::hashPassword(username, newSalt);
 
     query = "UPDATE user SET password = :password, salt = :salt WHERE id = :id AND status = 'Active';";
     params = {
@@ -194,7 +193,7 @@ bool Users::updateName(string newName){
     Database db;
     Auth auth;
 
-    Auth::UserDetails userDetails = auth.retrieveLoggedUserDetails();
+    Auth::UserDetails userDetails = Auth::retrieveLoggedUserDetails();
 
     string query = "UPDATE user SET name = :name WHERE id = :id AND status = 'Active';";
     map<string, string> params = {
@@ -209,11 +208,11 @@ bool Users::updatePassword(string newPassword){
     Database db;
     Auth auth;
 
-    Auth::UserDetails userDetails = auth.retrieveLoggedUserDetails();
+    Auth::UserDetails userDetails = Auth::retrieveLoggedUserDetails();
     string password, salt, query;
 
-    salt = auth.generateSalt();
-    password = auth.hashPassword(newPassword, salt);
+    salt = Auth::generateSalt();
+    password = Auth::hashPassword(newPassword, salt);
 
     query = "UPDATE user SET password = :password, salt = :salt WHERE id = :id AND status = 'Active';";
     map<string, string> params = {

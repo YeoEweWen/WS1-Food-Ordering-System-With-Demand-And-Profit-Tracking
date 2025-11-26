@@ -7,13 +7,13 @@ using namespace std;
 Database::Database() {
     retrievedData = nullptr;
     
-    auto cfg = Config::load("config/db.conf");
+    auto cfg = Config::load("config/app.conf");
 
-    host     = cfg["host"];
-    username = cfg["username"];
-    password = cfg["password"];
-    dbName   = cfg["database"];
-    port     = std::stoi(cfg["port"]);
+    host     = cfg["db_host"];
+    username = cfg["db_username"];
+    password = cfg["db_password"];
+    dbName   = cfg["db_database"];
+    port     = std::stoi(cfg["db_port"]);
 }
 
 bool Database::initConnection() {

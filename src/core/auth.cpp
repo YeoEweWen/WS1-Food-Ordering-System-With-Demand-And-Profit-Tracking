@@ -4,8 +4,9 @@
 
 using namespace std;
 
-string Auth::userRole = "Admin"; // Default Value
 int Auth::userID = 14; // Default value, -1 = Guest
+string Auth::userName = "Ali bin Abu"; // Default Value
+string Auth::userRole = "Admin"; // Default Value
 
 string Auth::toHexString(const unsigned char* data, size_t length) {
     stringstream ss;
@@ -36,21 +37,80 @@ bool Auth::verifyPassword(const string &password, const string &salt, const stri
     return hashPassword(password, salt) == hash;
 }
 
-map<string, string> Auth::login(string username, string password){
-    return {};
+Auth::LoginStatus Auth::login(string username, string password){
+    Database db;
+    Auth::LoginStatus loginStatus;
+
+    // Default values
+    loginStatus.success = false;
+    loginStatus.errorCode = -1;
+    loginStatus.description = "No Description.";
+    loginStatus.usingPresetPassword = false;
+
+    int id;
+    string query, name, role, storedPassword, salt, status;
+    map<string, string> params;
+
+    query = "SELECT id, name, role, password, salt, status FROM user WHERE username = :username LIMIT 1;";
+    params = {
+        {"username", username}
+    };
+
+    vector<map<string, string>> result = db.fetchData(query, params);
+
+    if (result.empty()){
+        loginStatus.errorCode = 0; // User not found.
+        loginStatus.description = "User not found/registered.";
+        return loginStatus;
+    }
+
+    id = stoi(result[0].at("id"));
+    name = result[0].at("name");
+    role = result[0].at("role");
+    storedPassword = result[0].at("password");
+    salt = result[0].at("salt");
+    status = result[0].at("status");
+
+    if (!verifyPassword(password, salt, storedPassword)){
+        loginStatus.errorCode = 1; // Wrong password.
+        loginStatus.description = "Wrong password.";
+        return loginStatus;
+    }
+
+    if (status == "Inactive"){
+        loginStatus.errorCode = 2; // User not active.
+        loginStatus.description = "User not active.";
+        return loginStatus;
+    }
+
+    // Add user details
+    userID = id;
+    userName = name;
+    userRole = role;
+
+    // Update last logged in
+    query = "UPDATE user SET last_logged_in = NOW() WHERE id = :id AND status = 'Active';";
+    params = {
+        {"id", to_string(id)}
+    };
+
+    db.runQuery(query, params);
+
+    loginStatus.success = true;
+    loginStatus.description = "Login successfully!";
+    loginStatus.usingPresetPassword = verifyPassword(username, salt, storedPassword);
+
+    return loginStatus;
 }
 
 void Auth::logout(){
-    userRole = "Guest";
     userID = -1;
+    userName = "Guest";
+    userRole = "Guest";
 }
 
 bool Auth::isLoggedIn(){
     return (userRole != "Guest" && userID != -1);
-}
-
-bool usingPresetPassword(){
-    return false;
 }
 
 Auth::UserDetails Auth::retrieveLoggedUserDetails(){
@@ -58,9 +118,11 @@ Auth::UserDetails Auth::retrieveLoggedUserDetails(){
 
     if (!isLoggedIn()){
         userDetails.id = -1;
+        userDetails.name = "Guest";
         userDetails.role = "Guest";
     }
     userDetails.id = userID;
+    userDetails.name = userName;
     userDetails.role = userRole;
 
     return userDetails;

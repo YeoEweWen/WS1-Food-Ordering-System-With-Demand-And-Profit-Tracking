@@ -1,6 +1,0 @@
-[2025-11-26 00:57:20]   MYSQL Query: SELECT username FROM user WHERE username LIKE 'ali%';
-[2025-11-26 00:57:20]   MYSQL Query: INSERT INTO user (name, username, role, password, salt, created_by) VALUES ('Ali bin Abu', 'ali2016', 'Admin', '445c9a60497ed594935cc8a6e3f9926e2e994d18d572a4fe7a0b01ea6ffc1fd3', 'e7d242735dc41fa019a403f9c5f8171e', NULL);
-[2025-11-26 00:57:20]   MYSQL Query: SELECT username, status FROM user WHERE id = 14 LIMIT 1;
-[2025-11-26 00:57:20]   MYSQL Query: UPDATE user SET password = '3c443166d4f0d3ec02ad57482c5f47ece810a0050f2e9f1409a9ba6bd4f5c979', salt = '73cf50852bad664f388a1ed0ab1bc957' WHERE id = 14 AND status = 'Active';
-[2025-11-26 01:40:51]   MYSQL Query: UPDATE user SET name = 'Ali bin Mohd Abu' WHERE id = 14 AND status = 'Active';
-[2025-11-26 01:41:44]   MYSQL Query: UPDATE user SET password = '02d3d1c186b6b193904fa8984132ab1b4e4e1047d74ab1a04d49024d2f9d13df', salt = '0018b9ede7d2665a132d3f6a6221d5e9' WHERE id = 14 AND status = 'Active';
