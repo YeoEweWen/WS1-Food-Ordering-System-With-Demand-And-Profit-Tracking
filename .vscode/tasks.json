@@ -11,6 +11,7 @@
                 "src/core/config.cpp",
                 "src/core/database.cpp",
                 "src/core/functions.cpp",
+                "src/core/menu.cpp",
                 "src/core/users.cpp",
                 "src/core/validation.cpp",
 
