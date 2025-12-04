@@ -18,7 +18,7 @@ public:
     // Menu Category
     bool addMenuCategory(std::string categoryName);
     bool updateMenuCategory(int id, std::string categoryName);
-    std::vector<std::map<std::string, std::string>> categoryList();
+    std::vector<std::map<std::string, std::string>> categoryList(bool detailedList = false);
 
     // Menu
     bool addMenu(std::string name, double productionCost, double sellingPrice, int categoryID);
@@ -27,7 +27,7 @@ public:
     double calculateProfitMargin(double productionCost, double sellingPrice);
     bool setAvailable(int id);
     bool setUnavailable(int id);
-    std::vector<std::map<std::string, std::string>> menuList(bool availableOnly = false);
+    std::vector<std::map<std::string, std::string>> menuList(bool detailedList = false, bool availableOnly = false);
 };
 
 #endif

@@ -56,13 +56,22 @@ bool isFloat(const string& s) {
 
 void printVectorValues(const vector<map<string, string>>& mapValue){
     // Display the retrieved rows
-    for (const auto& row : mapValue) {
-        cout << "---- ROW ----" << endl;
-        for (const auto& kv : row) {
-            cout << kv.first << " = " << kv.second << endl;
+    int i = 0;
+    if (!mapValue.empty()){
+        for (const auto& row : mapValue) {
+            i++;
+            cout << "---- ROW " << i << " ----" << endl;
+            for (const auto& kv : row) {
+                cout << kv.first << " = " << kv.second << endl;
+            }
+            cout << endl;
         }
-        cout << endl;
     }
+    else{
+        cout << "\nNo Record Found\n" << endl;
+    }
+
+    
 }
 
 string toProperCase(const string& input) {
