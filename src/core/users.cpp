@@ -65,17 +65,16 @@ map<string, string> Users::registerUser(string name, string role){
 
     string username = generateUsername(name);
     string salt = Auth::generateSalt();
-    string password = Auth::hashPassword(username, salt);
+    string password = Auth::hashPassword(username, salt) + ":" + salt; // Include salt inside hashed password
 
     Auth::UserDetails userDetails = Auth::retrieveLoggedUserDetails();
 
-    string query = "INSERT INTO user (name, username, role, password, salt, created_by) VALUES (:name, :username, :role, :password, :salt, :created_by);";
+    string query = "INSERT INTO user (name, username, role, password, created_by) VALUES (:name, :username, :role, :password, :created_by);";
     map<string, string> params = {
         {"name", name},
         {"username", username},
         {"role", role},
         {"password", password},
-        {"salt", salt},
         {"created_by", to_string(userDetails.id)},
     };
 
@@ -90,7 +89,6 @@ map<string, string> Users::registerUser(string name, string role){
         {"name", name},
         {"username", username},
         {"role", role},
-        {"password", password},
         {"status", "success"}
     };
 }
@@ -165,13 +163,12 @@ bool Users::resetPassword(int id){
     }
 
     newSalt = Auth::generateSalt();
-    newPassword = Auth::hashPassword(username, newSalt);
+    newPassword = Auth::hashPassword(username, newSalt) + ":" + newSalt;
 
-    query = "UPDATE user SET password = :password, salt = :salt WHERE id = :id AND status = 'Active';";
+    query = "UPDATE user SET password = :password WHERE id = :id AND status = 'Active';";
     params = {
         {"id", to_string(id)},
         {"password", newPassword},
-        {"salt", newSalt}
     };
 
     return db.runQuery(query, params);
@@ -212,13 +209,12 @@ bool Users::updatePassword(string newPassword){
     string password, salt, query;
 
     salt = Auth::generateSalt();
-    password = Auth::hashPassword(newPassword, salt);
+    password = Auth::hashPassword(newPassword, salt) + ":" + salt;
 
-    query = "UPDATE user SET password = :password, salt = :salt WHERE id = :id AND status = 'Active';";
+    query = "UPDATE user SET password = :password WHERE id = :id AND status = 'Active';";
     map<string, string> params = {
         {"id", to_string(userDetails.id)},
         {"password", password},
-        {"salt", salt}
     };
 
     return db.runQuery(query, params);

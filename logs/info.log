@@ -1,0 +1,4 @@
+[2025-12-05 01:36:53]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-05 01:36:53]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-05 01:37:35]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-05 01:37:35]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';

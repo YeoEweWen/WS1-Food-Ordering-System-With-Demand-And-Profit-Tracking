@@ -94,3 +94,21 @@ string toProperCase(const string& input) {
     return result;
 }
 
+vector<string> split(const string &text, char delimiter) {
+    vector<string> result;
+    string temp;
+
+    for (char c : text) {
+        if (c == delimiter) {
+            result.push_back(temp);
+            temp.clear();
+        } else {
+            temp += c;
+        }
+    }
+
+    // Push the last part
+    result.push_back(temp);
+
+    return result;
+}
