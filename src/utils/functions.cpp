@@ -1,5 +1,5 @@
-#include "config.h"
-#include "functions.h"
+#include "core/config.h"
+#include "utils/functions.h"
 
 using namespace std;
 

@@ -1,7 +1,8 @@
-#include "auth.h"
-#include "menu.h"
-#include "users.h"
-#include "functions.h"
+#include "core/auth.h"
+#include "core/menu.h"
+#include "core/order.h"
+#include "core/users.h"
+#include "utils/functions.h"
 
 #include <iostream>
 #include <sstream>

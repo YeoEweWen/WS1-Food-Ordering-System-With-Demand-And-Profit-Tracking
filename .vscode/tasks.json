@@ -7,13 +7,18 @@
             "command": "g++",
             "args": [
                 "src/main.cpp",
+                // Core
                 "src/core/auth.cpp",
                 "src/core/config.cpp",
                 "src/core/database.cpp",
-                "src/core/functions.cpp",
                 "src/core/menu.cpp",
+                "src/core/order.cpp",
                 "src/core/users.cpp",
                 "src/core/validation.cpp",
+                // User Interface (UI)
+
+                // Utils
+                "src/utils/functions.cpp",
 
                 // Include directory
                 "-I", "C:/Program Files/MySQL/MySQL Server 8.0/include",

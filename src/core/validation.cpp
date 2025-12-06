@@ -1,5 +1,5 @@
-#include "validation.h"
-#include "functions.h"
+#include "core/validation.h"
+#include "utils/functions.h"
 
 using namespace std;
 

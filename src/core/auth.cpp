@@ -1,6 +1,6 @@
-#include "auth.h"
-#include "database.h"
-#include "functions.h"
+#include "core/auth.h"
+#include "core/database.h"
+#include "utils/functions.h"
 
 using namespace std;
 
