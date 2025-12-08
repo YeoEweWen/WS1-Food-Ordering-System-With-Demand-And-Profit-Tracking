@@ -5,7 +5,6 @@
 
 using namespace std;
 
-
 string Users::generateUsername(string name){
     Database db;
 

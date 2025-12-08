@@ -25,7 +25,7 @@ private:
     std::map<std::string, std::string> rowToMap(MYSQL_ROW row, MYSQL_FIELD* fields, int numFields);
 
 public:
-    Database();           // constructor
+    Database(); // constructor
 
     // Methods
     bool runQuery(std::string query, const std::map<std::string, std::string> &params = {});
