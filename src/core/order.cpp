@@ -67,6 +67,19 @@ const vector<Order::Item>& Order::itemsList() const {
 
 // Order
 bool Order::createOrder() {
+    Database db;
+    Auth::UserDetails userDetails = Auth::retrieveLoggedUserDetails();
+
+    string query;
+    map<string, string> params;
+
+    if (items.empty()){
+        logError("Failed to create order. The items is empty.");
+        return false;
+    }
+
+    query = "INSERT INTO order ";
+
     return false;
 }
 
@@ -97,14 +110,67 @@ vector<map<string, string>> Order::orderList(int createdBy) {
     return db.fetchData(query, params);
 }
 
-vector<map<string, string>> Order::orderDetails(int id) {
+Order::OrderDetails Order::orderDetails(int id) {
     Database db;
+    Order::OrderDetails details;
+    Order::Item item;
 
-    string query = "SELECT * FROM order_items WHERE order_id = :order_id;";
-    
-    map<string, string> params = {
+    string query;
+    map<string, string> params;
+    vector<map<string, string>> result; 
+
+    // Default value
+    details.id = -1;
+    details.createdBy = "";
+    details.createdAt = "";
+    details.isCompleted = false;
+    details.cancelledAt = "";
+    details.itemsList = {};
+
+    // Details
+    query = "SELECT o.id, o.transaction_status, o.created_by AS created_by_id, u.name AS created_by, o.created_at, o.cancelled_at "
+            "FROM order o "
+            "LEFT JOIN user AS u ON u.id = o.created_by "
+            "WHERE id = :id LIMIT 1;";
+    params = {
+        {"id", to_string(id)}
+    };
+
+    result = db.fetchData(query, params);
+
+    if (result.empty()){
+        logError("Failed to retrieve order details (ID: " + to_string(id) + ").");
+        return details;
+    }
+
+    details.id = id;
+    details.createdBy = result[0].at("created_by");
+    details.createdAt = result[0].at("created_at");
+    details.isCompleted = (result[0].at("transaction_status") == "Completed");
+    details.cancelledAt = result[0].at("cancelled_at");
+
+    // Item list
+    query = "SELECT * FROM order_items WHERE order_id = :order_id;";
+    params = {
         {"order_id", to_string(id)}
     };
 
-    return db.fetchData(query, params);
+    result = db.fetchData(query, params);
+
+    if (result.empty()){
+        logError("Failed to retrieve items list. (Order ID: " + to_string(id) + ")");
+        return details;
+    }
+
+    for (const auto& item_ : result) {
+        item.id = stoi(item_.at("id"));
+        item.name = item_.at("name");
+        item.productionCost = stod(item_.at("production_cost"));
+        item.sellingPrice = stod(item_.at("selling_price"));
+        item.quantity = stoi(item_.at("quantity"));
+
+        details.itemsList.push_back(item);
+    }
+
+    return details;
 }
