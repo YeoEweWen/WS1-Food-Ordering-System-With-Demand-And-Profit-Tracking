@@ -78,9 +78,41 @@ bool Order::createOrder() {
         return false;
     }
 
-    query = "INSERT INTO order ";
+    // Create new order
+    query = "INSERT INTO order (created_by) VALUES (:created_by);";
+    params = {
+        {"created_by", to_string(userDetails.id)}
+    };
 
-    return false;
+    if (!db.runQuery(query, params)){
+        logError("Failed to create order.");
+        return false;
+    }
+
+    // Retrieve the order id
+    query = "SELECT id FROM order WHERE created_by = :created_by AND transaction_status = 'Completed' ORDER BY created_at DESC LIMIT 1;";
+    string orderID = db.fetchData(query, params)[0].at("id");
+
+    // Insert the items
+    for (const auto& item_ : items){
+        query = "INSERT INTO order_items (order_id, menu_id, name, production_cost, selling_price, quantity) VALUES (:order_id, :menu_id, :name, :production_cost, :selling_price, :quantity);";
+        params = {
+            {"order_id", orderID},
+            {"menu_id", to_string(item_.id)},
+            {"name", item_.name},
+            {"production_cost", to_string(item_.productionCost)},
+            {"selling_price", to_string(item_.sellingPrice)},
+            {"quantity", to_string(item_.quantity)},
+        };
+        
+        if (!db.runQuery(query, params)){
+            logError("Failed to add menu (ID: " + to_string(item_.id) + ") into order_itemss (ID: " + orderID + ").");
+            return false;
+        }
+        logInfo("Menu (ID: " + to_string(item_.id) + " added into order_items (ID: " + orderID + ").");
+    }
+
+    return true;
 }
 
 bool Order::cancelOrder(int id) {
