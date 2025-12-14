@@ -1,6 +1,6 @@
-#include "auth.h"
-#include "database.h"
-#include "functions.h"
+#include "core/auth.h"
+#include "core/database.h"
+#include "utils/functions.h"
 
 using namespace std;
 
@@ -48,10 +48,11 @@ Auth::LoginStatus Auth::login(string username, string password){
     loginStatus.usingPresetPassword = false;
 
     int id;
-    string query, name, role, storedPassword, salt, status;
+    string query, name, role, hashedPassword, salt, status;
+    vector<string> passwordAndSalt;
     map<string, string> params;
 
-    query = "SELECT id, name, role, password, salt, status FROM user WHERE username = :username LIMIT 1;";
+    query = "SELECT id, name, role, password, status FROM user WHERE username = :username LIMIT 1;";
     params = {
         {"username", username}
     };
@@ -67,11 +68,12 @@ Auth::LoginStatus Auth::login(string username, string password){
     id = stoi(result[0].at("id"));
     name = result[0].at("name");
     role = result[0].at("role");
-    storedPassword = result[0].at("password");
-    salt = result[0].at("salt");
+    passwordAndSalt = split(result[0].at("password"), ':');
+    hashedPassword = passwordAndSalt[0];
+    salt = passwordAndSalt[1];
     status = result[0].at("status");
 
-    if (!verifyPassword(password, salt, storedPassword)){
+    if (!verifyPassword(password, salt, hashedPassword)){
         loginStatus.errorCode = 1; // Wrong password.
         loginStatus.description = "Wrong password.";
         return loginStatus;
@@ -98,7 +100,7 @@ Auth::LoginStatus Auth::login(string username, string password){
 
     loginStatus.success = true;
     loginStatus.description = "Login successfully!";
-    loginStatus.usingPresetPassword = verifyPassword(username, salt, storedPassword);
+    loginStatus.usingPresetPassword = verifyPassword(username, salt, hashedPassword);
 
     return loginStatus;
 }

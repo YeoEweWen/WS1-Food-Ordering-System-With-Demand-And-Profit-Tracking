@@ -1,7 +1,7 @@
-#include "menu.h"
-#include "auth.h"
-#include "database.h"
-#include "functions.h"
+#include "core/menu.h"
+#include "core/auth.h"
+#include "core/database.h"
+#include "utils/functions.h"
 
 using namespace std;
 
@@ -177,7 +177,7 @@ vector<map<string, string>> Menu::menuList(bool detailedList, bool availableOnly
     }
     else{
         query = "SELECT "
-                "m.id, m.name, m.selling_price, mc.category, m.availability "
+                "m.id, m.name, m.production_cost, m.selling_price, mc.category, m.availability "
                 "FROM menu m "
                 "LEFT JOIN menu_category AS MC ON mc.id = m.category_id "
                 + availabilityCondition +

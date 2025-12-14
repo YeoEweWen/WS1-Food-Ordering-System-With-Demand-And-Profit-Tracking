@@ -1,7 +1,7 @@
 #ifndef USERS_H
 #define USERS_H
 
-#include "database.h"
+#include "core/database.h"
 #include <string>
 #include <vector>
 #include <map>

@@ -1,6 +1,6 @@
-#include "config.h"
-#include "database.h"
-#include "functions.h"
+#include "core/config.h"
+#include "core/database.h"
+#include "utils/functions.h"
 
 using namespace std;
 
