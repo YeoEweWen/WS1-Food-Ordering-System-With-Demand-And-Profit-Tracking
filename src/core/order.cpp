@@ -24,6 +24,7 @@ void Order::addItem(int id, string name, double productionCost, double sellingPr
         if (it != items.end()) {
             int newQuantity = it->quantity + quantity;
             updateQuantity(id, newQuantity);
+            return;
         }
     }
 
@@ -79,7 +80,7 @@ bool Order::createOrder() {
     }
 
     // Create new order
-    query = "INSERT INTO order (created_by) VALUES (:created_by);";
+    query = "INSERT INTO `order` (created_by) VALUES (:created_by);";
     params = {
         {"created_by", to_string(userDetails.id)}
     };
@@ -90,7 +91,7 @@ bool Order::createOrder() {
     }
 
     // Retrieve the order id
-    query = "SELECT id FROM order WHERE created_by = :created_by AND transaction_status = 'Completed' ORDER BY created_at DESC LIMIT 1;";
+    query = "SELECT id FROM `order` WHERE created_by = :created_by AND transaction_status = 'Completed' ORDER BY created_at DESC LIMIT 1;";
     string orderID = db.fetchData(query, params)[0].at("id");
 
     // Insert the items
@@ -118,7 +119,7 @@ bool Order::createOrder() {
 bool Order::cancelOrder(int id) {
     Database db;
 
-    string query = "UPDATE order SET transaction_status = 'Cancelled' WHERE id = :id AND transaction_status = 'Completed';";
+    string query = "UPDATE `order` SET transaction_status = 'Cancelled' WHERE id = :id AND transaction_status = 'Completed';";
     map<string, string> params = {
         {"id", to_string(id)}
     };
@@ -130,7 +131,7 @@ vector<map<string, string>> Order::orderList(int createdBy) {
     Database db;
 
     string query = "SELECT o.id, o.transaction_status, o.created_by AS created_by_id, u.name AS created_by, o.created_at, o.cancelled_at "
-                   "FROM order o "
+                   "FROM `order` o "
                    "LEFT JOIN user AS u ON u.id = o.created_by "
                    "WHERE o.created_by = :created_by OR :created_by = 0 "
                    "ORDER BY o.transaction_status DESC, o.created_at DESC;";
@@ -161,9 +162,9 @@ Order::OrderDetails Order::orderDetails(int id) {
 
     // Details
     query = "SELECT o.id, o.transaction_status, o.created_by AS created_by_id, u.name AS created_by, o.created_at, o.cancelled_at "
-            "FROM order o "
+            "FROM `order` o "
             "LEFT JOIN user AS u ON u.id = o.created_by "
-            "WHERE id = :id LIMIT 1;";
+            "WHERE o.id = :id LIMIT 1;";
     params = {
         {"id", to_string(id)}
     };
