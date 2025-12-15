@@ -16,6 +16,8 @@
                 "src/core/users.cpp",
                 "src/core/validation.cpp",
                 // User Interface (UI)
+                "src/ui/loginUI.cpp",
+                "src/ui/usersUI.cpp",
 
                 // Utils
                 "src/utils/functions.cpp",

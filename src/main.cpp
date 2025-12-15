@@ -1,32 +1,44 @@
+// Core
 #include "core/auth.h"
 #include "core/menu.h"
 #include "core/order.h"
 #include "core/users.h"
+
+// UI
+#include "ui/loginUI.h"
+#include "ui/usersUI.h"
+
+// Utils
 #include "utils/functions.h"
 
+
 #include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <unordered_map>
-#include <iomanip>
 
 using namespace std;
 
+void clearConsole (){
+    system("cls");
+}
+
 int main() {
-    cout << "##### Food Ordering System with Demand and Profit Tracking #####\n" << endl;
+    while (true){
+        system("cls");
+        if (!Auth::isLoggedIn()){
+            LoginUI::main();
+            continue;
+        }
 
-    Order order;
-
-    Order::OrderDetails details = order.orderDetails(2);
-
-    cout<<details.createdBy<<endl;
-    cout<<details.createdAt<<endl;
-
-    for (auto i:details.itemsList){
-        cout<<i.name<<endl;
+        cout<<"This is main page"<<endl;
+        system("pause"); // waits for a keypress
     }
 
-    /*
+
+    system("pause"); // waits for a keypress
+
+    return 0;
+}
+
+/*
     Menu menu;
     Order order;
     Order::Item item;
@@ -98,8 +110,3 @@ int main() {
         }
     }
     */
-
-    system("pause"); // waits for a keypress
-
-    return 0;
-}
