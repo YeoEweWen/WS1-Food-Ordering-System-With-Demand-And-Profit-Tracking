@@ -54,6 +54,11 @@ bool isFloat(const string& s) {
     }
 }
 
+int countStringLength(const string& text){
+    size_t len = text.length();
+    return static_cast<int>(len);
+}
+
 void printVectorValues(const vector<map<string, string>>& mapValue){
     // Display the retrieved rows
     int i = 0;
@@ -91,6 +96,22 @@ string toProperCase(const string& input) {
         }
     }
 
+    return result;
+}
+
+string toUpperCase(const string& input) {
+    string result = input;
+    for (auto& c : result) {
+        c = toupper(static_cast<unsigned char>(c));
+    }
+    return result;
+}
+
+string toLowerCase(const string& input) {
+    string result = input;
+    for (auto& c : result) {
+        c = tolower(static_cast<unsigned char>(c));
+    }
     return result;
 }
 

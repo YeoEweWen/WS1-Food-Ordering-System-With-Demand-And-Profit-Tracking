@@ -4,37 +4,88 @@
 #include "core/order.h"
 #include "core/users.h"
 
-// UI
-#include "ui/loginUI.h"
-#include "ui/usersUI.h"
+// UIManager
+#include "ui/auth.h"
+#include "ui/main_menu.h"
+#include "ui/users.h"
+#include "ui/ui_manager.h"
 
 // Utils
 #include "utils/functions.h"
 
-
 #include <iostream>
+#include <cstdlib>
 
 using namespace std;
 
-void clearConsole (){
-    system("cls");
-}
-
 int main() {
+    Page currentPage;
+
+    /*
+    id | page
+    ----------------------
+    0  | auth
+    1  | dashboard (default)
+    2  | users
+    3  | menu
+    4  | order
+    5  | report
+    6  | profile
+    */
+
+    // Bypass login for development
+    Auth::LoginStatus loginStatus = Auth::login("ali7703", "p@ssW0rd"); 
+    if (!loginStatus.success){
+        cout<<loginStatus.description<<endl;
+        system("pause");
+        exit(0);
+    }
+    if (!loginStatus.usingPresetPassword){
+        UIManager::goTo(1);
+    }
+
     while (true){
-        system("cls");
+        currentPage = UIManager::currentPageDetails();
+
         if (!Auth::isLoggedIn()){
-            LoginUI::main();
+            AuthUI::login();
             continue;
         }
 
-        cout<<"This is main page"<<endl;
-        system("pause"); // waits for a keypress
+       switch (currentPage.id){
+        case 0:
+            AuthUI::updatePassword();
+            break;
+
+        case 2:
+            UsersUI::main();
+            break;
+
+        case 3:
+            UIManager::emptyPage();
+            break;
+
+        case 4:
+            UIManager::emptyPage();
+            break;
+
+        case 5:
+            UIManager::emptyPage();
+            break;
+
+        case 6:
+            UIManager::emptyPage();
+            break;
+
+        case 1:
+        default:
+            MainMenuUI::main();
+       }
     }
-
-
+    
     system("pause"); // waits for a keypress
 
+    
     return 0;
 }
 
