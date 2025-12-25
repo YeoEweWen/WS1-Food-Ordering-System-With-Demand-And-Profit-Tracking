@@ -60,6 +60,113 @@ void UIManager::header(const string& pageName){
     cout<<string(lineLength, '-')<<endl;
 }
 
+TableNavPermission UIManager::table(vector<Attribute> columns, vector<map<string, string>> rows, int totalRows, string search, Sort sort, int pageNum, int maxRowPerPage){
+    vector<int> ids = {};
+    int numOfRows, lastPage;
+
+    numOfRows = rows.size();
+    lastPage = (numOfRows + maxRowPerPage - 1) / maxRowPerPage;
+
+    // Calculate the maximum length per column
+    int reservedSpace = 1;
+    int reservedSpaceEachColumn = 2;
+    int numOfColumns = columns.size();
+    int availableSpace = lineLength - 6 - reservedSpace - (reservedSpaceEachColumn * numOfColumns);
+
+    for (auto& column : columns){
+        // Default
+        column.maxLength = countStringLength(column.label);
+
+        bool included = ids.empty();
+        for (auto& row : rows){
+            if (row.at(column.key) == "NULL"){ // Update null value
+                row.at(column.key) = "-";
+            }
+
+            if (countStringLength(row.at(column.key)) > column.maxLength){
+                column.maxLength = countStringLength(row.at(column.key));
+            }
+
+            // Add id into ids
+            if (included){
+                ids.push_back(stoi(row.at("id")));
+            }
+        }
+        availableSpace -= column.maxLength;
+    }
+
+    availableSpace = availableSpace/numOfColumns;
+    
+    // Search & Filter
+    cout<<endl;
+    if (search != ""){
+        cout<<"Search: "<<search<<endl;
+    }
+    if (sort.columnIndex != -1){
+        cout<<"Sort: "<<columns[sort.columnIndex].label<<" ("<<((sort.ascendingOrder) ? "Ascending" : "Descending")<<")"<<endl;
+    }
+
+    // Print table
+    int padding, balance, i, j;
+    balance = lineLength - 6;
+
+    // Header (Columns)
+    cout<<string(lineLength, '-')<<endl;
+    cout<<"|  # |";
+    i = numOfColumns;
+    for (auto& column : columns){
+        i--;
+        padding = (column.maxLength + availableSpace) - countStringLength(column.label);
+        balance -= padding + countStringLength(column.label) + reservedSpaceEachColumn;
+        padding = (i == 0) ? (padding + balance) : padding;
+
+        cout<<" "<<column.label<<string(padding, ' ')<<"|";
+    }
+    cout<<endl;
+
+    cout<<string(lineLength, '-')<<endl;
+
+    // Contents (Rows)
+    if (numOfRows > 0){
+        i = 0;
+        for (auto& row : rows){
+            i++;
+            j = numOfColumns;
+            balance = lineLength - 6;
+
+            cout<<"|"<<string(((i > 9) ? 1 : 2), ' ')<<i<<" |";
+
+            for (auto& column : columns){
+                j--;
+                padding = (column.maxLength + availableSpace) - countStringLength(row.at(column.key));
+                balance -= padding + countStringLength(row.at(column.key)) + reservedSpaceEachColumn;
+                padding = (j == 0) ? (padding + balance) : padding;
+
+                cout<<" "<<row.at(column.key)<<string(padding, ' ')<<"|";
+            }
+            cout<<endl;
+        }
+    }
+    else{
+        cout<<"|"<<string((lineLength-17)/2, ' ')<<"No record found."<<string((lineLength-17)/2, ' ')<<"|"<<endl;
+    }
+    cout<<string(lineLength, '-')<<endl;
+
+    // Pagination
+    string part1, part2;
+
+    part1 = "Showing " + to_string((maxRowPerPage * (pageNum - 1)) + 1) + "-" + to_string((maxRowPerPage * (pageNum - 1)) + numOfRows) + " of " + to_string(totalRows) + " records";
+    part2 = "Page " + to_string(pageNum) + "/" + to_string(lastPage);
+
+    cout<<part1<<string((lineLength - countStringLength(part1 + part2)), ' ')<<part2<<endl;
+
+    return {
+        (pageNum != 1),
+        (pageNum != lastPage),
+        (lastPage != 1)
+    };
+}
+
 void UIManager::errorMessages(const vector<string>& errorMessages, bool topBorder, bool bottomBorder){
     if (errorMessages.empty()){
         return;

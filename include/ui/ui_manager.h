@@ -6,13 +6,31 @@
 #include <vector>
 #include <map>
 #include <cstdlib>
+#include <cmath>
 
 struct Page {
-        int id;
-        int subID;
-        std::map<std::string, std::string> params;
-        std::vector<std::string> errorMessages;
-    };
+    int id;
+    int subID;
+    std::map<std::string, std::string> params;
+    std::vector<std::string> errorMessages;
+};
+
+struct Attribute {
+    std::string key;
+    std::string label;
+    int maxLength = 0;
+};
+
+struct Sort {
+    int columnIndex;
+    bool ascendingOrder; 
+};
+
+struct TableNavPermission {
+    bool previosPage;
+    bool nextPage;
+    bool goToPage;
+};
 
 class UIManager {
 protected:
@@ -28,6 +46,7 @@ public:
     static void addErrorMessage(std::string errorMessage);
     
     static void header(const std::string& pageName = "");
+    static TableNavPermission table(std::vector<Attribute> columns, std::vector<std::map<std::string, std::string>> rows, int totalRows, std::string search = "", Sort sort = {-1, true}, int pageNum=1, int maxRowPerPage=25);
     static void errorMessages(const std::vector<std::string>& errorMessages, bool topBorder = true, bool bottomBorder = true);
     static void emptyPage(bool includeHeader=true);
 };

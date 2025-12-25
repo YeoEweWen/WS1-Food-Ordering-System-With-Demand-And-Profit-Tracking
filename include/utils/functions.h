@@ -18,6 +18,11 @@ struct OperationResult {
     int errorCode = -1;          // error code = -1, mean no error.
 };
 
+struct tableList {
+    std::vector<std::map<std::string, std::string>> list;
+    int totalRows;
+};
+
 // ----- Logger -----
 void logError(std::string message);
 void logInfo(std::string message);

@@ -175,13 +175,24 @@ bool Users::resetPassword(int id){
 
 vector<map<string, string>> Users::userList(){
     Database db;
+    Auth auth;
+
+    Auth::UserDetails userDetails = Auth::retrieveLoggedUserDetails();
+
+    string search = "Active";
 
     string query = "SELECT u.id, u.name, u.username, u.role, u.created_by AS created_by_id, u2.name AS created_by, u.created_at, u.last_logged_in, u.status "
                    "FROM user u "
                    "LEFT JOIN user AS u2 ON u2.id = u.created_by "
+                   "WHERE u.id != :id AND (u.name LIKE :search OR u.role LIKE :search OR u.status LIKE :search OR u.last_logged_in LIKE :search)"
                    "ORDER BY u.status ASC, u.last_logged_in DESC;";
 
-    return db.fetchData(query);
+    map<string, string> params = {
+        {"id", "-1"},
+        {"search", "%" + search + "%"},
+    };
+
+    return db.fetchData(query, params);
 }
 
 /*---------- ALL USERS ----------*/
