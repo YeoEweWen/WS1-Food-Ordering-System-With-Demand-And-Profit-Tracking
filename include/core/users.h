@@ -9,20 +9,34 @@
 #include <sstream>
 #include <algorithm>
 #include <random>
+#include "utils/functions.h"
 
-class Users {     
+class Users {       
 private:
     std::string generateUsername(std::string name);
     bool isValidRole(std::string role);
 
 public:
+    struct UserDetails {
+        int id;
+        std::string name;
+        std::string username;
+        std::string role;
+        std::string status;
+        std::string lastLoggedIn;
+        std::string registeredAt;
+        int registeredByID;
+        std::string registeredByName;
+    };
+
     // Admin Only
     std::map<std::string, std::string> registerUser(std::string name, std::string role);
     bool updateRole(int id, std::string newRole);
     bool deactivate(int id);
     bool activate(int id);
     bool resetPassword(int id);
-    std::vector<std::map<std::string, std::string>> userList();
+    TableList userList(std::string search="", std::string sortColumn="", bool sortAsc=true, int limitRowPerPage=25, int page=1);
+    UserDetails userDetails(int id);
 
     // All Users
     bool updateName(std::string newName);

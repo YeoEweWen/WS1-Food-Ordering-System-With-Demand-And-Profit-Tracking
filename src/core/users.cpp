@@ -173,26 +173,66 @@ bool Users::resetPassword(int id){
     return db.runQuery(query, params);
 }
 
-vector<map<string, string>> Users::userList(){
+TableList Users::userList(string search, string sortColumn, bool sortAsc, int limitRowPerPage, int page){
     Database db;
     Auth auth;
 
     Auth::UserDetails userDetails = Auth::retrieveLoggedUserDetails();
 
-    string search = "Active";
+    vector<string> sortableColumnKeys = {"name", "role", "status", "last_logged_in"};
 
-    string query = "SELECT u.id, u.name, u.username, u.role, u.created_by AS created_by_id, u2.name AS created_by, u.created_at, u.last_logged_in, u.status "
-                   "FROM user u "
-                   "LEFT JOIN user AS u2 ON u2.id = u.created_by "
-                   "WHERE u.id != :id AND (u.name LIKE :search OR u.role LIKE :search OR u.status LIKE :search OR u.last_logged_in LIKE :search)"
-                   "ORDER BY u.status ASC, u.last_logged_in DESC;";
+    string orderQuery = "ORDER BY status ASC, last_logged_in DESC ";
+    if (find(sortableColumnKeys.begin(), sortableColumnKeys.end(), sortColumn) != sortableColumnKeys.end()){
+        orderQuery = "ORDER BY " + sortColumn + " " + ((sortAsc) ? "ASC " : "DESC ");
+    }
+    
+    int offset = limitRowPerPage * (page - 1);
+    string limitOffsetQuery = "LIMIT " + to_string(limitRowPerPage) + " OFFSET " + to_string(offset) + ";";
+
+    // Retrieve the total of row (Without limit)
+    string query = "SELECT COUNT(*) AS total FROM user "
+                   "WHERE id != :id AND (name LIKE :search OR role LIKE :search OR status LIKE :search OR last_logged_in LIKE :search);";
 
     map<string, string> params = {
-        {"id", "-1"},
+        {"id", to_string(userDetails.id)},
         {"search", "%" + search + "%"},
     };
 
-    return db.fetchData(query, params);
+    int total = stoi(db.fetchData(query, params)[0].at("total"));
+
+    // Retrieve the rows (With limit)
+    query = "SELECT id, name, role, status, last_logged_in FROM user "
+            "WHERE id != :id AND (name LIKE :search OR role LIKE :search OR status LIKE :search OR last_logged_in LIKE :search) "
+             + orderQuery + limitOffsetQuery;
+
+    vector<map<string, string>> list = db.fetchData(query, params);
+
+    return {list, total};
+}
+
+Users::UserDetails Users::userDetails(int id){
+    Database db;
+
+    string query = "SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, "
+                   "u.created_by AS registered_by_id, u2.name AS registered_by_name "
+                   "FROM user u "
+                   "LEFT JOIN user AS u2 ON u2.id = u.id "
+                   "WHERE u.id = :id;";
+    map<string, string> params = {{"id", to_string(id)}};
+
+    map<string, string> details = db.fetchData(query, params)[0];
+
+    return {
+        stoi(details.at("id")),
+        details.at("name"),
+        details.at("username"),
+        details.at("role"),
+        details.at("status"),
+        details.at("last_logged_in"),
+        details.at("registered_at"),
+        ((details.at("registered_by_id") == "NULL") ? -1 : stoi(details.at("registered_by_id"))),
+        ((details.at("registered_by_name") == "NULL") ? "System" : details.at("registered_by_name"))
+    };
 }
 
 /*---------- ALL USERS ----------*/

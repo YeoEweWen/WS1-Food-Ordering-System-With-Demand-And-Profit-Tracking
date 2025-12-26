@@ -9,11 +9,11 @@ using namespace std;
 void UsersUI::main() {
     Users users;
 
-    vector<map<string, string>> list = users.userList();
+    TableList userList = users.userList();
     map<int, map<string, string>> mappedList;
 
     // Mapping the row to its own ID
-    for (auto& row : list){
+    for (auto& row : userList.list){
         mappedList[stoi(row.at("id"))] = row;
     }
 
@@ -26,8 +26,8 @@ void UsersUI::main() {
             {"status", "Status"},
             {"last_logged_in", "Last Logged In"}
         },
-        list,
-        list.size()
+        userList.list,
+        userList.totalRows
     );
 
     if (tableNavPermission.previosPage){

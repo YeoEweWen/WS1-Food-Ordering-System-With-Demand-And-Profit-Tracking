@@ -7,6 +7,7 @@
 #include <map>
 #include <cstdlib>
 #include <cmath>
+#include "utils/functions.h"
 
 struct Page {
     int id;
@@ -23,7 +24,7 @@ struct Attribute {
 
 struct Sort {
     int columnIndex;
-    bool ascendingOrder; 
+    bool ascendingOrder;
 };
 
 struct TableNavPermission {

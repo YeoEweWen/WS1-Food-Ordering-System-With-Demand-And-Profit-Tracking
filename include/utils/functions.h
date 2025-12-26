@@ -18,7 +18,7 @@ struct OperationResult {
     int errorCode = -1;          // error code = -1, mean no error.
 };
 
-struct tableList {
+struct TableList {
     std::vector<std::map<std::string, std::string>> list;
     int totalRows;
 };
