@@ -173,7 +173,7 @@ bool Users::resetPassword(int id){
     return db.runQuery(query, params);
 }
 
-TableList Users::userList(string search, string sortColumn, bool sortAsc, int limitRowPerPage, int page){
+TableList Users::userList(string search, string sortColumn, bool sortAsc, int page, int limitRowPerPage){
     Database db;
     Auth auth;
 

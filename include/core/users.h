@@ -35,7 +35,7 @@ public:
     bool deactivate(int id);
     bool activate(int id);
     bool resetPassword(int id);
-    TableList userList(std::string search="", std::string sortColumn="", bool sortAsc=true, int limitRowPerPage=25, int page=1);
+    TableList userList(std::string search="", std::string sortColumn="", bool sortAsc=true, int page=1, int limitRowPerPage=25);
     UserDetails userDetails(int id);
 
     // All Users

@@ -19,7 +19,7 @@
 using namespace std;
 
 int main() {
-    Page currentPage;
+    Page page;
 
     /*
     id | page
@@ -45,42 +45,42 @@ int main() {
     }
 
     while (true){
-        currentPage = UIManager::currentPageDetails();
+        page = UIManager::currentPageDetails();
 
         if (!Auth::isLoggedIn()){
             AuthUI::login();
             continue;
         }
 
-       switch (currentPage.id){
-        case 0:
-            AuthUI::updatePassword();
-            break;
+        switch (page.id){
+            case 0:
+                AuthUI::updatePassword();
+                break;
 
-        case 2:
-            UsersUI::main();
-            break;
+            case 2:
+                UsersUI::main();
+                break;
 
-        case 3:
-            UIManager::emptyPage();
-            break;
+            case 3:
+                UIManager::emptyPage();
+                break;
 
-        case 4:
-            UIManager::emptyPage();
-            break;
+            case 4:
+                UIManager::emptyPage();
+                break;
 
-        case 5:
-            UIManager::emptyPage();
-            break;
+            case 5:
+                UIManager::emptyPage();
+                break;
 
-        case 6:
-            UIManager::emptyPage();
-            break;
+            case 6:
+                UIManager::emptyPage();
+                break;
 
-        case 1:
-        default:
-            MainMenuUI::main();
-       }
+            case 1:
+            default:
+                MainMenuUI::main();
+        }
     }
     
     system("pause"); // waits for a keypress

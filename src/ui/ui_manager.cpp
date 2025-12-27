@@ -160,10 +160,14 @@ TableNavPermission UIManager::table(vector<Attribute> columns, vector<map<string
 
     cout<<part1<<string((lineLength - countStringLength(part1 + part2)), ' ')<<part2<<endl;
 
-    return {
+    /*return {
         (pageNum != 1),
         (pageNum != lastPage),
         (lastPage != 1)
+    };*/
+
+    return {
+        true, true, true
     };
 }
 
