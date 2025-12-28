@@ -10,26 +10,27 @@ void UsersUI::main() {
     Page page = UIManager::currentPageDetails();
 
     UIManager::header("Users Management");
-    UIManager::errorMessages(page.errorMessages);
+    UIManager::errorMessages(page.errorMessages, false);
+    UIManager::infoMessages(page.infoMessages, false);
 
     map<string, string> params = page.params;
 
     UIManager::clearErrorMessages();
+    UIManager::clearInfoMessages();
 
     switch (page.subID){
         case 1:
-            logInfo("This is view details");
-            UIManager::emptyPage(false);
-            break;
-        
-        case 2:
-            logInfo("This is update role");
-            UIManager::emptyPage(false);
+            if (!params.empty() && params.count("id") > 0){
+                details(stoi(params.at("id")));
+            }
+            else{
+                UIManager::addErrorMessage("Invalid User's ID!");
+                UIManager::goTo(2);
+            }
             break;
 
-        case 3:
-            logInfo("This is register user");
-            UIManager::emptyPage(false);
+        case 2:
+            registerUser();
             break;
 
         case 0:
@@ -85,12 +86,13 @@ void UsersUI::list(string search, Sort sort, int pageNum, int maxPerPage){
     UIManager::dataTable(attributes, userList.list, userList.totalRows, search, sort, pageNum, maxPerPage);
 
     cout<<"[N] Register New User"<<endl;
-    cout<<endl<<"[X] Back"<<endl;
+    cout<<"\n[X] Back"<<endl;
 
     // Commands
     string input;
     cout<<"\nCommand > ";
     cin>>input;
+    cout<<endl;
 
     if (isInteger(input) && mappedIDs.count(stoi(input)) > 0){ // View Details
         UIManager::clearParams();
@@ -98,28 +100,86 @@ void UsersUI::list(string search, Sort sort, int pageNum, int maxPerPage){
         UIManager::goTo(2, 1);
     }
     else if (toProperCase(input) == "P"){ // Previous
+        int prevPage = pageNum - 1;
+        prevPage = (prevPage < 1) ? 1 : prevPage;
 
-        UIManager::goTo(2);
+        UIManager::addParam("page_num", to_string(prevPage));
     }
     else if (toProperCase(input) == "N"){ // Next
+        int nextPage = pageNum + 1;
 
-        UIManager::goTo(2);
-    }
-    else if (toProperCase(input) == "G"){ // Go To Page
+        int lastPage = (userList.list.size() + maxPerPage - 1) / maxPerPage;
+        lastPage = (lastPage == 0) ? 1 : lastPage;
+        nextPage = (nextPage > lastPage) ? lastPage : nextPage;
 
-        UIManager::goTo(2);
+        UIManager::addParam("page_num", to_string(nextPage));
     }
     else if (toProperCase(input) == "R"){ // Reset
-
-        UIManager::goTo(2);
+        UIManager::clearParams();
     }
     else if (toProperCase(input) == "S"){ // Search
+        cout<<"[X] Cancel"<<endl;
+        cout<<"\nSearch > ";
+        cin>>input;
 
-        UIManager::goTo(2);
+        if (toLowerCase(input) == "x"){
+            // Re-render the UI
+        }
+        else{
+            UIManager::addParam("search", input);
+        }
     }
     else if (toProperCase(input) == "O"){ // Sort
+        cout<<"[1] Sort by Name (Ascending)   ";
+        cout<<"[2] Sort by Name (Descending)"<<endl;
+        cout<<"[3] Sort by Role (Ascending)   ";
+        cout<<"[4] Sort by Role (Descending)"<<endl;
+        cout<<"[5] Sort by Status (Ascending)   ";
+        cout<<"[6] Sort by Status (Descending)"<<endl;
+        cout<<"[7] Sort by Last Logged In (Ascending)   ";
+        cout<<"[8] Sort by Last Logged In (Descending)"<<endl;
+        cout<<"\n[X] Cancel"<<endl;
 
-        UIManager::goTo(2);
+        cout<<"\nSelect Option > ";
+        cin>>input;
+
+        if (isInteger(input)){
+            int option = stoi(input);
+            switch (option) {
+                case 1:
+                case 2:
+                    UIManager::addParam("sort_column_index", "0");
+                    UIManager::addParam("sort_asc", ((option == 1) ? "true" : "false"));
+                    break;
+
+                case 3:
+                case 4:
+                    UIManager::addParam("sort_column_index", "1");
+                    UIManager::addParam("sort_asc", ((option == 3) ? "true" : "false"));
+                    break;
+
+                case 5:
+                case 6:
+                    UIManager::addParam("sort_column_index", "2");
+                    UIManager::addParam("sort_asc", ((option == 5) ? "true" : "false"));
+                    break;
+
+                case 7:
+                case 8:
+                    UIManager::addParam("sort_column_index", "3");
+                    UIManager::addParam("sort_asc", ((option == 7) ? "true" : "false"));
+                    break;
+
+                default:
+                    UIManager::addErrorMessage("Invalid Option.");
+            }
+        }
+        else if (toLowerCase(input) == "x"){
+            // Re-render the UI
+        }
+        else{
+            UIManager::addErrorMessage("Invalid Option.");
+        }
     }
     else if (toProperCase(input) == "N"){ // Register new user
         UIManager::clearParams();
@@ -130,18 +190,153 @@ void UsersUI::list(string search, Sort sort, int pageNum, int maxPerPage){
         UIManager::goTo(1);
     }
     else{
-        UIManager::addErrorMessage("Invalid command.");
+        UIManager::addErrorMessage("Invalid Command.");
     }
 }
 
 void UsersUI::details(int id){
+    Users users;
 
+    Users::UserDetails details = users.userDetails(id);
+
+    cout<<"User Details"<<endl;
+    cout<<string(UIManager::getLineLength(), '-')<<endl;
+    if (details.id == -1){
+        cout<<"User not Found."<<endl;
+    }
+    else{
+        cout<<"Name           : "<<details.name<<endl;
+        cout<<"Username       : "<<details.username<<endl;
+        cout<<"Role           : "<<details.role<<endl;
+        cout<<"Status         : "<<details.status<<endl;
+        cout<<"Registered By  : "<<details.registeredByName<<endl;
+        cout<<"Registered At  : "<<details.registeredAt<<endl;
+        cout<<"Last Logged In : "<<details.lastLoggedIn<<endl;
+    }
+    cout<<string(UIManager::getLineLength(), '-')<<endl;;
+
+    cout<<"Actions:"<<endl;
+    if (details.id != -1){
+        cout<<"[U] Update Role"<<endl;
+        if (toLowerCase(details.status) == "active"){
+            cout<<"[D] Deactivate"<<endl;
+        }
+        else{
+            cout<<"[A] Activate"<<endl;
+        }
+        cout<<"[R] Reset Password"<<endl<<endl;
+    }
+    cout<<"[X] Back"<<endl;
+
+    string input;
+
+    cout<<"\nCommand > ";
+    cin>>input;
+
+    if (toLowerCase(input) == "u"){ // Update Role
+        cout<<"\nAvailable Roles: "<<endl;
+        cout<<"   [1] Administrator"<<endl;
+        cout<<"   [2] Employee"<<endl<<endl;
+        cout<<"[X] Cancel"<<endl;
+
+        cout<<"\nSelect Option > ";
+        cin>>input;
+
+        if (input == "1" || input == "2"){
+            if (users.updateRole(details.id, ((input == "1") ? "Admin" : "Employee"))){
+                UIManager::addInfoMessage("User's role has been successfully updated.");
+            }
+            else{
+                UIManager::addErrorMessage("Failed to update the user's role.");
+            }
+        }
+        else if (toLowerCase(input) == "x"){
+            // Re-render the UI
+        }
+        else{
+            UIManager::addErrorMessage("Invalid Option.");
+        }
+    }
+    else if (toLowerCase(input) == "d" && toLowerCase(details.status) == "active"){ // Deactivate
+        cout<<"\nAre you sure you want to deactivate this user?"<<endl;
+        cout<<"Select Option (Y/N) > ";
+        cin>>input;
+
+        if (toLowerCase(input) == "y"){
+            if (users.deactivate(details.id)){
+                UIManager::addInfoMessage("The user has been successfully deactivated.");
+            }
+            else{
+                UIManager::addErrorMessage("Failed to deactivate the user.");
+            }
+        }
+        else if (toLowerCase(input) == "n"){
+            // Re-render the UI
+        }
+        else{
+            UIManager::addErrorMessage("Invalid Option.");
+        }
+    }
+    else if (toLowerCase(input) == "a" && toLowerCase(details.status) == "inactive"){ // Activate
+        cout<<"\nAre you sure you want to activate this user?"<<endl;
+        cout<<"Select Option (Y/N) > ";
+        cin>>input;
+
+        if (toLowerCase(input) == "y"){
+            if (users.activate(details.id)){
+                UIManager::addInfoMessage("The user has been successfully activated.");
+            }
+            else{
+                UIManager::addErrorMessage("Failed to activate the user.");
+            }
+        }
+        else if (toLowerCase(input) == "n"){
+            // Re-render the UI
+        }
+        else{
+            UIManager::addErrorMessage("Invalid Option.");
+        }
+    }
+    else if (toLowerCase(input) == "r"){ // Reset Password
+        cout<<"\nAre you sure you want to reset this user's password?"<<endl;
+        cout<<"Select Option (Y/N) > ";
+
+        cin>>input;
+
+        if (toLowerCase(input) == "y"){
+            if (users.resetPassword(details.id)){
+                UIManager::addInfoMessage("The user's password has been successfully reset.");
+            }
+            else{
+                UIManager::addErrorMessage("Failed to reset the user's password.");
+            }
+        }
+        else if (toLowerCase(input) == "n"){
+            // Re-render the UI
+        }
+        else{
+            UIManager::addErrorMessage("Invalid Option.");
+        }
+    }
+    else if (toLowerCase(input) == "x"){ // Back
+        UIManager::clearParams();
+        UIManager::goTo(2);
+    }
+    else{
+        UIManager::addErrorMessage("Invalid Command.");
+    }
 }
 
 void UsersUI::registerUser(){
+    Users users;
 
-}
+    cout<<"Register New User"<<endl;
+    cout<<string(UIManager::getLineLength(), '-')<<endl;
+    cout<<"[C] Clear All   [X] Back"<<endl<<endl;
 
-void UsersUI::updateRole(){
+    string name, role;
+    cout<<"Enter the Name > ";
+    cin>>name;
 
+    
 }

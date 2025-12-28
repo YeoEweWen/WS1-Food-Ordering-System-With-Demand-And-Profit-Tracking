@@ -8,6 +8,10 @@ Page UIManager::currentPage = {0, 0, {}, {}};
 int UIManager::lineLength = 120;
 
 // ---------- Pages & Navigation ----------
+int UIManager::getLineLength(){
+    return lineLength;
+}
+
 Page UIManager::currentPageDetails(){
     return currentPage;
 }
@@ -25,12 +29,20 @@ void UIManager::clearErrorMessages(){
     currentPage.errorMessages = {};
 }
 
+void UIManager::clearInfoMessages(){
+    currentPage.infoMessages = {};
+}
+
 void UIManager::addParam(string key, string value){
     currentPage.params[key] = value;
 }
 
 void UIManager::addErrorMessage(string errorMessage){
     currentPage.errorMessages.push_back(errorMessage);
+}
+
+void UIManager::addInfoMessage(string infoMessage){
+    currentPage.infoMessages.push_back(infoMessage);
 }
 
 
@@ -128,7 +140,7 @@ void UIManager::baseTable(vector<Attribute> columns, vector<map<string, string>>
         }
     }
     else{
-        cout<<"|"<<string((lineLength-countStringLength(noRecordMessage))/2, ' ')<<noRecordMessage<<string((lineLength-countStringLength(noRecordMessage))/2, ' ')<<"|"<<endl;
+        cout<<"|"<<string((lineLength-2-countStringLength(noRecordMessage))/2, ' ')<<noRecordMessage<<string((lineLength-2-countStringLength(noRecordMessage))/2, ' ')<<"|"<<endl;
     }
     cout<<string(lineLength, '-')<<endl;
 }
@@ -138,6 +150,7 @@ void UIManager::dataTable(vector<Attribute> columns, vector<map<string, string>>
 
     numOfRows = rows.size();
     lastPage = (numOfRows + maxRowPerPage - 1) / maxRowPerPage;
+    lastPage = (lastPage == 0) ? 1 : lastPage;
 
     // Search & Filter
     cout<<endl;
@@ -154,21 +167,20 @@ void UIManager::dataTable(vector<Attribute> columns, vector<map<string, string>>
     // Pagination
     string part1, part2;
 
-    part1 = "Showing " + to_string((maxRowPerPage * (pageNum - 1)) + 1) + "-" + to_string((maxRowPerPage * (pageNum - 1)) + numOfRows) + " of " + to_string(totalRows) + " records";
+    part1 = "Showing " + ((numOfRows > 0) ? to_string((maxRowPerPage * (pageNum - 1)) + 1) : "0") + "-" + to_string((maxRowPerPage * (pageNum - 1)) + numOfRows) + " of " + to_string(totalRows) + " records";
     part2 = "Page " + to_string(pageNum) + "/" + to_string(lastPage);
 
     cout<<part1<<string((lineLength - countStringLength(part1 + part2)), ' ')<<part2<<endl;
 
     cout<<endl<<"Actions:"<<endl;
-    cout<<"[1"<<((numOfRows > 1) ? "-" + to_string(numOfRows) : "")<<"] View Details"<<endl;
+    if (numOfRows > 0){
+        cout<<"[1"<<((numOfRows > 1) ? "-" + to_string(numOfRows) : "")<<"] View Details"<<endl;
+    }
     if (pageNum != 1){
         cout<<"[P] Previous   ";
     }
     if (pageNum != lastPage){
         cout<<"[N] Next   ";
-    }
-    if (lastPage != 1){
-        cout<<"[G] Go To Page   ";
     }
     cout<<"[R] Reset"<<endl;
     cout<<"[S] Search   [O] Sort"<<endl;
@@ -195,6 +207,34 @@ void UIManager::errorMessages(const vector<string>& errorMessages, bool topBorde
     else{
         // Single Line
         cout<<"Error: "<<errorMessages[0]<<endl;
+    }
+    
+    if (bottomBorder){
+        cout<<string(lineLength, '-')<<endl;
+    }
+}
+
+void UIManager::infoMessages(const vector<string>& infoMessages, bool topBorder, bool bottomBorder){
+    if (infoMessages.empty()){
+        return;
+    }
+
+    if (topBorder){
+        cout<<string(lineLength, '-')<<endl;
+    }
+
+    if (infoMessages.size() > 1){
+        // Multi Line
+        int i = 1;
+        cout<<"Info:"<<endl;
+        for (const auto& msg : infoMessages){
+            cout<<i<<". "<<msg<<endl;
+            i++;
+        }
+    }
+    else{
+        // Single Line
+        cout<<"Info: "<<infoMessages[0]<<endl;
     }
     
     if (bottomBorder){

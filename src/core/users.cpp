@@ -59,7 +59,7 @@ bool Users::isValidRole(string role){
 }
 
 /*---------- ADMIN ONLY ----------*/
-map<string, string> Users::registerUser(string name, string role){
+bool Users::registerUser(string name, string role){
     Database db;
 
     string username = generateUsername(name);
@@ -77,19 +77,7 @@ map<string, string> Users::registerUser(string name, string role){
         {"created_by", to_string(userDetails.id)},
     };
 
-    if (!db.runQuery(query, params)){
-        logError("Failed to register new user.");
-        return {
-            {"status", "fail"}
-        };
-    }
-
-    return {
-        {"name", name},
-        {"username", username},
-        {"role", role},
-        {"status", "success"}
-    };
+    return db.runQuery(query, params);
 }
 
 bool Users::updateRole(int id, string newRole){
@@ -216,19 +204,25 @@ Users::UserDetails Users::userDetails(int id){
     string query = "SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, "
                    "u.created_by AS registered_by_id, u2.name AS registered_by_name "
                    "FROM user u "
-                   "LEFT JOIN user AS u2 ON u2.id = u.id "
+                   "LEFT JOIN user AS u2 ON u2.id = u.created_by "
                    "WHERE u.id = :id;";
     map<string, string> params = {{"id", to_string(id)}};
 
-    map<string, string> details = db.fetchData(query, params)[0];
+    vector<map<string, string>> result = db.fetchData(query, params);
+
+    if (result.empty()){
+        return {-1};
+    }
+
+    map<string, string> details = result[0];
 
     return {
         stoi(details.at("id")),
         details.at("name"),
         details.at("username"),
-        details.at("role"),
+        ((details.at("role") == "Admin") ? "Administrator" : details.at("role")),
         details.at("status"),
-        details.at("last_logged_in"),
+        ((details.at("last_logged_in") == "NULL") ? "-" : details.at("last_logged_in")),
         details.at("registered_at"),
         ((details.at("registered_by_id") == "NULL") ? -1 : stoi(details.at("registered_by_id"))),
         ((details.at("registered_by_name") == "NULL") ? "System" : details.at("registered_by_name"))

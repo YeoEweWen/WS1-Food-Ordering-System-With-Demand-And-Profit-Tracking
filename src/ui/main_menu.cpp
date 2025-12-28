@@ -48,6 +48,6 @@ void MainMenuUI::main(){
         UIManager::goTo(0);
     }
     else{
-        UIManager::addErrorMessage("Invalid option.");
+        UIManager::addErrorMessage("Invalid Option.");
     }
 }

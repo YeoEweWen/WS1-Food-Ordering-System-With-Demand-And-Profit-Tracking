@@ -19,18 +19,18 @@ private:
 public:
     struct UserDetails {
         int id;
-        std::string name;
-        std::string username;
-        std::string role;
-        std::string status;
-        std::string lastLoggedIn;
-        std::string registeredAt;
-        int registeredByID;
-        std::string registeredByName;
+        std::string name = "";
+        std::string username = "";
+        std::string role = "";
+        std::string status = "";
+        std::string lastLoggedIn = "";
+        std::string registeredAt = "";
+        int registeredByID = -1;
+        std::string registeredByName = "";
     };
 
     // Admin Only
-    std::map<std::string, std::string> registerUser(std::string name, std::string role);
+    bool registerUser(std::string name, std::string role);
     bool updateRole(int id, std::string newRole);
     bool deactivate(int id);
     bool activate(int id);
