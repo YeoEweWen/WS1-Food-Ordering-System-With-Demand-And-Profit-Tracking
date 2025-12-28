@@ -15,7 +15,8 @@ void MainMenuUI::main(){
         cout<<"[2] Menu Management"<<endl;
         cout<<"[3] Order System"<<endl;
         cout<<"[4] Analysis & Report"<<endl;
-        cout<<"[5] Profile"<<endl<<endl;
+        cout<<"[5] Store"<<endl;
+        cout<<"[6] Profile"<<endl<<endl;
     }
     else{
         cout<<"[1] Order System"<<endl;
@@ -40,8 +41,11 @@ void MainMenuUI::main(){
     else if (option == "4" && Auth::isAdmin()){
         UIManager::goTo(5);
     }
-    else if ((option == "5" && Auth::isAdmin()) || (option == "2" && !Auth::isAdmin())){
-        UIManager::goTo(6);
+    else if (option == "5" && Auth::isAdmin()){
+        UIManager::goTo(5);
+    }
+    else if ((option == "6" && Auth::isAdmin()) || (option == "2" && !Auth::isAdmin())){
+        UIManager::goTo(7);
     }
     else if (option == "x" || option == "X"){
         Auth::logout();

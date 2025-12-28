@@ -169,7 +169,7 @@ TableList Users::userList(string search, string sortColumn, bool sortAsc, int pa
 
     vector<string> sortableColumnKeys = {"name", "role", "status", "last_logged_in"};
 
-    string orderQuery = "ORDER BY status ASC, last_logged_in DESC ";
+    string orderQuery = "ORDER BY status ASC, created_at DESC, last_logged_in DESC ";
     if (find(sortableColumnKeys.begin(), sortableColumnKeys.end(), sortColumn) != sortableColumnKeys.end()){
         orderQuery = "ORDER BY " + sortColumn + " " + ((sortAsc) ? "ASC " : "DESC ");
     }
