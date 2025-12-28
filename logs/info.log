@@ -83,3 +83,19 @@
 [2025-12-28 01:33:10]   MYSQL Query: SELECT id, name, role, status, last_logged_in FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%') ORDER BY status ASC, last_logged_in DESC LIMIT 25 OFFSET 0;
 [2025-12-28 01:33:11]   MYSQL Query: SELECT COUNT(*) AS total FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%');
 [2025-12-28 01:33:11]   MYSQL Query: SELECT id, name, role, status, last_logged_in FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%') ORDER BY status ASC, last_logged_in DESC LIMIT 25 OFFSET 0;
+[2025-12-28 10:53:31]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-28 10:53:31]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-28 10:53:31]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-28 10:53:34]   MYSQL Query: SELECT COUNT(*) AS total FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%');
+[2025-12-28 10:53:34]   MYSQL Query: SELECT id, name, role, status, last_logged_in FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%') ORDER BY status ASC, last_logged_in DESC LIMIT 25 OFFSET 0;
+[2025-12-28 12:54:04]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-28 12:54:04]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-28 12:54:04]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-28 12:54:13]   MYSQL Query: SELECT COUNT(*) AS total FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%');
+[2025-12-28 12:54:13]   MYSQL Query: SELECT id, name, role, status, last_logged_in FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%') ORDER BY status ASC, last_logged_in DESC LIMIT 25 OFFSET 0;
+[2025-12-28 12:58:41]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-28 12:58:41]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-28 12:58:41]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-28 12:59:36]   MYSQL Query: SELECT COUNT(*) AS total FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%');
+[2025-12-28 12:59:36]   MYSQL Query: SELECT id, name, role, status, last_logged_in FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%') ORDER BY status ASC, last_logged_in DESC LIMIT 25 OFFSET 0;
+[2025-12-28 12:59:40]   Ali bin Mohd Abu (ID: 14) is logged out.

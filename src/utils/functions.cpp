@@ -133,3 +133,17 @@ vector<string> split(const string &text, char delimiter) {
 
     return result;
 }
+
+string trim(const string& s) {
+    auto start = s.begin();
+    while (start != s.end() && isspace(static_cast<unsigned char>(*start))) {
+        ++start;
+    }
+
+    auto end = s.end();
+    do {
+        --end;
+    } while (end != start && isspace(static_cast<unsigned char>(*end)));
+
+    return string(start, end + 1);
+}

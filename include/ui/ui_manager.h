@@ -27,12 +27,6 @@ struct Sort {
     bool ascendingOrder;
 };
 
-struct TableNavPermission {
-    bool previosPage;
-    bool nextPage;
-    bool goToPage;
-};
-
 class UIManager {
 protected:
     static int lineLength;
@@ -47,7 +41,8 @@ public:
     static void addErrorMessage(std::string errorMessage);
     
     static void header(const std::string& pageName = "");
-    static TableNavPermission table(std::vector<Attribute> columns, std::vector<std::map<std::string, std::string>> rows, int totalRows, std::string search = "", Sort sort = {-1, true}, int pageNum=1, int maxRowPerPage=25);
+    static void baseTable(std::vector<Attribute> columns, std::vector<std::map<std::string, std::string>> rows, std::string noRecordMessage="No record found.");
+    static void dataTable(std::vector<Attribute> columns, std::vector<std::map<std::string, std::string>> rows, int totalRows, std::string search = "", Sort sort = {-1, true}, int pageNum=1, int maxRowPerPage=25);
     static void errorMessages(const std::vector<std::string>& errorMessages, bool topBorder = true, bool bottomBorder = true);
     static void emptyPage(bool includeHeader=true);
 };

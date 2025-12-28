@@ -60,13 +60,7 @@ void UIManager::header(const string& pageName){
     cout<<string(lineLength, '-')<<endl;
 }
 
-TableNavPermission UIManager::table(vector<Attribute> columns, vector<map<string, string>> rows, int totalRows, string search, Sort sort, int pageNum, int maxRowPerPage){
-    vector<int> ids = {};
-    int numOfRows, lastPage;
-
-    numOfRows = rows.size();
-    lastPage = (numOfRows + maxRowPerPage - 1) / maxRowPerPage;
-
+void UIManager::baseTable(vector<Attribute> columns, vector<map<string, string>> rows, string noRecordMessage){
     // Calculate the maximum length per column
     int reservedSpace = 1;
     int reservedSpaceEachColumn = 2;
@@ -77,7 +71,6 @@ TableNavPermission UIManager::table(vector<Attribute> columns, vector<map<string
         // Default
         column.maxLength = countStringLength(column.label);
 
-        bool included = ids.empty();
         for (auto& row : rows){
             if (row.at(column.key) == "NULL"){ // Update null value
                 row.at(column.key) = "-";
@@ -86,25 +79,11 @@ TableNavPermission UIManager::table(vector<Attribute> columns, vector<map<string
             if (countStringLength(row.at(column.key)) > column.maxLength){
                 column.maxLength = countStringLength(row.at(column.key));
             }
-
-            // Add id into ids
-            if (included){
-                ids.push_back(stoi(row.at("id")));
-            }
         }
         availableSpace -= column.maxLength;
     }
 
     availableSpace = availableSpace/numOfColumns;
-    
-    // Search & Filter
-    cout<<endl;
-    if (search != ""){
-        cout<<"Search: "<<search<<endl;
-    }
-    if (sort.columnIndex != -1){
-        cout<<"Sort: "<<columns[sort.columnIndex].label<<" ("<<((sort.ascendingOrder) ? "Ascending" : "Descending")<<")"<<endl;
-    }
 
     // Print table
     int padding, balance, i, j;
@@ -127,6 +106,7 @@ TableNavPermission UIManager::table(vector<Attribute> columns, vector<map<string
     cout<<string(lineLength, '-')<<endl;
 
     // Contents (Rows)
+    int numOfRows = rows.size();
     if (numOfRows > 0){
         i = 0;
         for (auto& row : rows){
@@ -148,9 +128,28 @@ TableNavPermission UIManager::table(vector<Attribute> columns, vector<map<string
         }
     }
     else{
-        cout<<"|"<<string((lineLength-17)/2, ' ')<<"No record found."<<string((lineLength-17)/2, ' ')<<"|"<<endl;
+        cout<<"|"<<string((lineLength-countStringLength(noRecordMessage))/2, ' ')<<noRecordMessage<<string((lineLength-countStringLength(noRecordMessage))/2, ' ')<<"|"<<endl;
     }
     cout<<string(lineLength, '-')<<endl;
+}
+
+void UIManager::dataTable(vector<Attribute> columns, vector<map<string, string>> rows, int totalRows, string search, Sort sort, int pageNum, int maxRowPerPage){
+    int numOfRows, lastPage;
+
+    numOfRows = rows.size();
+    lastPage = (numOfRows + maxRowPerPage - 1) / maxRowPerPage;
+
+    // Search & Filter
+    cout<<endl;
+    if (search != ""){
+        cout<<"Search: "<<search<<endl;
+    }
+    if (sort.columnIndex != -1){
+        cout<<"Sort: "<<columns[sort.columnIndex].label<<" ("<<((sort.ascendingOrder) ? "Ascending" : "Descending")<<")"<<endl;
+    }
+
+    // Table
+    baseTable(columns, rows);
 
     // Pagination
     string part1, part2;
@@ -160,15 +159,19 @@ TableNavPermission UIManager::table(vector<Attribute> columns, vector<map<string
 
     cout<<part1<<string((lineLength - countStringLength(part1 + part2)), ' ')<<part2<<endl;
 
-    /*return {
-        (pageNum != 1),
-        (pageNum != lastPage),
-        (lastPage != 1)
-    };*/
-
-    return {
-        true, true, true
-    };
+    cout<<endl<<"Actions:"<<endl;
+    cout<<"[1"<<((numOfRows > 1) ? "-" + to_string(numOfRows) : "")<<"] View Details"<<endl;
+    if (pageNum != 1){
+        cout<<"[P] Previous   ";
+    }
+    if (pageNum != lastPage){
+        cout<<"[N] Next   ";
+    }
+    if (lastPage != 1){
+        cout<<"[G] Go To Page   ";
+    }
+    cout<<"[R] Reset"<<endl;
+    cout<<"[S] Search   [O] Sort"<<endl;
 }
 
 void UIManager::errorMessages(const vector<string>& errorMessages, bool topBorder, bool bottomBorder){

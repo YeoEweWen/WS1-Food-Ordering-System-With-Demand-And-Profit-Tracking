@@ -37,5 +37,6 @@ std::string toProperCase(const std::string& input);
 std::string toUpperCase(const std::string& input);
 std::string toLowerCase(const std::string& input);
 std::vector<std::string> split(const std::string &text, char delimiter);
+std::string trim(const std::string& s);
 
 #endif
