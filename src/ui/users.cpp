@@ -130,14 +130,10 @@ void UsersUI::list(string search, Sort sort, int pageNum, int maxPerPage){
         }
     }
     else if (toUpperCase(input) == "O"){ // Sort
-        cout<<"[1] Sort by Name (Ascending)   ";
-        cout<<"[2] Sort by Name (Descending)"<<endl;
-        cout<<"[3] Sort by Role (Ascending)   ";
-        cout<<"[4] Sort by Role (Descending)"<<endl;
-        cout<<"[5] Sort by Status (Ascending)   ";
-        cout<<"[6] Sort by Status (Descending)"<<endl;
-        cout<<"[7] Sort by Last Logged In (Ascending)   ";
-        cout<<"[8] Sort by Last Logged In (Descending)"<<endl;
+        cout<<"[1] Sort by Name (Ascending)             [2] Sort by Name (Descending)"<<endl;
+        cout<<"[3] Sort by Role (Ascending)             [4] Sort by Role (Descending)"<<endl;
+        cout<<"[5] Sort by Status (Ascending)           [6] Sort by Status (Descending)"<<endl;
+        cout<<"[7] Sort by Last Logged In (Ascending)   [8] Sort by Last Logged In (Descending)";
         cout<<"\n[X] Cancel"<<endl;
 
         cout<<"\nSelect Option > ";
@@ -212,7 +208,7 @@ void UsersUI::details(int id){
         cout<<"Registered At  : "<<details.registeredAt<<endl;
         cout<<"Last Logged In : "<<details.lastLoggedIn<<endl;
     }
-    cout<<string(UIManager::getLineLength(), '-')<<endl;;
+    cout<<string(UIManager::getLineLength(), '-')<<endl;
 
     cout<<"Actions:"<<endl;
     if (details.id != -1){
@@ -357,7 +353,6 @@ void UsersUI::registerUser(){
     if (toUpperCase(input) == "S"){ // Submit
         bool isValid = true;
         if (!Validation::validateName(name)){
-            logInfo("Name: " + name);
             UIManager::addErrorMessage("Name must be between 3 and 300 characters.");
             isValid = false;
         }

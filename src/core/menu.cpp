@@ -36,16 +36,17 @@ bool Menu::addMenuCategory(string categoryName){
     return db.runQuery(query, params);
 }
 
-bool Menu::updateMenuCategory(int id, string categoryName){
+bool Menu::updateMenuCategory(int id, string categoryName, string type){
     Database db;
     Auth auth;
 
     Auth::UserDetails userDetails = auth.retrieveLoggedUserDetails();
 
-    string query = "UPDATE menu_category SET category = :category, updated_by = :updated_by, updated_at = :updated_at WHERE id = :id;";
+    string query = "UPDATE menu_category SET category = :category, type = :type, updated_by = :updated_by, updated_at = :updated_at WHERE id = :id;";
     map<string, string> params = {
         {"id", to_string(id)},
         {"category", categoryName},
+        {"type", ((toLowerCase(type) == "food") ? "Food" : "Beverage")},
         {"updated_by", to_string(userDetails.id)},
         {"updated_at", timestamp()}
     };
@@ -154,35 +155,96 @@ bool Menu::setUnavailable(int id){
     return db.runQuery(query, params);
 }
 
-vector<map<string, string>> Menu::menuList(bool detailedList, bool availableOnly){
+TableList Menu::menuList(string search, string sortColumn, bool sortAsc, int page, int limitRowPerPage){
     Database db;
 
-    string query;
-    string availabilityCondition = "";
-    if (availableOnly){
-        availabilityCondition = "WHERE m.availability = 'Available' ";
+    vector<string> sortableColumnKeys = {"name", "price", "category", "availability"};
+
+    string orderQuery = "ORDER BY m.created_at DESC, m.updated_at DESC ";
+    if (find(sortableColumnKeys.begin(), sortableColumnKeys.end(), sortColumn) != sortableColumnKeys.end()){
+        if (sortColumn == "price"){
+            sortColumn = "m.selling_price";
+        }
+        else if (sortColumn == "category"){
+            sortColumn = "mc.category";
+        }
+        else{
+            sortColumn = "m." + sortColumn;
+        }
+
+        orderQuery = "ORDER BY " + sortColumn + " " + ((sortAsc) ? "ASC " : "DESC ");
+    }
+    
+    int offset = limitRowPerPage * (page - 1);
+    string limitOffsetQuery = "LIMIT " + to_string(limitRowPerPage) + " OFFSET " + to_string(offset) + ";";
+
+    // Retrieve the total of row (Without limit)
+    string query = "SELECT COUNT(*) AS total FROM menu m "
+                   "LEFT JOIN menu_category AS mc ON mc.id = m.category_id "
+                   "WHERE (m.name LIKE :search OR m.selling_price LIKE :search OR mc.category LIKE :search OR m.availability LIKE :search);";
+
+    map<string, string> params = {
+        {"search", "%" + search + "%"}
+    };
+
+    int total = stoi(db.fetchData(query, params)[0].at("total"));
+
+    // Retrieve the rows (With limit)
+    query = "SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m "
+            "LEFT JOIN menu_category AS mc ON mc.id = m.category_id "
+            "WHERE (m.name LIKE :search OR m.selling_price LIKE :search OR mc.category LIKE :search OR m.availability LIKE :search) "
+             + orderQuery + limitOffsetQuery;
+
+    vector<map<string, string>> list = db.fetchData(query, params);
+
+    return {list, total};
+}
+
+Menu::MenuDetails Menu::menuDetails(int id){
+    Database db;
+
+    string query = "SELECT m.id, m.name, m.production_cost, m.selling_price, mc.category AS category, mc.type, "
+                   "m.availability, m.created_at, m.created_by AS created_by_id, u.name AS created_by_name, "
+                   "m.updated_at, m.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu m "
+                   "LEFT JOIN menu_category AS mc ON mc.id = m.category_id "
+                   "LEFT JOIN user AS u ON u.id = m.created_by "
+                   "LEFT JOIN user AS u2 ON u2.id = m.updated_by "
+                   "WHERE m.id = :id;";
+
+    map<string, string> params = {{"id", to_string(id)}};
+
+    vector<map<string, string>> result = db.fetchData(query, params);
+
+    if (result.empty()){
+        return {-1};
     }
 
-    if (detailedList){
-        query = "SELECT "
-                "m.id, m.name, m.production_cost, m.selling_price, m.category_id, mc.category AS category, m.availability, "
-                "m.created_by AS created_by_id, u.name AS created_by, m.created_at, "
-                "m.updated_by AS updated_by_id, u2.name AS updated_by, m.updated_at "
-                "FROM menu m "
-                "LEFT JOIN menu_category AS mc ON mc.id = m.category_id "
-                "LEFT JOIN user AS u ON u.id = m.created_by "
-                "LEFT JOIN user AS u2 ON u2.id = m.updated_by "
-                + availabilityCondition + 
-                "ORDER BY mc.category ASC, m.name ASC;";
-    }
-    else{
-        query = "SELECT "
-                "m.id, m.name, m.production_cost, m.selling_price, mc.category, m.availability "
-                "FROM menu m "
-                "LEFT JOIN menu_category AS MC ON mc.id = m.category_id "
-                + availabilityCondition +
-                "ORDER BY mc.category ASC, m.name ASC;";
-    }
+    map<string, string> details = result[0];
 
-    return db.fetchData(query);
+    return {
+        stoi(details.at("id")),
+        details.at("name"),
+        stod(details.at("production_cost")),
+        stod(details.at("selling_price")),
+        calculateProfitMargin(stod(details.at("production_cost")), stod(details.at("selling_price"))),
+        details.at("category"),
+        details.at("type"),
+        details.at("availability"),
+        details.at("created_at"),
+        stoi(details.at("created_by_id")),
+        details.at("created_by_name"),
+        ((details.at("updated_at") == "NULL") ? "-" : details.at("updated_at")),
+        ((details.at("updated_by_id") == "NULL") ? -1 : stoi(details.at("updated_by_id"))),
+        ((details.at("updated_by_name") == "NULL") ? "-" : details.at("updated_by_name")),
+        isMenuDeletable(id),
+    };
+}
+
+vector<Menu::MenuDetails> Menu::menuPriceList(){
+    Database db;
+
+    string query = "SELECT m.id, m.name, m.selling_price, mc.name AS category FROM menu m "
+                   "LEFT JOIN menu_category AS mc ON mc.id = m.category_id "
+                   "WHERE m.availability = 'Available' "
+                   "ORDER BY m.name ASC";
 }

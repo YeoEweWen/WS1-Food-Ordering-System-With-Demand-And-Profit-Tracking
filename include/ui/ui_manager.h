@@ -20,6 +20,8 @@ struct Page {
 struct Attribute {
     std::string key;
     std::string label;
+    std::string additionalFrontLabel = "";
+    std::string additionalBackLabel = "";
     int maxLength = 0;
 };
 

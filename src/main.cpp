@@ -7,6 +7,10 @@
 // UIManager
 #include "ui/auth.h"
 #include "ui/main_menu.h"
+#include "ui/menu.h"
+#include "ui/order.h"
+#include "ui/profile.h"
+#include "ui/store.h"
 #include "ui/users.h"
 #include "ui/ui_manager.h"
 
@@ -62,7 +66,7 @@ int main() {
                 break;
 
             case 3:
-                UIManager::emptyPage();
+                MenuUI::main();
                 break;
 
             case 4:

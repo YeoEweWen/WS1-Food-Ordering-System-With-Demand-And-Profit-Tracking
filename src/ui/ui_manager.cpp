@@ -78,6 +78,7 @@ void UIManager::baseTable(vector<Attribute> columns, vector<map<string, string>>
     int reservedSpaceEachColumn = 2;
     int numOfColumns = columns.size();
     int availableSpace = lineLength - 6 - reservedSpace - (reservedSpaceEachColumn * numOfColumns);
+    int columnSize;
 
     for (auto& column : columns){
         // Default
@@ -88,8 +89,9 @@ void UIManager::baseTable(vector<Attribute> columns, vector<map<string, string>>
                 row.at(column.key) = "-";
             }
 
-            if (countStringLength(row.at(column.key)) > column.maxLength){
-                column.maxLength = countStringLength(row.at(column.key));
+            columnSize = countStringLength(row.at(column.key)) + countStringLength(column.additionalFrontLabel) + countStringLength(column.additionalBackLabel);
+            if (columnSize > column.maxLength){
+                column.maxLength = columnSize;
             }
         }
         availableSpace -= column.maxLength;
@@ -108,8 +110,10 @@ void UIManager::baseTable(vector<Attribute> columns, vector<map<string, string>>
     for (auto& column : columns){
         i--;
         padding = (column.maxLength + availableSpace) - countStringLength(column.label);
-        balance -= padding + countStringLength(column.label) + reservedSpaceEachColumn;
+        columnSize = countStringLength(column.label) + countStringLength(column.additionalFrontLabel) + countStringLength(column.additionalBackLabel);
+        balance -= padding + columnSize + reservedSpaceEachColumn;
         padding = (i == 0) ? (padding + balance) : padding;
+        padding += countStringLength(column.additionalFrontLabel + column.additionalBackLabel);
 
         cout<<" "<<column.label<<string(padding, ' ')<<"|";
     }
@@ -131,10 +135,11 @@ void UIManager::baseTable(vector<Attribute> columns, vector<map<string, string>>
             for (auto& column : columns){
                 j--;
                 padding = (column.maxLength + availableSpace) - countStringLength(row.at(column.key));
-                balance -= padding + countStringLength(row.at(column.key)) + reservedSpaceEachColumn;
+                columnSize = countStringLength(row.at(column.key)) + countStringLength(column.additionalFrontLabel) + countStringLength(column.additionalBackLabel);
+                balance -= padding + columnSize + reservedSpaceEachColumn;
                 padding = (j == 0) ? (padding + balance) : padding;
 
-                cout<<" "<<row.at(column.key)<<string(padding, ' ')<<"|";
+                cout<<" "<<column.additionalFrontLabel<<row.at(column.key)<<column.additionalBackLabel<<string(padding, ' ')<<"|";
             }
             cout<<endl;
         }
@@ -182,8 +187,11 @@ void UIManager::dataTable(vector<Attribute> columns, vector<map<string, string>>
     if (pageNum != lastPage){
         cout<<"[N] Next   ";
     }
-    cout<<"[R] Reset"<<endl;
+    if (pageNum != 1 || pageNum != lastPage){
+        cout<<endl;
+    }
     cout<<"[S] Search   [O] Sort"<<endl;
+    cout<<"[R] Reset"<<endl;
 }
 
 void UIManager::errorMessages(const vector<string>& errorMessages, bool topBorder, bool bottomBorder){
