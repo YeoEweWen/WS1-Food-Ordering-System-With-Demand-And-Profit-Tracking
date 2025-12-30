@@ -1,23 +1,253 @@
-[2025-12-29 21:02:52]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
-[2025-12-29 21:02:52]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
-[2025-12-29 21:02:52]   Ali bin Mohd Abu (ID: 14) is logged in.
-[2025-12-29 21:02:54]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
-[2025-12-29 21:02:54]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
-[2025-12-29 21:02:55]   MYSQL Query: SELECT m.id, m.name, m.production_cost, m.selling_price, mc.category AS category, mc.type, m.availability, m.created_at, m.created_by AS created_by_id, u.name AS created_by_name, m.updated_at, m.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id LEFT JOIN user AS u ON u.id = m.created_by LEFT JOIN user AS u2 ON u2.id = m.updated_by WHERE m.id = 16;
-[2025-12-29 21:02:55]   MYSQL Query: SELECT menu_id FROM order_items WHERE menu_id = 16 LIMIT 1;
-[2025-12-29 21:07:05]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
-[2025-12-29 21:07:05]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
-[2025-12-29 21:07:05]   Ali bin Mohd Abu (ID: 14) is logged in.
-[2025-12-29 21:07:06]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
-[2025-12-29 21:07:06]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
-[2025-12-29 21:07:08]   MYSQL Query: SELECT m.id, m.name, m.production_cost, m.selling_price, mc.category AS category, mc.type, m.availability, m.created_at, m.created_by AS created_by_id, u.name AS created_by_name, m.updated_at, m.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id LEFT JOIN user AS u ON u.id = m.created_by LEFT JOIN user AS u2 ON u2.id = m.updated_by WHERE m.id = 14;
-[2025-12-29 21:07:08]   MYSQL Query: SELECT menu_id FROM order_items WHERE menu_id = 14 LIMIT 1;
-[2025-12-29 21:09:38]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
-[2025-12-29 21:09:38]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
-[2025-12-29 21:09:38]   Ali bin Mohd Abu (ID: 14) is logged in.
-[2025-12-29 21:09:45]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
-[2025-12-29 21:09:45]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
-[2025-12-29 21:09:46]   MYSQL Query: SELECT m.id, m.name, m.production_cost, m.selling_price, mc.category AS category, mc.type, m.availability, m.created_at, m.created_by AS created_by_id, u.name AS created_by_name, m.updated_at, m.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id LEFT JOIN user AS u ON u.id = m.created_by LEFT JOIN user AS u2 ON u2.id = m.updated_by WHERE m.id = 15;
-[2025-12-29 21:09:46]   MYSQL Query: SELECT menu_id FROM order_items WHERE menu_id = 15 LIMIT 1;
-[2025-12-29 21:10:07]   MYSQL Query: SELECT COUNT(*) AS total FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%');
-[2025-12-29 21:10:07]   MYSQL Query: SELECT id, name, role, status, last_logged_in FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%') ORDER BY status ASC, created_at DESC, last_logged_in DESC LIMIT 25 OFFSET 0;
+[2025-12-30 22:28:29]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-30 22:28:29]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-30 22:28:29]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-30 22:28:30]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
+[2025-12-30 22:28:30]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
+[2025-12-30 22:28:33]   MYSQL Query: SELECT m.id, m.name, m.production_cost, m.selling_price, mc.category AS category, mc.type, m.availability, m.created_at, m.created_by AS created_by_id, u.name AS created_by_name, m.updated_at, m.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id LEFT JOIN user AS u ON u.id = m.created_by LEFT JOIN user AS u2 ON u2.id = m.updated_by WHERE m.id = 16;
+[2025-12-30 22:28:33]   MYSQL Query: SELECT menu_id FROM order_items WHERE menu_id = 16 LIMIT 1;
+[2025-12-30 22:28:35]   MYSQL Query: SELECT m.id, m.name, m.production_cost, m.selling_price, mc.category AS category, mc.type, m.availability, m.created_at, m.created_by AS created_by_id, u.name AS created_by_name, m.updated_at, m.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id LEFT JOIN user AS u ON u.id = m.created_by LEFT JOIN user AS u2 ON u2.id = m.updated_by WHERE m.id = 16;
+[2025-12-30 22:28:35]   MYSQL Query: SELECT menu_id FROM order_items WHERE menu_id = 16 LIMIT 1;
+[2025-12-30 22:28:43]   MYSQL Query: SELECT m.id, m.name, m.production_cost, m.selling_price, mc.category AS category, mc.type, m.availability, m.created_at, m.created_by AS created_by_id, u.name AS created_by_name, m.updated_at, m.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id LEFT JOIN user AS u ON u.id = m.created_by LEFT JOIN user AS u2 ON u2.id = m.updated_by WHERE m.id = 16;
+[2025-12-30 22:28:43]   MYSQL Query: SELECT menu_id FROM order_items WHERE menu_id = 16 LIMIT 1;
+[2025-12-30 22:29:53]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-30 22:29:53]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-30 22:29:53]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-30 22:29:55]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
+[2025-12-30 22:29:55]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
+[2025-12-30 22:29:58]   MYSQL Query: SELECT m.id, m.name, m.production_cost, m.selling_price, mc.category AS category, mc.type, m.availability, m.created_at, m.created_by AS created_by_id, u.name AS created_by_name, m.updated_at, m.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id LEFT JOIN user AS u ON u.id = m.created_by LEFT JOIN user AS u2 ON u2.id = m.updated_by WHERE m.id = 13;
+[2025-12-30 22:29:58]   MYSQL Query: SELECT menu_id FROM order_items WHERE menu_id = 13 LIMIT 1;
+[2025-12-30 22:30:05]   MYSQL Query: UPDATE menu SET availability = 'Unavailable' WHERE id = 13;
+[2025-12-30 22:30:05]   MYSQL Query: SELECT m.id, m.name, m.production_cost, m.selling_price, mc.category AS category, mc.type, m.availability, m.created_at, m.created_by AS created_by_id, u.name AS created_by_name, m.updated_at, m.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id LEFT JOIN user AS u ON u.id = m.created_by LEFT JOIN user AS u2 ON u2.id = m.updated_by WHERE m.id = 13;
+[2025-12-30 22:30:05]   MYSQL Query: SELECT menu_id FROM order_items WHERE menu_id = 13 LIMIT 1;
+[2025-12-30 22:30:18]   MYSQL Query: UPDATE menu SET availability = 'Available' WHERE id = 13;
+[2025-12-30 22:30:18]   MYSQL Query: SELECT m.id, m.name, m.production_cost, m.selling_price, mc.category AS category, mc.type, m.availability, m.created_at, m.created_by AS created_by_id, u.name AS created_by_name, m.updated_at, m.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id LEFT JOIN user AS u ON u.id = m.created_by LEFT JOIN user AS u2 ON u2.id = m.updated_by WHERE m.id = 13;
+[2025-12-30 22:30:18]   MYSQL Query: SELECT menu_id FROM order_items WHERE menu_id = 13 LIMIT 1;
+[2025-12-30 22:30:29]   MYSQL Query: SELECT m.id, m.name, m.production_cost, m.selling_price, mc.category AS category, mc.type, m.availability, m.created_at, m.created_by AS created_by_id, u.name AS created_by_name, m.updated_at, m.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id LEFT JOIN user AS u ON u.id = m.created_by LEFT JOIN user AS u2 ON u2.id = m.updated_by WHERE m.id = 13;
+[2025-12-30 22:30:29]   MYSQL Query: SELECT menu_id FROM order_items WHERE menu_id = 13 LIMIT 1;
+[2025-12-30 22:43:14]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-30 22:43:14]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-30 22:43:14]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-30 22:43:17]   MYSQL Query: SELECT COUNT(*) AS total FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%');
+[2025-12-30 22:43:17]   MYSQL Query: SELECT id, name, role, status, last_logged_in FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%') ORDER BY status ASC, created_at DESC, last_logged_in DESC LIMIT 25 OFFSET 0;
+[2025-12-30 22:43:22]   MYSQL Query: SELECT COUNT(*) AS total FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%');
+[2025-12-30 22:43:22]   MYSQL Query: SELECT id, name, role, status, last_logged_in FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%') ORDER BY status ASC, created_at DESC, last_logged_in DESC LIMIT 25 OFFSET 0;
+[2025-12-30 22:43:34]   MYSQL Query: SELECT COUNT(*) AS total FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%');
+[2025-12-30 22:43:34]   MYSQL Query: SELECT id, name, role, status, last_logged_in FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%') ORDER BY status ASC, created_at DESC, last_logged_in DESC LIMIT 25 OFFSET 0;
+[2025-12-30 22:43:36]   MYSQL Query: SELECT COUNT(*) AS total FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%');
+[2025-12-30 22:43:36]   MYSQL Query: SELECT id, name, role, status, last_logged_in FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%') ORDER BY status ASC, created_at DESC, last_logged_in DESC LIMIT 25 OFFSET 0;
+[2025-12-30 22:45:26]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-30 22:45:26]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-30 22:45:26]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-30 22:45:28]   MYSQL Query: SELECT COUNT(*) AS total FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%');
+[2025-12-30 22:45:28]   MYSQL Query: SELECT id, name, role, status, last_logged_in FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%') ORDER BY status ASC, created_at DESC, last_logged_in DESC LIMIT 25 OFFSET 0;
+[2025-12-30 22:45:30]   MYSQL Query: SELECT COUNT(*) AS total FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%');
+[2025-12-30 22:45:30]   MYSQL Query: SELECT id, name, role, status, last_logged_in FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%') ORDER BY status ASC, created_at DESC, last_logged_in DESC LIMIT 25 OFFSET 0;
+[2025-12-30 22:45:32]   MYSQL Query: SELECT COUNT(*) AS total FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%');
+[2025-12-30 22:45:32]   MYSQL Query: SELECT id, name, role, status, last_logged_in FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%') ORDER BY status ASC, created_at DESC, last_logged_in DESC LIMIT 25 OFFSET 0;
+[2025-12-30 22:45:34]   MYSQL Query: SELECT COUNT(*) AS total FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%');
+[2025-12-30 22:45:34]   MYSQL Query: SELECT id, name, role, status, last_logged_in FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%') ORDER BY status ASC, created_at DESC, last_logged_in DESC LIMIT 25 OFFSET 0;
+[2025-12-30 22:45:37]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 18;
+[2025-12-30 22:45:42]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 18;
+[2025-12-30 22:45:43]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 18;
+[2025-12-30 22:45:45]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 18;
+[2025-12-30 22:45:48]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 18;
+[2025-12-30 22:45:49]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 18;
+[2025-12-30 22:45:50]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 18;
+[2025-12-30 22:45:51]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 18;
+[2025-12-30 22:45:53]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 18;
+[2025-12-30 22:45:56]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 18;
+[2025-12-30 22:45:58]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 18;
+[2025-12-30 22:46:00]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 18;
+[2025-12-30 22:46:02]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 18;
+[2025-12-30 22:46:07]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 18;
+[2025-12-30 22:46:09]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 18;
+[2025-12-30 22:46:10]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 18;
+[2025-12-30 22:46:12]   MYSQL Query: SELECT COUNT(*) AS total FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%');
+[2025-12-30 22:46:12]   MYSQL Query: SELECT id, name, role, status, last_logged_in FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%') ORDER BY status ASC, created_at DESC, last_logged_in DESC LIMIT 25 OFFSET 0;
+[2025-12-30 22:46:17]   Ali bin Mohd Abu (ID: 14) is logged out.
+[2025-12-30 22:59:06]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-30 22:59:06]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-30 22:59:06]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-30 22:59:38]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
+[2025-12-30 22:59:38]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
+[2025-12-30 22:59:53]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
+[2025-12-30 22:59:53]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
+[2025-12-30 23:00:05]   MYSQL Query: SELECT COUNT(*) AS total FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%');
+[2025-12-30 23:00:05]   MYSQL Query: SELECT id, name, role, status, last_logged_in FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%') ORDER BY status ASC, created_at DESC, last_logged_in DESC LIMIT 25 OFFSET 0;
+[2025-12-30 23:17:01]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-30 23:17:01]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-30 23:17:01]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-30 23:17:03]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
+[2025-12-30 23:17:03]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
+[2025-12-30 23:17:06]   MYSQL Query: SELECT id, category, type FROM menu_category ORDER BY category ASC;
+[2025-12-30 23:19:57]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-30 23:19:57]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-30 23:19:57]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-30 23:20:32]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-30 23:20:32]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-30 23:20:32]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-30 23:20:33]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
+[2025-12-30 23:20:33]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
+[2025-12-30 23:20:35]   MYSQL Query: SELECT id, category, type FROM menu_category ORDER BY category ASC;
+[2025-12-30 23:22:52]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-30 23:22:52]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-30 23:22:52]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-30 23:22:52]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
+[2025-12-30 23:22:52]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
+[2025-12-30 23:22:53]   MYSQL Query: SELECT id, category, type FROM menu_category ORDER BY category ASC;
+[2025-12-30 23:24:08]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-30 23:24:08]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-30 23:24:08]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-30 23:24:15]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
+[2025-12-30 23:24:15]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
+[2025-12-30 23:24:16]   MYSQL Query: SELECT id, category, type FROM menu_category ORDER BY category ASC;
+[2025-12-30 23:30:37]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-30 23:30:37]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-30 23:30:37]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-30 23:30:39]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
+[2025-12-30 23:30:39]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
+[2025-12-30 23:30:41]   MYSQL Query: SELECT id, category, type FROM menu_category ORDER BY category ASC;
+[2025-12-30 23:30:43]   MYSQL Query: SELECT mc.id, mc.category, mc.type, mc.created_at, mc.created_by AS created_by_id, u.name AS created_by_name, mc.updated_at, mc.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu_category mc LEFT JOIN user AS u ON u.id = mc.created_by LEFT JOIN user AS u2 ON u2.id = mc.updated_by WHERE mc.id = 12;
+[2025-12-30 23:30:43]   MYSQL Query: SELECT category_id FROM menu WHERE category_id = 12 LIMIT 1;
+[2025-12-30 23:30:54]   MYSQL Query: SELECT id, category, type FROM menu_category ORDER BY category ASC;
+[2025-12-30 23:30:57]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
+[2025-12-30 23:30:57]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
+[2025-12-30 23:31:00]   Ali bin Mohd Abu (ID: 14) is logged out.
+[2025-12-30 23:48:29]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-30 23:48:29]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-30 23:48:29]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-30 23:48:38]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
+[2025-12-30 23:48:38]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
+[2025-12-30 23:48:49]   MYSQL Query: SELECT id, category, type FROM menu_category ORDER BY category ASC;
+[2025-12-30 23:48:53]   MYSQL Query: SELECT mc.id, mc.category, mc.type, mc.created_at, mc.created_by AS created_by_id, u.name AS created_by_name, mc.updated_at, mc.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu_category mc LEFT JOIN user AS u ON u.id = mc.created_by LEFT JOIN user AS u2 ON u2.id = mc.updated_by WHERE mc.id = 13;
+[2025-12-30 23:48:53]   MYSQL Query: SELECT category_id FROM menu WHERE category_id = 13 LIMIT 1;
+[2025-12-30 23:49:01]   MYSQL Query: SELECT mc.id, mc.category, mc.type, mc.created_at, mc.created_by AS created_by_id, u.name AS created_by_name, mc.updated_at, mc.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu_category mc LEFT JOIN user AS u ON u.id = mc.created_by LEFT JOIN user AS u2 ON u2.id = mc.updated_by WHERE mc.id = 13;
+[2025-12-30 23:49:01]   MYSQL Query: SELECT category_id FROM menu WHERE category_id = 13 LIMIT 1;
+[2025-12-30 23:49:04]   MYSQL Query: SELECT id, category, type FROM menu_category ORDER BY category ASC;
+[2025-12-30 23:49:08]   MYSQL Query: SELECT mc.id, mc.category, mc.type, mc.created_at, mc.created_by AS created_by_id, u.name AS created_by_name, mc.updated_at, mc.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu_category mc LEFT JOIN user AS u ON u.id = mc.created_by LEFT JOIN user AS u2 ON u2.id = mc.updated_by WHERE mc.id = 14;
+[2025-12-30 23:49:08]   MYSQL Query: SELECT category_id FROM menu WHERE category_id = 14 LIMIT 1;
+[2025-12-30 23:49:11]   MYSQL Query: SELECT id, category, type FROM menu_category ORDER BY category ASC;
+[2025-12-31 02:18:08]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-31 02:18:08]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-31 02:18:08]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-31 02:18:13]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
+[2025-12-31 02:18:13]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
+[2025-12-31 02:18:16]   MYSQL Query: SELECT id, category, type FROM menu_category ORDER BY category ASC;
+[2025-12-31 02:18:21]   MYSQL Query: SELECT mc.id, mc.category, mc.type, mc.created_at, mc.created_by AS created_by_id, u.name AS created_by_name, mc.updated_at, mc.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu_category mc LEFT JOIN user AS u ON u.id = mc.created_by LEFT JOIN user AS u2 ON u2.id = mc.updated_by WHERE mc.id = 12;
+[2025-12-31 02:18:21]   MYSQL Query: SELECT category_id FROM menu WHERE category_id = 12 LIMIT 1;
+[2025-12-31 02:18:27]   MYSQL Query: SELECT mc.id, mc.category, mc.type, mc.created_at, mc.created_by AS created_by_id, u.name AS created_by_name, mc.updated_at, mc.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu_category mc LEFT JOIN user AS u ON u.id = mc.created_by LEFT JOIN user AS u2 ON u2.id = mc.updated_by WHERE mc.id = 12;
+[2025-12-31 02:18:27]   MYSQL Query: SELECT category_id FROM menu WHERE category_id = 12 LIMIT 1;
+[2025-12-31 02:18:31]   MYSQL Query: SELECT mc.id, mc.category, mc.type, mc.created_at, mc.created_by AS created_by_id, u.name AS created_by_name, mc.updated_at, mc.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu_category mc LEFT JOIN user AS u ON u.id = mc.created_by LEFT JOIN user AS u2 ON u2.id = mc.updated_by WHERE mc.id = 12;
+[2025-12-31 02:18:31]   MYSQL Query: SELECT category_id FROM menu WHERE category_id = 12 LIMIT 1;
+[2025-12-31 02:18:45]   MYSQL Query: SELECT mc.id, mc.category, mc.type, mc.created_at, mc.created_by AS created_by_id, u.name AS created_by_name, mc.updated_at, mc.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu_category mc LEFT JOIN user AS u ON u.id = mc.created_by LEFT JOIN user AS u2 ON u2.id = mc.updated_by WHERE mc.id = 12;
+[2025-12-31 02:18:45]   MYSQL Query: SELECT category_id FROM menu WHERE category_id = 12 LIMIT 1;
+[2025-12-31 02:18:57]   MYSQL Query: UPDATE menu_category SET category = 'Airr', updated_by = 14, updated_at = '2025-12-31 02:18:57' WHERE id = 12;
+[2025-12-31 02:18:57]   MYSQL Query: SELECT mc.id, mc.category, mc.type, mc.created_at, mc.created_by AS created_by_id, u.name AS created_by_name, mc.updated_at, mc.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu_category mc LEFT JOIN user AS u ON u.id = mc.created_by LEFT JOIN user AS u2 ON u2.id = mc.updated_by WHERE mc.id = 12;
+[2025-12-31 02:18:57]   MYSQL Query: SELECT category_id FROM menu WHERE category_id = 12 LIMIT 1;
+[2025-12-31 02:19:15]   MYSQL Query: SELECT mc.id, mc.category, mc.type, mc.created_at, mc.created_by AS created_by_id, u.name AS created_by_name, mc.updated_at, mc.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu_category mc LEFT JOIN user AS u ON u.id = mc.created_by LEFT JOIN user AS u2 ON u2.id = mc.updated_by WHERE mc.id = 12;
+[2025-12-31 02:19:15]   MYSQL Query: SELECT category_id FROM menu WHERE category_id = 12 LIMIT 1;
+[2025-12-31 02:19:23]   MYSQL Query: SELECT mc.id, mc.category, mc.type, mc.created_at, mc.created_by AS created_by_id, u.name AS created_by_name, mc.updated_at, mc.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu_category mc LEFT JOIN user AS u ON u.id = mc.created_by LEFT JOIN user AS u2 ON u2.id = mc.updated_by WHERE mc.id = 12;
+[2025-12-31 02:19:23]   MYSQL Query: SELECT category_id FROM menu WHERE category_id = 12 LIMIT 1;
+[2025-12-31 02:19:44]   MYSQL Query: SELECT mc.id, mc.category, mc.type, mc.created_at, mc.created_by AS created_by_id, u.name AS created_by_name, mc.updated_at, mc.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu_category mc LEFT JOIN user AS u ON u.id = mc.created_by LEFT JOIN user AS u2 ON u2.id = mc.updated_by WHERE mc.id = 12;
+[2025-12-31 02:19:44]   MYSQL Query: SELECT category_id FROM menu WHERE category_id = 12 LIMIT 1;
+[2025-12-31 02:20:35]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-31 02:20:35]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-31 02:20:35]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-31 02:20:41]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
+[2025-12-31 02:20:41]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
+[2025-12-31 02:20:48]   MYSQL Query: SELECT id, category, type FROM menu_category ORDER BY category ASC;
+[2025-12-31 02:20:56]   MYSQL Query: SELECT mc.id, mc.category, mc.type, mc.created_at, mc.created_by AS created_by_id, u.name AS created_by_name, mc.updated_at, mc.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu_category mc LEFT JOIN user AS u ON u.id = mc.created_by LEFT JOIN user AS u2 ON u2.id = mc.updated_by WHERE mc.id = 12;
+[2025-12-31 02:20:56]   MYSQL Query: SELECT category_id FROM menu WHERE category_id = 12 LIMIT 1;
+[2025-12-31 02:21:04]   MYSQL Query: UPDATE menu_category SET type = 'Beverage', updated_by = 14, updated_at = '2025-12-31 02:21:04' WHERE id = 12;
+[2025-12-31 02:21:04]   MYSQL Query: SELECT mc.id, mc.category, mc.type, mc.created_at, mc.created_by AS created_by_id, u.name AS created_by_name, mc.updated_at, mc.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu_category mc LEFT JOIN user AS u ON u.id = mc.created_by LEFT JOIN user AS u2 ON u2.id = mc.updated_by WHERE mc.id = 12;
+[2025-12-31 02:21:04]   MYSQL Query: SELECT category_id FROM menu WHERE category_id = 12 LIMIT 1;
+[2025-12-31 02:21:10]   MYSQL Query: SELECT id, category, type FROM menu_category ORDER BY category ASC;
+[2025-12-31 02:21:12]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
+[2025-12-31 02:21:12]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
+[2025-12-31 02:21:16]   MYSQL Query: SELECT m.id, m.name, m.production_cost, m.selling_price, mc.category AS category, mc.type, m.availability, m.created_at, m.created_by AS created_by_id, u.name AS created_by_name, m.updated_at, m.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id LEFT JOIN user AS u ON u.id = m.created_by LEFT JOIN user AS u2 ON u2.id = m.updated_by WHERE m.id = 10;
+[2025-12-31 02:21:16]   MYSQL Query: SELECT menu_id FROM order_items WHERE menu_id = 10 LIMIT 1;
+[2025-12-31 02:21:20]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
+[2025-12-31 02:21:20]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
+[2025-12-31 02:21:23]   MYSQL Query: SELECT id, category, type FROM menu_category ORDER BY category ASC;
+[2025-12-31 02:21:25]   MYSQL Query: SELECT mc.id, mc.category, mc.type, mc.created_at, mc.created_by AS created_by_id, u.name AS created_by_name, mc.updated_at, mc.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu_category mc LEFT JOIN user AS u ON u.id = mc.created_by LEFT JOIN user AS u2 ON u2.id = mc.updated_by WHERE mc.id = 12;
+[2025-12-31 02:21:25]   MYSQL Query: SELECT category_id FROM menu WHERE category_id = 12 LIMIT 1;
+[2025-12-31 02:21:36]   MYSQL Query: UPDATE menu_category SET category = 'Mee', updated_by = 14, updated_at = '2025-12-31 02:21:36' WHERE id = 12;
+[2025-12-31 02:21:36]   MYSQL Query: SELECT mc.id, mc.category, mc.type, mc.created_at, mc.created_by AS created_by_id, u.name AS created_by_name, mc.updated_at, mc.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu_category mc LEFT JOIN user AS u ON u.id = mc.created_by LEFT JOIN user AS u2 ON u2.id = mc.updated_by WHERE mc.id = 12;
+[2025-12-31 02:21:36]   MYSQL Query: SELECT category_id FROM menu WHERE category_id = 12 LIMIT 1;
+[2025-12-31 02:22:01]   MYSQL Query: UPDATE menu_category SET type = 'Food', updated_by = 14, updated_at = '2025-12-31 02:22:01' WHERE id = 12;
+[2025-12-31 02:22:01]   MYSQL Query: SELECT mc.id, mc.category, mc.type, mc.created_at, mc.created_by AS created_by_id, u.name AS created_by_name, mc.updated_at, mc.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu_category mc LEFT JOIN user AS u ON u.id = mc.created_by LEFT JOIN user AS u2 ON u2.id = mc.updated_by WHERE mc.id = 12;
+[2025-12-31 02:22:01]   MYSQL Query: SELECT category_id FROM menu WHERE category_id = 12 LIMIT 1;
+[2025-12-31 02:22:07]   MYSQL Query: SELECT id, category, type FROM menu_category ORDER BY category ASC;
+[2025-12-31 02:22:09]   MYSQL Query: SELECT mc.id, mc.category, mc.type, mc.created_at, mc.created_by AS created_by_id, u.name AS created_by_name, mc.updated_at, mc.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu_category mc LEFT JOIN user AS u ON u.id = mc.created_by LEFT JOIN user AS u2 ON u2.id = mc.updated_by WHERE mc.id = 12;
+[2025-12-31 02:22:09]   MYSQL Query: SELECT category_id FROM menu WHERE category_id = 12 LIMIT 1;
+[2025-12-31 02:34:53]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-31 02:34:53]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-31 02:34:54]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-31 02:35:01]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
+[2025-12-31 02:35:01]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
+[2025-12-31 02:35:44]   MYSQL Query: SELECT id, category, type FROM menu_category ORDER BY category ASC;
+[2025-12-31 02:36:07]   MYSQL Query: SELECT COUNT(*) AS total FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%');
+[2025-12-31 02:36:07]   MYSQL Query: SELECT id, name, role, status, last_logged_in FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%') ORDER BY status ASC, created_at DESC, last_logged_in DESC LIMIT 25 OFFSET 0;
+[2025-12-31 02:37:03]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-31 02:37:03]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-31 02:37:03]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-31 02:37:22]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
+[2025-12-31 02:37:22]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
+[2025-12-31 02:37:24]   MYSQL Query: SELECT id, category, type FROM menu_category ORDER BY category ASC;
+[2025-12-31 02:37:32]   MYSQL Query: INSERT INTO menu_category (category, type, created_by) VALUES ('Air', 'Beverage', 14);
+[2025-12-31 02:37:33]   MYSQL Query: SELECT COUNT(*) AS total FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%');
+[2025-12-31 02:37:33]   MYSQL Query: SELECT id, name, role, status, last_logged_in FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%') ORDER BY status ASC, created_at DESC, last_logged_in DESC LIMIT 25 OFFSET 0;
+[2025-12-31 02:37:41]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
+[2025-12-31 02:37:41]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
+[2025-12-31 02:37:43]   MYSQL Query: SELECT id, category, type FROM menu_category ORDER BY category ASC;
+[2025-12-31 02:42:53]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-31 02:42:53]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-31 02:42:53]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-31 02:43:12]   MYSQL Query: SELECT COUNT(*) AS total FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%');
+[2025-12-31 02:43:12]   MYSQL Query: SELECT id, name, role, status, last_logged_in FROM user WHERE id != 14 AND (name LIKE '%%' OR role LIKE '%%' OR status LIKE '%%' OR last_logged_in LIKE '%%') ORDER BY status ASC, created_at DESC, last_logged_in DESC LIMIT 25 OFFSET 0;
+[2025-12-31 02:43:13]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 18;
+[2025-12-31 02:50:42]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-31 02:50:42]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-31 02:50:42]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-31 02:50:46]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 14;
+[2025-12-31 03:02:57]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-31 03:02:57]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-31 03:02:57]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-31 03:02:59]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 14;
+[2025-12-31 03:05:42]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-31 03:05:42]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-31 03:05:42]   Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-31 03:05:44]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 14;
+[2025-12-31 03:06:01]   MYSQL Query: UPDATE user SET name = 'Mohd Ali bin Mohd Abu' WHERE id = 14 AND status = 'Active';
+[2025-12-31 03:06:01]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 14;
+[2025-12-31 03:08:47]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-31 03:08:47]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-31 03:08:47]   Mohd Ali bin Mohd Abu (ID: 14) is logged in.
+[2025-12-31 03:10:07]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 14;
+[2025-12-31 03:10:21]   MYSQL Query: UPDATE user SET name = 'Ali Bin Abu' WHERE id = 14 AND status = 'Active';
+[2025-12-31 03:10:21]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 14;
+[2025-12-31 03:18:39]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-31 03:18:39]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-31 03:18:39]   Ali Bin Abu (ID: 14) is logged in.
+[2025-12-31 03:18:45]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 14;
+[2025-12-31 03:18:51]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 14;
+[2025-12-31 03:20:09]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-31 03:20:09]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-31 03:20:09]   Ali Bin Abu (ID: 14) is logged in.
+[2025-12-31 03:20:11]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 14;
+[2025-12-31 03:20:18]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 14;
+[2025-12-31 03:21:49]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-31 03:21:49]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-31 03:21:49]   Ali Bin Abu (ID: 14) is logged in.
+[2025-12-31 03:21:51]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 14;
+[2025-12-31 03:21:58]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 14;
+[2025-12-31 03:22:08]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 14;
+[2025-12-31 03:25:31]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'ali7703' LIMIT 1;
+[2025-12-31 03:25:31]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 14 AND status = 'Active';
+[2025-12-31 03:25:31]   Ali Bin Abu (ID: 14) is logged in.
+[2025-12-31 03:25:34]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 14;
+[2025-12-31 03:25:43]   MYSQL Query: UPDATE user SET name = 'fdf' WHERE id = 14 AND status = 'Active';
+[2025-12-31 03:25:43]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 14;
+[2025-12-31 03:26:01]   MYSQL Query: UPDATE user SET name = 'Mohd Ali bin Mohd Abu' WHERE id = 14 AND status = 'Active';
+[2025-12-31 03:26:01]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 14;
+[2025-12-31 03:26:06]   MYSQL Query: SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, u.created_by AS registered_by_id, u2.name AS registered_by_name FROM user u LEFT JOIN user AS u2 ON u2.id = u.created_by WHERE u.id = 14;

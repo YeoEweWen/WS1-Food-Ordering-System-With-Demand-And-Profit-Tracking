@@ -140,3 +140,7 @@ bool Auth::isAdmin() {
     }
     return (userRole == "Admin");
 }
+
+void Auth::updateName(string name){
+    userName = name;
+}

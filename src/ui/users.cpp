@@ -83,16 +83,14 @@ void UsersUI::list(string search, Sort sort, int pageNum, int maxPerPage){
         i++;
     }
 
-    UIManager::dataTable(attributes, userList.list, userList.totalRows, search, sort, pageNum, maxPerPage);
+    UIManager::dataTable("Users List", attributes, userList.list, userList.totalRows, search, sort, pageNum, maxPerPage);
 
     cout<<"[A] Add New User"<<endl;
     cout<<"\n[X] Back"<<endl;
 
     // Commands
-    string input;
     cout<<"\nSelect Option > ";
-    cin>>input;
-    cout<<endl;
+    string input = UIManager::checkPresetInput();
 
     if (isInteger(input) && mappedIDs.count(stoi(input)) > 0){ // View Details
         UIManager::clearParams();
@@ -168,6 +166,7 @@ void UsersUI::list(string search, Sort sort, int pageNum, int maxPerPage){
 
                 default:
                     UIManager::addErrorMessage("Invalid Option.");
+                    UIManager::addPresetInput("O");
             }
         }
         else if (toUpperCase(input) == "X"){
@@ -175,6 +174,7 @@ void UsersUI::list(string search, Sort sort, int pageNum, int maxPerPage){
         }
         else{
             UIManager::addErrorMessage("Invalid Option.");
+            UIManager::addPresetInput("O");
         }
     }
     else if (toUpperCase(input) == "A"){ // Register new user
@@ -182,6 +182,7 @@ void UsersUI::list(string search, Sort sort, int pageNum, int maxPerPage){
     }
     else if (toUpperCase(input) == "X"){ // Back
         UIManager::clearParams();
+        UIManager::clearPresetInputs();
         UIManager::goTo(1);
     }
     else{
@@ -194,7 +195,7 @@ void UsersUI::details(int id){
 
     Users::UserDetails details = users.userDetails(id);
 
-    cout<<"User Details"<<endl;
+    cout<<"\nUser Details"<<endl;
     cout<<string(UIManager::getLineLength(), '-')<<endl;
     if (details.id == -1){
         cout<<"User not Found."<<endl;
@@ -223,10 +224,8 @@ void UsersUI::details(int id){
     }
     cout<<"[X] Back"<<endl;
 
-    string input;
-
-    cout<<"\nCommand > ";
-    cin>>input;
+    cout<<"\nOption > ";
+    string input = UIManager::checkPresetInput();
 
     if (toUpperCase(input) == "U"){ // Update Role
         cout<<"\nAvailable Roles: "<<endl;
@@ -250,6 +249,7 @@ void UsersUI::details(int id){
         }
         else{
             UIManager::addErrorMessage("Invalid Option.");
+            UIManager::addPresetInput("U");
         }
     }
     else if (toUpperCase(input) == "D" && toLowerCase(details.status) == "active"){ // Deactivate
@@ -270,6 +270,7 @@ void UsersUI::details(int id){
         }
         else{
             UIManager::addErrorMessage("Invalid Option.");
+            UIManager::addPresetInput("D");
         }
     }
     else if (toUpperCase(input) == "A" && toLowerCase(details.status) == "inactive"){ // Activate
@@ -290,6 +291,7 @@ void UsersUI::details(int id){
         }
         else{
             UIManager::addErrorMessage("Invalid Option.");
+            UIManager::addPresetInput("A");
         }
     }
     else if (toUpperCase(input) == "R"){ // Reset Password
@@ -311,10 +313,12 @@ void UsersUI::details(int id){
         }
         else{
             UIManager::addErrorMessage("Invalid Option.");
+            UIManager::addPresetInput("R");
         }
     }
     else if (toUpperCase(input) == "X"){ // Back
         UIManager::clearParams();
+        UIManager::clearPresetInputs();
         UIManager::goTo(2);
     }
     else{
@@ -325,7 +329,7 @@ void UsersUI::details(int id){
 void UsersUI::registerUser(){
     Users users;
 
-    cout<<"Register New User"<<endl;
+    cout<<"\nAdd New User"<<endl;
     cout<<string(UIManager::getLineLength(), '-')<<endl;
 
     cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear leftover '\n'
@@ -358,7 +362,7 @@ void UsersUI::registerUser(){
         }
 
         if (role != "1" && role != "2"){
-            UIManager::addErrorMessage("Invalid role.");
+            UIManager::addErrorMessage("Invalid Option.");
             isValid = false;
         }
 

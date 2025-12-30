@@ -12,6 +12,7 @@
 struct Page {
     int id;
     int subID = 0;
+    std::vector<std::string> presetInputs = {};
     std::map<std::string, std::string> params = {};
     std::vector<std::string> errorMessages = {};
     std::vector<std::string> infoMessages = {};
@@ -33,7 +34,7 @@ struct Sort {
 class UIManager {
 protected:
     static int lineLength;
-    static Page currentPage;
+    static Page page;
 
 public:
     static int getLineLength();
@@ -42,13 +43,16 @@ public:
     static void clearParams();
     static void clearErrorMessages();
     static void clearInfoMessages();
+    static void clearPresetInputs();
     static void addParam(std::string key, std::string value);
     static void addErrorMessage(std::string errorMessage);
     static void addInfoMessage(std::string infoMessage);
+    static void addPresetInput(std::string input);
+    static std::string checkPresetInput();
     
     static void header(const std::string& pageName = "");
-    static void baseTable(std::vector<Attribute> columns, std::vector<std::map<std::string, std::string>> rows, std::string noRecordMessage="No record found.");
-    static void dataTable(std::vector<Attribute> columns, std::vector<std::map<std::string, std::string>> rows, int totalRows, std::string search = "", Sort sort = {-1, true}, int pageNum=1, int maxRowPerPage=25);
+    static void baseTable(std::string title, std::vector<Attribute> columns, std::vector<std::map<std::string, std::string>> rows, std::string noRecordMessage="No record found.");
+    static void dataTable(std::string title, std::vector<Attribute> columns, std::vector<std::map<std::string, std::string>> rows, int totalRows, std::string search = "", Sort sort = {-1, true}, int pageNum=1, int maxRowPerPage=25);
     static void errorMessages(const std::vector<std::string>& errorMessages, bool topBorder = true, bool bottomBorder = true);
     static void infoMessages(const std::vector<std::string>& infoMessages, bool topBorder = true, bool bottomBorder = true);
     static void emptyPage(bool includeHeader=true);

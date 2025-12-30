@@ -22,6 +22,7 @@
                 "src/ui/order.cpp",
                 "src/ui/profile.cpp",
                 "src/ui/store.cpp",
+                "src/ui/transaction_history.cpp",
                 "src/ui/ui_manager.cpp",
                 "src/ui/users.cpp",
 

@@ -21,7 +21,7 @@ void MenuUI::main() {
     switch (page.subID){
         case 1:
             if (!params.empty() && params.count("id") > 0){
-                details(stoi(params.at("id")));
+                menuDetails(stoi(params.at("id")));
             }
             else{
                 UIManager::addErrorMessage("Invalid Menu's ID!");
@@ -34,7 +34,21 @@ void MenuUI::main() {
             break;
         
         case 3:
-            
+            manageCategory();
+            break;
+
+        case 4:
+            if (!params.empty() && params.count("id") > 0){
+                categoryDetails(stoi(params.at("id")));
+            }
+            else{
+                UIManager::addErrorMessage("Invalid Category's ID!");
+                UIManager::goTo(3, 3);
+            }
+            break;
+
+        case 5:
+            addCategory();
             break;
 
         case 0:
@@ -87,17 +101,15 @@ void MenuUI::list(string search, Sort sort, int pageNum, int maxPerPage){
         i++;
     }
 
-    UIManager::dataTable(attributes, menuList.list, menuList.totalRows, search, sort, pageNum, maxPerPage);
+    UIManager::dataTable("Menu List", attributes, menuList.list, menuList.totalRows, search, sort, pageNum, maxPerPage);
 
     cout<<"[A] Add New Menu"<<endl;
     cout<<"[M] Manage Category"<<endl;
     cout<<"\n[X] Back"<<endl;
 
     // Commands
-    string input;
     cout<<"\nSelect Option > ";
-    cin>>input;
-    cout<<endl;
+    string input = UIManager::checkPresetInput();
 
     if (isInteger(input) && mappedIDs.count(stoi(input)) > 0){ // View Details
         UIManager::clearParams();
@@ -173,6 +185,7 @@ void MenuUI::list(string search, Sort sort, int pageNum, int maxPerPage){
 
                 default:
                     UIManager::addErrorMessage("Invalid Option.");
+                    UIManager::addPresetInput("O");
             }
         }
         else if (toUpperCase(input) == "X"){
@@ -180,6 +193,7 @@ void MenuUI::list(string search, Sort sort, int pageNum, int maxPerPage){
         }
         else{
             UIManager::addErrorMessage("Invalid Option.");
+            UIManager::addPresetInput("O");
         }
     }
     else if (toUpperCase(input) == "A"){ // Add New Menu
@@ -190,6 +204,7 @@ void MenuUI::list(string search, Sort sort, int pageNum, int maxPerPage){
     }
     else if (toUpperCase(input) == "X"){ // Back
         UIManager::clearParams();
+        UIManager::clearPresetInputs();
         UIManager::goTo(1);
     }
     else{
@@ -197,12 +212,12 @@ void MenuUI::list(string search, Sort sort, int pageNum, int maxPerPage){
     }
 }
 
-void MenuUI::details(int id){
+void MenuUI::menuDetails(int id){
     Menu menu;
 
     Menu::MenuDetails details = menu.menuDetails(id);
 
-    cout<<"Menu Details"<<endl;
+    cout<<"\nMenu Details"<<endl;
     cout<<string(UIManager::getLineLength(), '-')<<endl;
     if (details.id == -1){
         cout<<"Menu not Found."<<endl;
@@ -239,72 +254,47 @@ void MenuUI::details(int id){
     
     string input;
 
-    cout<<"\nCommand > ";
-    cin>>input;
+    cout<<"\nOption > ";
+    input = UIManager::checkPresetInput(); // Replace cin
 
-    if (toUpperCase(input) == "U"){ // Update Role
-        
-    }
-    else if (toUpperCase(input) == "A" && toLowerCase(details.availability) == "inactive"){ // Activate
-        
-    }
-    else if (toUpperCase(input) == "R"){ // Reset Password
-        
-    }
-    else if (toUpperCase(input) == "X"){ // Back
-        UIManager::clearParams();
-        UIManager::goTo(3);
-    }
-    else{
-        UIManager::addErrorMessage("Invalid Option.");
-    }
-
-
-
-
-
-    /*
-    
-
-    
-
-    
-
-    if (toUpperCase(input) == "U"){ // Update Role
-        cout<<"\nAvailable Roles: "<<endl;
-        cout<<"   [1] Administrator"<<endl;
-        cout<<"   [2] Employee"<<endl<<endl;
+    if (toUpperCase(input) == "U"){ // Update Name, Cost, Price, Category
+        cout<<"\nUpdate: "<<endl;
+        cout<<"   [1] Name"<<endl;
+        cout<<"   [2] Production Cost & Selling Price"<<endl;
+        cout<<"   [3] Category"<<endl<<endl;
         cout<<"[X] Cancel"<<endl;
-
+        
         cout<<"\nSelect Option > ";
-        cin>>input;
+        input = UIManager::checkPresetInput();
 
-        if (input == "1" || input == "2"){
-            if (users.updateRole(details.id, ((input == "1") ? "Admin" : "Employee"))){
-                UIManager::addInfoMessage("User's role has been successfully updated.");
-            }
-            else{
-                UIManager::addErrorMessage("Failed to update the user's role.");
-            }
+        if (input == "1"){ // Update Name
+            
+        }
+        else if (input == "2"){ // Update Production Cost & Selling Price
+            
+        }
+        else if (input == "3"){ // Update Category
+            
         }
         else if (toUpperCase(input) == "X"){
             // Re-render the UI
         }
         else{
             UIManager::addErrorMessage("Invalid Option.");
+            UIManager::addPresetInput("U");
         }
     }
-    else if (toUpperCase(input) == "D" && toLowerCase(details.status) == "active"){ // Deactivate
-        cout<<"\nAre you sure you want to deactivate this user?"<<endl;
+    else if (toUpperCase(input) == "D"){ // Delete
+        cout<<"\nAre you sure you want to delete this menu?"<<endl;
         cout<<"Select Option (Y/N) > ";
         cin>>input;
 
         if (toUpperCase(input) == "Y"){
-            if (users.deactivate(details.id)){
-                UIManager::addInfoMessage("The user has been successfully deactivated.");
+            if (menu.deleteMenu(details.id)){
+                UIManager::addInfoMessage("The menu has been successfully deleted.");
             }
             else{
-                UIManager::addErrorMessage("Failed to deactivate the user.");
+                UIManager::addErrorMessage("Failed to delete the menu.");
             }
         }
         else if (toUpperCase(input) == "N"){
@@ -312,19 +302,29 @@ void MenuUI::details(int id){
         }
         else{
             UIManager::addErrorMessage("Invalid Option.");
+            UIManager::addPresetInput("D");
         }
     }
-    else if (toUpperCase(input) == "A" && toLowerCase(details.status) == "inactive"){ // Activate
-        cout<<"\nAre you sure you want to activate this user?"<<endl;
+    else if (toUpperCase(input) == "S"){ // Set as Available/Unavailable
+        cout<<"\nAre you sure you want to set this menu as "<<((toLowerCase(details.availability) == "available") ? "unavailable?" : "available?")<<endl;
         cout<<"Select Option (Y/N) > ";
         cin>>input;
 
         if (toUpperCase(input) == "Y"){
-            if (users.activate(details.id)){
-                UIManager::addInfoMessage("The user has been successfully activated.");
+            bool result;
+
+            if (toLowerCase(details.availability) == "available"){
+                result = menu.setUnavailable(details.id);
             }
             else{
-                UIManager::addErrorMessage("Failed to activate the user.");
+                result = menu.setAvailable(details.id);
+            }
+
+            if (result){
+                UIManager::addInfoMessage(string("The menu has been successfully set as ") + ((toLowerCase(details.availability) == "available") ? "unavailable." : "available."));
+            }
+            else{
+                UIManager::addErrorMessage(string("Failed to set the menu as ") + ((toLowerCase(details.availability) == "available") ? "unavailable." : "available."));
             }
         }
         else if (toUpperCase(input) == "N"){
@@ -332,37 +332,18 @@ void MenuUI::details(int id){
         }
         else{
             UIManager::addErrorMessage("Invalid Option.");
-        }
-    }
-    else if (toUpperCase(input) == "R"){ // Reset Password
-        cout<<"\nAre you sure you want to reset this user's password?"<<endl;
-        cout<<"Select Option (Y/N) > ";
-
-        cin>>input;
-
-        if (toUpperCase(input) == "Y"){
-            if (users.resetPassword(details.id)){
-                UIManager::addInfoMessage("The user's password has been successfully reset.");
-            }
-            else{
-                UIManager::addErrorMessage("Failed to reset the user's password.");
-            }
-        }
-        else if (toUpperCase(input) == "N"){
-            // Re-render the UI
-        }
-        else{
-            UIManager::addErrorMessage("Invalid Option.");
+            UIManager::addPresetInput("S");
         }
     }
     else if (toUpperCase(input) == "X"){ // Back
         UIManager::clearParams();
+        UIManager::clearPresetInputs();
         UIManager::goTo(3);
     }
     else{
         UIManager::addErrorMessage("Invalid Option.");
+        UIManager::clearPresetInputs();
     }
-    */
 }
 
 void MenuUI::addMenu(){
@@ -432,4 +413,274 @@ void MenuUI::addMenu(){
     }
 
     */
+}
+
+void MenuUI::manageCategory(){
+    Menu menu;
+
+    vector<Attribute> attributes = {
+            {"category", "Name"},
+            {"type", "Type"}
+        };
+
+    vector<map<string, string>> list = menu.categoryList();
+    map<int, int> mappedIDs;
+
+    // Mapping the id into input command
+    int i = 1;
+    for (auto& row : list){
+        mappedIDs[i] = stoi(row.at("id"));
+        i++;
+    }
+
+    UIManager::baseTable("Category List", attributes, list);
+
+    cout<<endl<<"Actions:"<<endl;
+    int numOfRows = list.size();
+    if (numOfRows > 0){
+        cout<<"[1"<<((numOfRows > 1) ? "-" + to_string(numOfRows) : "")<<"] View Details"<<endl;
+    }
+    cout<<"[A] Add New Category"<<endl;
+    cout<<"\n[X] Back"<<endl;
+
+    // Commands
+    cout<<"\nSelect Option > ";
+    string input = UIManager::checkPresetInput();
+
+    if (isInteger(input) && mappedIDs.count(stoi(input)) > 0){ // View Details
+        UIManager::clearParams();
+        UIManager::addParam("id", to_string(mappedIDs.at(stoi(input))));
+        UIManager::goTo(3, 4);
+    }
+    else if (toUpperCase(input) == "A"){ // Add New Category
+        UIManager::goTo(3, 5);
+    }
+    else if (toUpperCase(input) == "X"){ // Back
+        UIManager::clearParams();
+        UIManager::clearPresetInputs();
+        UIManager::goTo(3);
+    }
+    else{
+        UIManager::addErrorMessage("Invalid Option.");
+    }
+
+}
+
+void MenuUI::categoryDetails(int id){
+    Menu menu;
+
+    Menu::CategoryDetails details = menu.categoryDetails(id);
+
+    cout<<"\nCategory Details"<<endl;
+    cout<<string(UIManager::getLineLength(), '-')<<endl;
+    if (details.id == -1){
+        cout<<"Category not Found."<<endl;
+    }
+    else{
+        cout<<"Name             : "<<details.name<<endl;
+        cout<<"Type             : "<<details.type<<endl;
+        cout<<"Added By         : "<<details.createdByName<<endl;
+        cout<<"Added At         : "<<details.createdAt<<endl;
+        cout<<"Last Update By   : "<<details.updatedByName<<endl;
+        cout<<"Last Update At   : "<<details.updatedAt<<endl;
+    }
+    cout<<string(UIManager::getLineLength(), '-')<<endl;
+
+    cout<<"Actions:"<<endl;
+    if (details.id != -1){
+        cout<<"[U] Update"<<endl;
+        if (details.deletable){
+            cout<<"[D] Delete"<<endl;
+        }
+    }
+    cout<<"[X] Back"<<endl;
+    
+    string input;
+
+    cout<<"\nOption > ";
+    input = UIManager::checkPresetInput(); // Replace cin
+
+    if (toUpperCase(input) == "U"){ // Update Name, Type
+        cout<<"\nUpdate: "<<endl;
+        cout<<"   [1] Name"<<endl;
+        cout<<"   [2] Type"<<endl;
+        cout<<"[X] Cancel"<<endl;
+        
+        cout<<"\nSelect Option > ";
+        input = UIManager::checkPresetInput();
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear leftover '\n'
+
+        string name, type, selectedOption;
+
+        if (input == "1" || input == "2"){ // Update
+            selectedOption = input;
+            if (input == "1"){ // Name
+                cout<<"\nName : "<<endl;
+                cout<<"> ";
+                getline(cin, name);
+            }
+            else{ // Type
+                cout<<"\nType : "<<endl;
+                cout<<"   [1] Food"<<endl;
+                cout<<"   [2] Beverage"<<endl;
+                cout<<"> ";
+                getline(cin, type);
+            }
+            
+            cout<<endl<<string(UIManager::getLineLength(), '-')<<endl;
+            cout<<"Actions:"<<endl;
+            cout<<"[S] Submit"<<endl;
+            cout<<"[C] Clear All"<<endl;
+            cout<<"[X] Back"<<endl;
+
+            cout<<"\nSelect Option > ";
+            cin>>input;
+
+            if (toUpperCase(input) == "S"){ // Submit
+                if (selectedOption == "1"){
+                    if (Validation::validateMenuCategoryName(name)){
+                        if (menu.updateCategoryName(id, name)){
+                            UIManager::addInfoMessage("Category name has been successfully updated.");
+                            UIManager::clearPresetInputs();
+                        }
+                        else{
+                            UIManager::addErrorMessage("Failed to update category name.");
+                        }
+                    }
+                    else{
+                        UIManager::addErrorMessage("Category name must be between 3 and 100 characters.");
+                    }
+                }
+                else{
+                    if (type != "1" || type != "2"){
+                        if (menu.updateCategoryType(id, ((type == "1") ? "Food" : "Beverage"))){
+                            UIManager::addInfoMessage("Category type has been successfully updated.");
+                            UIManager::clearPresetInputs();
+                        }
+                        else{
+                            UIManager::addErrorMessage("Failed to update category type.");
+                        }
+                    }
+                    else{
+                        UIManager::addErrorMessage("Invalid Option.");
+                        UIManager::addPresetInput("U");
+                        UIManager::addPresetInput(selectedOption);
+                    }
+                }
+            }
+            else if (toUpperCase(input) == "C"){ // Clear All
+                UIManager::addPresetInput("U");
+                UIManager::addPresetInput(selectedOption);
+                // Re-render the UI
+            }
+            else if (toUpperCase(input) == "X"){ // Back
+                UIManager::goTo(3, 4);
+            }
+            else{
+                UIManager::addErrorMessage("Invalid Option.");
+                UIManager::addPresetInput("U");
+                UIManager::addPresetInput(selectedOption);
+            }
+        }
+        else if (toUpperCase(input) == "X"){
+            // Re-render the UI
+        }
+        else{
+            UIManager::addErrorMessage("Invalid Option.");
+            UIManager::addPresetInput("U");
+        }
+    }
+    else if (toUpperCase(input) == "D"){ // Delete
+        cout<<"\nAre you sure you want to delete this category?"<<endl;
+        cout<<"Select Option (Y/N) > ";
+        cin>>input;
+
+        if (toUpperCase(input) == "Y"){
+            if (menu.deleteCategory(details.id)){
+                UIManager::addInfoMessage("The category has been successfully deleted.");
+            }
+            else{
+                UIManager::addErrorMessage("Failed to delete the category.");
+            }
+        }
+        else if (toUpperCase(input) == "N"){
+            // Re-render the UI
+        }
+        else{
+            UIManager::addErrorMessage("Invalid Option.");
+            UIManager::addPresetInput("D");
+        }
+    }
+    else if (toUpperCase(input) == "X"){ // Back
+        UIManager::clearParams();
+        UIManager::clearPresetInputs();
+        UIManager::goTo(3, 3);
+    }
+    else{
+        UIManager::addErrorMessage("Invalid Option.");
+        UIManager::clearPresetInputs();
+    }
+}
+
+void MenuUI::addCategory(){
+    Menu menu;
+
+    cout<<"\nAdd New Category"<<endl;
+    cout<<string(UIManager::getLineLength(), '-')<<endl;
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear leftover '\n'
+
+    string name, type, input;
+    cout<<"Name : "<<endl;
+    cout<<"> ";
+    getline(cin, name);
+
+    cout<<"\nType : "<<endl;
+    cout<<"   [1] Food"<<endl;
+    cout<<"   [2] Beverage"<<endl;
+    cout<<"> ";
+    cin>>type;
+
+    cout<<endl<<string(UIManager::getLineLength(), '-')<<endl;
+    cout<<"Actions:"<<endl;
+    cout<<"[S] Submit"<<endl;
+    cout<<"[C] Clear All"<<endl;
+    cout<<"[X] Back"<<endl;
+
+    cout<<"\nSelect Option > ";
+    cin>>input;
+
+    if (toUpperCase(input) == "S"){ // Submit
+        bool isValid = true;
+        if (!Validation::validateName(name)){
+            UIManager::addErrorMessage("Category name must be between 3 and 100 characters.");
+            isValid = false;
+        }
+
+        if (type != "1" && type != "2"){
+            UIManager::addErrorMessage("Invalid OPtion.");
+            isValid = false;
+        }
+
+        if (isValid){
+            if (menu.addCategory(name, ((type == "1") ? "Food" : "Beverage"))){
+                UIManager::addInfoMessage("New category has been successfully added.");
+                UIManager::clearParams();
+                UIManager::goTo(3, 3);
+            }
+            else{
+                UIManager::addErrorMessage("Failed to add new category.");
+            }
+        }
+    }
+    else if (toUpperCase(input) == "C"){ // Clear All
+        // Re-render the UI
+    }
+    else if (toUpperCase(input) == "X"){ // Back
+        UIManager::goTo(3, 3);
+    }
+    else{
+        UIManager::addErrorMessage("Invalid Option.");
+    }
 }

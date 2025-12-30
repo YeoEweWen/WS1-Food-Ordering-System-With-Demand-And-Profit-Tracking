@@ -11,6 +11,7 @@
 #include "ui/order.h"
 #include "ui/profile.h"
 #include "ui/store.h"
+#include "ui/transaction_history.h"
 #include "ui/users.h"
 #include "ui/ui_manager.h"
 
@@ -24,18 +25,6 @@ using namespace std;
 
 int main() {
     Page page;
-
-    /*
-    id | page
-    ----------------------
-    0  | auth
-    1  | dashboard (default)
-    2  | users
-    3  | menu
-    4  | order
-    5  | report
-    6  | profile
-    */
 
     // Bypass login for development
     Auth::LoginStatus loginStatus = Auth::login("ali7703", "p@ssW0rd"); 
@@ -81,14 +70,15 @@ int main() {
                 UIManager::emptyPage();
                 break;
 
+            case 7:
+                ProfileUI::main();
+                break;
+
             case 1:
             default:
                 MainMenuUI::main();
         }
     }
-    
-    system("pause"); // waits for a keypress
-
     
     return 0;
 }

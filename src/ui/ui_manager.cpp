@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Page UIManager::currentPage = {0, 0, {}, {}};
+Page UIManager::page = {0, 0, {}, {}};
 int UIManager::lineLength = 120;
 
 // ---------- Pages & Navigation ----------
@@ -13,36 +13,58 @@ int UIManager::getLineLength(){
 }
 
 Page UIManager::currentPageDetails(){
-    return currentPage;
+    return page;
 }
 
 void UIManager::goTo(int id, int subID){
-    currentPage.id = id;
-    currentPage.subID = subID;
+    page.id = id;
+    page.subID = subID;
 }
 
 void UIManager::clearParams(){
-    currentPage.params = {};
+    page.params = {};
 }
 
 void UIManager::clearErrorMessages(){
-    currentPage.errorMessages = {};
+    page.errorMessages = {};
 }
 
 void UIManager::clearInfoMessages(){
-    currentPage.infoMessages = {};
+    page.infoMessages = {};
+}
+
+void UIManager::clearPresetInputs(){
+    page.presetInputs = {};
 }
 
 void UIManager::addParam(string key, string value){
-    currentPage.params[key] = value;
+    page.params[key] = value;
 }
 
 void UIManager::addErrorMessage(string errorMessage){
-    currentPage.errorMessages.push_back(errorMessage);
+    page.errorMessages.push_back(errorMessage);
 }
 
 void UIManager::addInfoMessage(string infoMessage){
-    currentPage.infoMessages.push_back(infoMessage);
+    page.infoMessages.push_back(infoMessage);
+}
+
+void UIManager::addPresetInput(std::string input){
+    page.presetInputs.push_back(input);
+}
+
+string UIManager::checkPresetInput(){
+    string input;
+    if (page.presetInputs.empty()){
+        getline(cin, input); // No Preset Inputs
+    }
+    else{
+        input = page.presetInputs[0];
+        cout<<input<<endl;
+        page.presetInputs.erase(page.presetInputs.begin());
+    }
+
+    return input;
 }
 
 
@@ -72,7 +94,7 @@ void UIManager::header(const string& pageName){
     cout<<string(lineLength, '-')<<endl;
 }
 
-void UIManager::baseTable(vector<Attribute> columns, vector<map<string, string>> rows, string noRecordMessage){
+void UIManager::baseTable(string title, vector<Attribute> columns, vector<map<string, string>> rows, string noRecordMessage){
     // Calculate the maximum length per column
     int reservedSpace = 1;
     int reservedSpaceEachColumn = 2;
@@ -102,6 +124,11 @@ void UIManager::baseTable(vector<Attribute> columns, vector<map<string, string>>
     // Print table
     int padding, balance, i, j;
     balance = lineLength - 6;
+
+    // Title
+    if (title != ""){
+        cout<<string(((lineLength - countStringLength(title)) / 2), ' ')<<title<<endl;
+    }
 
     // Header (Columns)
     cout<<string(lineLength, '-')<<endl;
@@ -150,7 +177,7 @@ void UIManager::baseTable(vector<Attribute> columns, vector<map<string, string>>
     cout<<string(lineLength, '-')<<endl;
 }
 
-void UIManager::dataTable(vector<Attribute> columns, vector<map<string, string>> rows, int totalRows, string search, Sort sort, int pageNum, int maxRowPerPage){
+void UIManager::dataTable(string title, vector<Attribute> columns, vector<map<string, string>> rows, int totalRows, string search, Sort sort, int pageNum, int maxRowPerPage){
     int numOfRows, lastPage;
 
     numOfRows = rows.size();
@@ -167,7 +194,7 @@ void UIManager::dataTable(vector<Attribute> columns, vector<map<string, string>>
     }
 
     // Table
-    baseTable(columns, rows);
+    baseTable(title, columns, rows);
 
     // Pagination
     string part1, part2;

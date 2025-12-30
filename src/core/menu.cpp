@@ -6,6 +6,19 @@
 using namespace std;
 
 // Private Methods
+bool Menu::isCategoryDeletable(int id){
+    Database db;
+
+    string query = "SELECT category_id FROM menu WHERE category_id = :id LIMIT 1;";
+    map<string, string> params = {
+        {"id", to_string(id)}
+    };
+
+    vector<map<string, string>> result = db.fetchData(query, params);
+
+    return result.empty();
+}
+
 bool Menu::isMenuDeletable(int id){
     Database db;
 
@@ -21,31 +34,48 @@ bool Menu::isMenuDeletable(int id){
 
 // Public Methods
 // Menu Category
-bool Menu::addMenuCategory(string categoryName){
+bool Menu::addCategory(string categoryName, string type){
     Database db;
     Auth auth;
 
     Auth::UserDetails userDetails = auth.retrieveLoggedUserDetails();
 
-    string query = "INSERT INTO menu_category (category, created_by) VALUES (:category, :created_by);";
+    string query = "INSERT INTO menu_category (category, type, created_by) VALUES (:category, :type, :created_by);";
     map<string, string> params = {
         {"category", categoryName},
+        {"type", type},
         {"created_by", to_string(userDetails.id)}
     };
 
     return db.runQuery(query, params);
 }
 
-bool Menu::updateMenuCategory(int id, string categoryName, string type){
+bool Menu::updateCategoryName(int id, string name){
     Database db;
     Auth auth;
 
     Auth::UserDetails userDetails = auth.retrieveLoggedUserDetails();
 
-    string query = "UPDATE menu_category SET category = :category, type = :type, updated_by = :updated_by, updated_at = :updated_at WHERE id = :id;";
+    string query = "UPDATE menu_category SET category = :category, updated_by = :updated_by, updated_at = :updated_at WHERE id = :id;";
     map<string, string> params = {
         {"id", to_string(id)},
-        {"category", categoryName},
+        {"category", name},
+        {"updated_by", to_string(userDetails.id)},
+        {"updated_at", timestamp()}
+    };
+
+    return db.runQuery(query, params);
+}
+
+bool Menu::updateCategoryType(int id, string type){
+    Database db;
+    Auth auth;
+
+    Auth::UserDetails userDetails = auth.retrieveLoggedUserDetails();
+
+    string query = "UPDATE menu_category SET type = :type, updated_by = :updated_by, updated_at = :updated_at WHERE id = :id;";
+    map<string, string> params = {
+        {"id", to_string(id)},
         {"type", ((toLowerCase(type) == "food") ? "Food" : "Beverage")},
         {"updated_by", to_string(userDetails.id)},
         {"updated_at", timestamp()}
@@ -54,27 +84,63 @@ bool Menu::updateMenuCategory(int id, string categoryName, string type){
     return db.runQuery(query, params);
 }
 
-vector<map<string, string>> Menu::categoryList(bool detailedList){
+bool Menu::deleteCategory(int id){
     Database db;
 
-    string query;
+    if (!isCategoryDeletable(id)){
+        logInfo("This menu category (ID: " + to_string(id) + ") cannot be deleted.");
+        return false;
+    }
 
-    if (detailedList){
-        query = "SELECT "
-                "   mc.id, mc.category, "
-                "   mc.created_by AS created_by_id, u.name AS created_by, mc.created_at, "
-                "   mc.updated_by AS updated_by_id, u2.name AS updated_by, mc.updated_at "
-                "FROM menu_category mc "
-                "LEFT JOIN user AS u ON u.id = mc.created_by "
-                "LEFT JOIN user AS u2 ON u2.id = mc.updated_by "
-                "ORDER BY mc.updated_at DESC, mc.created_at DESC;";
-    }
-    else{
-        query = "SELECT id, category FROM menu_category ORDER BY category ASC;";
-    }
+    string query = "DELETE FROM menu_category WHERE id = :id;";
+    map<string, string> params = {
+        {"id", to_string(id)}
+    };
+
+    return db.runQuery(query, params);
+}
+
+vector<map<string, string>> Menu::categoryList(){
+    Database db;
+
+    string query = "SELECT id, category, type FROM menu_category ORDER BY category ASC;";
 
     return db.fetchData(query);
 }
+
+Menu::CategoryDetails Menu::categoryDetails(int id){
+    Database db;
+
+    string query = "SELECT mc.id, mc.category, mc.type, mc.created_at, mc.created_by AS created_by_id, u.name AS created_by_name, "
+                   "mc.updated_at, mc.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu_category mc "
+                   "LEFT JOIN user AS u ON u.id = mc.created_by "
+                   "LEFT JOIN user AS u2 ON u2.id = mc.updated_by "
+                   "WHERE mc.id = :id;";
+
+    map<string, string> params = {{"id", to_string(id)}};
+
+    vector<map<string, string>> result = db.fetchData(query, params);
+
+    if (result.empty()){
+        return {-1};
+    }
+
+    map<string, string> details = result[0];
+
+    return {
+        stoi(details.at("id")),
+        details.at("category"),
+        details.at("type"),
+        details.at("created_at"),
+        stoi(details.at("created_by_id")),
+        details.at("created_by_name"),
+        ((details.at("updated_at") == "NULL") ? "-" : details.at("updated_at")),
+        ((details.at("updated_by_id") == "NULL") ? -1 : stoi(details.at("updated_by_id"))),
+        ((details.at("updated_by_name") == "NULL") ? "-" : details.at("updated_by_name")),
+        isCategoryDeletable(id)
+    };
+}
+
 
 // Menu
 bool Menu::addMenu(string name, double productionCost, double sellingPrice, int categoryID){
@@ -93,18 +159,47 @@ bool Menu::addMenu(string name, double productionCost, double sellingPrice, int 
     return db.runQuery(query, params);
 }
 
-bool Menu::updateMenu(int id, string name, double productionCost, double sellingPrice, int categoryID){
+bool Menu::updateMenuName(int id, std::string name){
     Database db;
     Auth::UserDetails userDetails = Auth::retrieveLoggedUserDetails();
 
-    string query = "UPDATE menu SET "
-                   "    name = :name, production_cost = :production_cost, selling_price = :selling_price, category_id = :category_id, updated_by = :updated_by, updated_at = :updated_at "
+    string query = "UPDATE menu SET name = :name, updated_by = :updated_by, updated_at = :updated_at "
                    "WHERE id = :id AND availability = 'Available';";
     map<string, string> params = {
         {"id", to_string(id)},
         {"name", name},
+        {"updated_by", to_string(userDetails.id)},
+        {"updated_at", timestamp()},
+    };
+
+    return db.runQuery(query, params);
+}
+
+bool Menu::updateMenuCostAndPrice(int id, double productionCost, double sellingPrice){
+    Database db;
+    Auth::UserDetails userDetails = Auth::retrieveLoggedUserDetails();
+
+    string query = "UPDATE menu SET production_cost = :production_cost, selling_price = :selling_price, updated_by = :updated_by, updated_at = :updated_at "
+                   "WHERE id = :id AND availability = 'Available';";
+    map<string, string> params = {
+        {"id", to_string(id)},
         {"production_cost", to_string(productionCost)},
         {"selling_price", to_string(sellingPrice)},
+        {"updated_by", to_string(userDetails.id)},
+        {"updated_at", timestamp()},
+    };
+
+    return db.runQuery(query, params);
+}
+
+bool Menu::updateMenuCategory(int id, int categoryID){
+    Database db;
+    Auth::UserDetails userDetails = Auth::retrieveLoggedUserDetails();
+
+    string query = "UPDATE menu SET category_id = :category_id, updated_by = :updated_by, updated_at = :updated_at "
+                   "WHERE id = :id AND availability = 'Available';";
+    map<string, string> params = {
+        {"id", to_string(id)},
         {"category_id", to_string(categoryID)},
         {"updated_by", to_string(userDetails.id)},
         {"updated_at", timestamp()},
@@ -240,11 +335,13 @@ Menu::MenuDetails Menu::menuDetails(int id){
     };
 }
 
-vector<Menu::MenuDetails> Menu::menuPriceList(){
+vector<map<string, string>> Menu::menuPriceList(){
     Database db;
 
     string query = "SELECT m.id, m.name, m.selling_price, mc.name AS category FROM menu m "
                    "LEFT JOIN menu_category AS mc ON mc.id = m.category_id "
                    "WHERE m.availability = 'Available' "
                    "ORDER BY m.name ASC";
+
+    return {};
 }

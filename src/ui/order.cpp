@@ -83,7 +83,7 @@ void OrderUI::list(string search, Sort sort, int pageNum, int maxPerPage){
         i++;
     }
 
-    UIManager::dataTable(attributes, userList.list, userList.totalRows, search, sort, pageNum, maxPerPage);
+    UIManager::dataTable("", attributes, userList.list, userList.totalRows, search, sort, pageNum, maxPerPage);
 
     cout<<"[A] Add New User"<<endl;
     cout<<"\n[X] Back"<<endl;
