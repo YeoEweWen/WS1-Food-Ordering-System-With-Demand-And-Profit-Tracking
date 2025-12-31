@@ -14,9 +14,8 @@ void AuthUI::login() {
     UIManager::errorMessages(UIManager::currentPageDetails().errorMessages, false);
 
     cout<<"Enter your username > ";
-    cin>>username;
+    getline(cin, username);
 
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear leftover '\n'
     cout<<"Enter your password > "; // Maybe can hide password in future
     getline(cin, password);
 
@@ -54,7 +53,6 @@ void AuthUI::updatePassword() {
     cout<<"4. Must have at least one digit."<<endl;
     cout<<"5. Must have at least one special character."<<endl<<endl;
 
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear leftover '\n'
     cout<<"Enter your new password > ";
     getline(cin, password);
     cout<<"Re-confirm your new password > ";

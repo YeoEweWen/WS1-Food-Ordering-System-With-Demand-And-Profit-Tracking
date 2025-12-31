@@ -37,7 +37,7 @@ protected:
     static Page page;
 
 public:
-    static int getLineLength();
+    static int getlineLength();
     static Page currentPageDetails();
     static void goTo(int id, int subID=0);
     static void clearParams();

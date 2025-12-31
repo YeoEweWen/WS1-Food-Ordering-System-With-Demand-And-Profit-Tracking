@@ -26,7 +26,7 @@ void MainMenuUI::main(){
     cout<<"[X] Logout"<<endl<<endl;
 
     cout<<"Select Option > ";
-    cin>>option;
+    getline(cin, option);
 
     UIManager::clearErrorMessages();
 

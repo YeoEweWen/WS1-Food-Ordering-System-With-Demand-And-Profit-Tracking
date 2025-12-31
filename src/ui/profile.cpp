@@ -33,7 +33,7 @@ void ProfileUI::main() {
     cout<<"Registered At  : "<<details.registeredAt<<endl;
     cout<<"Last Logged In : "<<details.lastLoggedIn<<endl;
 
-    cout<<string(UIManager::getLineLength(), '-')<<endl;
+    cout<<string(UIManager::getlineLength(), '-')<<endl;
 
     cout<<"Actions:"<<endl;
     cout<<"[U] Update Name"<<endl;
@@ -69,16 +69,14 @@ void ProfileUI::main() {
             getline(cin, confirmPassword);
         }
         
-        cout<<endl<<string(UIManager::getLineLength(), '-')<<endl;
+        cout<<endl<<string(UIManager::getlineLength(), '-')<<endl;
         cout<<"Actions:"<<endl;
         cout<<"[S] Submit"<<endl;
         cout<<"[C] Clear All"<<endl;
         cout<<"[X] Back"<<endl;
 
         cout<<"\nSelect Option > ";
-        cin>>input;
-
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear leftover '\n'
+        getline(cin, input);
 
         if (toUpperCase(input) == "S"){ // Submit
             UIManager::addPresetInput(selectedOption);
@@ -126,7 +124,7 @@ void ProfileUI::main() {
             // Re-render the UI
         }
         else if (toUpperCase(input) == "X"){ // Back
-            UIManager::goTo(6);
+            UIManager::goTo(7);
         }
         else{
             UIManager::addErrorMessage("Invalid Option.");

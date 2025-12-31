@@ -118,7 +118,7 @@ void UsersUI::list(string search, Sort sort, int pageNum, int maxPerPage){
     else if (toUpperCase(input) == "S"){ // Search
         cout<<"[X] Cancel"<<endl;
         cout<<"\nSearch > ";
-        cin>>input;
+        getline(cin, input);
 
         if (toUpperCase(input) == "X"){
             // Re-render the UI
@@ -135,7 +135,7 @@ void UsersUI::list(string search, Sort sort, int pageNum, int maxPerPage){
         cout<<"\n[X] Cancel"<<endl;
 
         cout<<"\nSelect Option > ";
-        cin>>input;
+        getline(cin, input);
 
         if (isInteger(input)){
             int option = stoi(input);
@@ -196,7 +196,7 @@ void UsersUI::details(int id){
     Users::UserDetails details = users.userDetails(id);
 
     cout<<"\nUser Details"<<endl;
-    cout<<string(UIManager::getLineLength(), '-')<<endl;
+    cout<<string(UIManager::getlineLength(), '-')<<endl;
     if (details.id == -1){
         cout<<"User not Found."<<endl;
     }
@@ -209,7 +209,7 @@ void UsersUI::details(int id){
         cout<<"Registered At  : "<<details.registeredAt<<endl;
         cout<<"Last Logged In : "<<details.lastLoggedIn<<endl;
     }
-    cout<<string(UIManager::getLineLength(), '-')<<endl;
+    cout<<string(UIManager::getlineLength(), '-')<<endl;
 
     cout<<"Actions:"<<endl;
     if (details.id != -1){
@@ -234,7 +234,7 @@ void UsersUI::details(int id){
         cout<<"[X] Cancel"<<endl;
 
         cout<<"\nSelect Option > ";
-        cin>>input;
+        getline(cin, input);
 
         if (input == "1" || input == "2"){
             if (users.updateRole(details.id, ((input == "1") ? "Admin" : "Employee"))){
@@ -255,7 +255,7 @@ void UsersUI::details(int id){
     else if (toUpperCase(input) == "D" && toLowerCase(details.status) == "active"){ // Deactivate
         cout<<"\nAre you sure you want to deactivate this user?"<<endl;
         cout<<"Select Option (Y/N) > ";
-        cin>>input;
+        getline(cin, input);
 
         if (toUpperCase(input) == "Y"){
             if (users.deactivate(details.id)){
@@ -276,7 +276,7 @@ void UsersUI::details(int id){
     else if (toUpperCase(input) == "A" && toLowerCase(details.status) == "inactive"){ // Activate
         cout<<"\nAre you sure you want to activate this user?"<<endl;
         cout<<"Select Option (Y/N) > ";
-        cin>>input;
+        getline(cin, input);
 
         if (toUpperCase(input) == "Y"){
             if (users.activate(details.id)){
@@ -298,7 +298,7 @@ void UsersUI::details(int id){
         cout<<"\nAre you sure you want to reset this user's password?"<<endl;
         cout<<"Select Option (Y/N) > ";
 
-        cin>>input;
+        getline(cin, input);
 
         if (toUpperCase(input) == "Y"){
             if (users.resetPassword(details.id)){
@@ -330,9 +330,7 @@ void UsersUI::registerUser(){
     Users users;
 
     cout<<"\nAdd New User"<<endl;
-    cout<<string(UIManager::getLineLength(), '-')<<endl;
-
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear leftover '\n'
+    cout<<string(UIManager::getlineLength(), '-')<<endl;
 
     string name, role, input;
     cout<<"Name : "<<endl;
@@ -343,16 +341,16 @@ void UsersUI::registerUser(){
     cout<<"   [1] Administrator"<<endl;
     cout<<"   [2] Employee"<<endl;
     cout<<"> ";
-    cin>>role;
+    getline(cin, role);
 
-    cout<<endl<<string(UIManager::getLineLength(), '-')<<endl;
+    cout<<endl<<string(UIManager::getlineLength(), '-')<<endl;
     cout<<"Actions:"<<endl;
     cout<<"[S] Submit"<<endl;
     cout<<"[C] Clear All"<<endl;
     cout<<"[X] Back"<<endl;
 
     cout<<"\nSelect Option > ";
-    cin>>input;
+    getline(cin, input);
 
     if (toUpperCase(input) == "S"){ // Submit
         bool isValid = true;

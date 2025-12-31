@@ -199,7 +199,7 @@ void OrderUI::details(int id){
     Users::UserDetails details = users.userDetails(id);
 
     cout<<"User Details"<<endl;
-    cout<<string(UIManager::getLineLength(), '-')<<endl;
+    cout<<string(UIManager::getlineLength(), '-')<<endl;
     if (details.id == -1){
         cout<<"User not Found."<<endl;
     }
@@ -212,7 +212,7 @@ void OrderUI::details(int id){
         cout<<"Registered At  : "<<details.registeredAt<<endl;
         cout<<"Last Logged In : "<<details.lastLoggedIn<<endl;
     }
-    cout<<string(UIManager::getLineLength(), '-')<<endl;;
+    cout<<string(UIManager::getlineLength(), '-')<<endl;;
 
     cout<<"Actions:"<<endl;
     if (details.id != -1){

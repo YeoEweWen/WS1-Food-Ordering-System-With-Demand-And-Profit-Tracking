@@ -137,7 +137,7 @@ void MenuUI::list(string search, Sort sort, int pageNum, int maxPerPage){
     else if (toUpperCase(input) == "S"){ // Search
         cout<<"[X] Cancel"<<endl;
         cout<<"\nSearch > ";
-        cin>>input;
+        getline(cin, input);
 
         if (toUpperCase(input) == "X"){
             // Re-render the UI
@@ -154,7 +154,7 @@ void MenuUI::list(string search, Sort sort, int pageNum, int maxPerPage){
         cout<<"\n[X] Cancel"<<endl;
 
         cout<<"\nSelect Option > ";
-        cin>>input;
+        getline(cin, input);
 
         if (isInteger(input)){
             int option = stoi(input);
@@ -218,7 +218,7 @@ void MenuUI::menuDetails(int id){
     Menu::MenuDetails details = menu.menuDetails(id);
 
     cout<<"\nMenu Details"<<endl;
-    cout<<string(UIManager::getLineLength(), '-')<<endl;
+    cout<<string(UIManager::getlineLength(), '-')<<endl;
     if (details.id == -1){
         cout<<"Menu not Found."<<endl;
     }
@@ -235,7 +235,7 @@ void MenuUI::menuDetails(int id){
         cout<<"Last Update By   : "<<details.updatedByName<<endl;
         cout<<"Last Update At   : "<<details.updatedAt<<endl;
     }
-    cout<<string(UIManager::getLineLength(), '-')<<endl;
+    cout<<string(UIManager::getlineLength(), '-')<<endl;
 
     cout<<"Actions:"<<endl;
     if (details.id != -1){
@@ -287,7 +287,7 @@ void MenuUI::menuDetails(int id){
     else if (toUpperCase(input) == "D"){ // Delete
         cout<<"\nAre you sure you want to delete this menu?"<<endl;
         cout<<"Select Option (Y/N) > ";
-        cin>>input;
+        getline(cin, input);
 
         if (toUpperCase(input) == "Y"){
             if (menu.deleteMenu(details.id)){
@@ -308,7 +308,7 @@ void MenuUI::menuDetails(int id){
     else if (toUpperCase(input) == "S"){ // Set as Available/Unavailable
         cout<<"\nAre you sure you want to set this menu as "<<((toLowerCase(details.availability) == "available") ? "unavailable?" : "available?")<<endl;
         cout<<"Select Option (Y/N) > ";
-        cin>>input;
+        getline(cin, input);
 
         if (toUpperCase(input) == "Y"){
             bool result;
@@ -354,9 +354,7 @@ void MenuUI::addMenu(){
     Users users;
 
     cout<<"Register New User"<<endl;
-    cout<<string(UIManager::getLineLength(), '-')<<endl;
-
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear leftover '\n'
+    cout<<string(UIManager::getlineLength(), '-')<<endl;
 
     string name, role, input;
     cout<<"Name : "<<endl;
@@ -367,16 +365,16 @@ void MenuUI::addMenu(){
     cout<<"   [1] Administrator"<<endl;
     cout<<"   [2] Employee"<<endl;
     cout<<"> ";
-    cin>>role;
+    getline(cin, role);
 
-    cout<<endl<<string(UIManager::getLineLength(), '-')<<endl;
+    cout<<endl<<string(UIManager::getlineLength(), '-')<<endl;
     cout<<"Actions:"<<endl;
     cout<<"[S] Submit"<<endl;
     cout<<"[C] Clear All"<<endl;
     cout<<"[X] Back"<<endl;
 
     cout<<"\nSelect Option > ";
-    cin>>input;
+    getline(cin, input);
 
     if (toUpperCase(input) == "S"){ // Submit
         bool isValid = true;
@@ -472,7 +470,7 @@ void MenuUI::categoryDetails(int id){
     Menu::CategoryDetails details = menu.categoryDetails(id);
 
     cout<<"\nCategory Details"<<endl;
-    cout<<string(UIManager::getLineLength(), '-')<<endl;
+    cout<<string(UIManager::getlineLength(), '-')<<endl;
     if (details.id == -1){
         cout<<"Category not Found."<<endl;
     }
@@ -484,7 +482,7 @@ void MenuUI::categoryDetails(int id){
         cout<<"Last Update By   : "<<details.updatedByName<<endl;
         cout<<"Last Update At   : "<<details.updatedAt<<endl;
     }
-    cout<<string(UIManager::getLineLength(), '-')<<endl;
+    cout<<string(UIManager::getlineLength(), '-')<<endl;
 
     cout<<"Actions:"<<endl;
     if (details.id != -1){
@@ -509,8 +507,6 @@ void MenuUI::categoryDetails(int id){
         cout<<"\nSelect Option > ";
         input = UIManager::checkPresetInput();
 
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear leftover '\n'
-
         string name, type, selectedOption;
 
         if (input == "1" || input == "2"){ // Update
@@ -528,14 +524,14 @@ void MenuUI::categoryDetails(int id){
                 getline(cin, type);
             }
             
-            cout<<endl<<string(UIManager::getLineLength(), '-')<<endl;
+            cout<<endl<<string(UIManager::getlineLength(), '-')<<endl;
             cout<<"Actions:"<<endl;
             cout<<"[S] Submit"<<endl;
             cout<<"[C] Clear All"<<endl;
             cout<<"[X] Back"<<endl;
 
             cout<<"\nSelect Option > ";
-            cin>>input;
+            getline(cin, input);
 
             if (toUpperCase(input) == "S"){ // Submit
                 if (selectedOption == "1"){
@@ -594,7 +590,7 @@ void MenuUI::categoryDetails(int id){
     else if (toUpperCase(input) == "D"){ // Delete
         cout<<"\nAre you sure you want to delete this category?"<<endl;
         cout<<"Select Option (Y/N) > ";
-        cin>>input;
+        getline(cin, input);
 
         if (toUpperCase(input) == "Y"){
             if (menu.deleteCategory(details.id)){
@@ -627,9 +623,7 @@ void MenuUI::addCategory(){
     Menu menu;
 
     cout<<"\nAdd New Category"<<endl;
-    cout<<string(UIManager::getLineLength(), '-')<<endl;
-
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear leftover '\n'
+    cout<<string(UIManager::getlineLength(), '-')<<endl;
 
     string name, type, input;
     cout<<"Name : "<<endl;
@@ -640,16 +634,16 @@ void MenuUI::addCategory(){
     cout<<"   [1] Food"<<endl;
     cout<<"   [2] Beverage"<<endl;
     cout<<"> ";
-    cin>>type;
+    getline(cin, type);
 
-    cout<<endl<<string(UIManager::getLineLength(), '-')<<endl;
+    cout<<endl<<string(UIManager::getlineLength(), '-')<<endl;
     cout<<"Actions:"<<endl;
     cout<<"[S] Submit"<<endl;
     cout<<"[C] Clear All"<<endl;
     cout<<"[X] Back"<<endl;
 
     cout<<"\nSelect Option > ";
-    cin>>input;
+    getline(cin, input);
 
     if (toUpperCase(input) == "S"){ // Submit
         bool isValid = true;

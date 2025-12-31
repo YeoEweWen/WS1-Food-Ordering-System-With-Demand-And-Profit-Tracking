@@ -8,7 +8,7 @@ Page UIManager::page = {0, 0, {}, {}};
 int UIManager::lineLength = 120;
 
 // ---------- Pages & Navigation ----------
-int UIManager::getLineLength(){
+int UIManager::getlineLength(){
     return lineLength;
 }
 
