@@ -1,11 +1,11 @@
-#ifndef ORDERS_UI_H
-#define ORDERS_UI_H
+#ifndef REPORTS_UI_H
+#define REPORTS_UI_H
 
 #include <string>
 #include <iostream>
 #include "ui/ui_manager.h"
 
-class OrderUI {
+class ReportUI {
 public:
     static void main();
 

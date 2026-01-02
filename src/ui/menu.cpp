@@ -85,7 +85,7 @@ void MenuUI::list(string search, Sort sort, int pageNum, int maxPerPage){
 
     vector<Attribute> attributes = {
             {"name", "Name"},
-            {"price", "Price", "RM"},
+            {"price", "Price", "RM "},
             {"category", "Category"},
             {"availability", "Availability"}
         };
@@ -267,14 +267,114 @@ void MenuUI::menuDetails(int id){
         cout<<"\nSelect Option > ";
         input = UIManager::checkPresetInput();
 
-        if (input == "1"){ // Update Name
+        string name, productionCost, sellingPrice, category, selectedOption;
+
+        if (input == "1" || input == "2" || input == "3"){ // Update
+            map<int, int> mappedIDs;
+            selectedOption = input;
+            if (input == "1"){ // Name
+                cout<<"\nName : "<<endl;
+                cout<<"> ";
+                getline(cin, name);
+            }
+            else if (input == "2"){ // Cost & Price
+                cout<<"\nProduction Cost : "<<endl;
+                cout<<"> RM ";
+                getline(cin, productionCost);
+                cout<<"\nSelling Price : "<<endl;
+                cout<<"> RM ";
+                getline(cin, sellingPrice);
+            }
+            else{ // Category
+                cout<<"\nCategory : "<<endl;
+                int i = 1;
+
+                vector<map<string, string>> categoryList = menu.categoryList();
+                
+
+                for (auto& category : categoryList){
+                    mappedIDs[i] = stoi(category.at("id"));
+                    cout<<"   ["<<i<<"] "<<category.at("category")<<endl;
+                    i++;
+                }
+                cout<<"\nNote: You can add new category in Manage Category."<<endl;
+
+                cout<<"> ";
+                getline(cin, category);
+            }
             
-        }
-        else if (input == "2"){ // Update Production Cost & Selling Price
-            
-        }
-        else if (input == "3"){ // Update Category
-            
+            cout<<endl<<string(UIManager::getlineLength(), '-')<<endl;
+            cout<<"Actions:"<<endl;
+            cout<<"[S] Submit"<<endl;
+            cout<<"[C] Clear All"<<endl;
+            cout<<"[X] Back"<<endl;
+
+            cout<<"\nSelect Option > ";
+            getline(cin, input);
+
+            if (toUpperCase(input) == "S"){ // Submit
+                if (selectedOption == "1"){
+                    if (Validation::validateMenuName(name)){
+                        if (menu.updateMenuName(id, name)){
+                            UIManager::addInfoMessage("Menu name has been successfully updated.");
+                            UIManager::clearPresetInputs();
+                        }
+                        else{
+                            UIManager::addErrorMessage("Failed to update menu name.");
+                        }
+                    }
+                    else{
+                        UIManager::addErrorMessage("Category name must be between 3 and 200 characters.");
+                        UIManager::addPresetInput("U");
+                        UIManager::addPresetInput(selectedOption);
+                    }
+                }
+                else if (selectedOption == "2"){
+                    if (isFloat(productionCost) && isFloat(sellingPrice)){
+                        if (menu.updateMenuCostAndPrice(id, stod(productionCost), stod(sellingPrice))){
+                            UIManager::addInfoMessage("Menu production cost and selling price has been successfully updated.");
+                            UIManager::clearPresetInputs();
+                        }
+                        else{
+                            UIManager::addErrorMessage("Failed to update menu production cost and selling price.");
+                        }
+                    }
+                    else{
+                        UIManager::addErrorMessage("Invalid pricing format.");
+                        UIManager::addPresetInput("U");
+                        UIManager::addPresetInput(selectedOption);
+                    }
+                }
+                else{
+                    if (mappedIDs.count(stoi(category)) > 0){
+                        if (menu.updateMenuCategory(id, mappedIDs.at(stoi(category)))){
+                            UIManager::addInfoMessage("Category type has been successfully updated.");
+                            UIManager::clearPresetInputs();
+                        }
+                        else{
+                            UIManager::addErrorMessage("Failed to update category type.");
+                        }
+                    }
+                    else{
+                        UIManager::addErrorMessage("Invalid Option.");
+                        UIManager::addPresetInput("U");
+                        UIManager::addPresetInput(selectedOption);
+                    }
+                }
+            }
+            else if (toUpperCase(input) == "C"){ // Clear All
+                UIManager::addPresetInput("U");
+                UIManager::addPresetInput(selectedOption);
+                // Re-render the UI
+            }
+            else if (toUpperCase(input) == "X"){ // Back
+                UIManager::goTo(3, 1);
+            }
+            else{
+                UIManager::addErrorMessage("Invalid Option.");
+                UIManager::addPresetInput("U");
+                UIManager::addPresetInput(selectedOption);
+            }
         }
         else if (toUpperCase(input) == "X"){
             // Re-render the UI
@@ -292,6 +392,7 @@ void MenuUI::menuDetails(int id){
         if (toUpperCase(input) == "Y"){
             if (menu.deleteMenu(details.id)){
                 UIManager::addInfoMessage("The menu has been successfully deleted.");
+                UIManager::goTo(3);
             }
             else{
                 UIManager::addErrorMessage("Failed to delete the menu.");
@@ -347,25 +448,39 @@ void MenuUI::menuDetails(int id){
 }
 
 void MenuUI::addMenu(){
+    Menu menu;
 
-
-
-    /*
-    Users users;
-
-    cout<<"Register New User"<<endl;
+    cout<<"Add New Menu"<<endl;
     cout<<string(UIManager::getlineLength(), '-')<<endl;
 
-    string name, role, input;
+    string name, productionCost, sellingPrice, category, input;
     cout<<"Name : "<<endl;
     cout<<"> ";
     getline(cin, name);
 
-    cout<<"\nRole : "<<endl;
-    cout<<"   [1] Administrator"<<endl;
-    cout<<"   [2] Employee"<<endl;
+    cout<<"\nProduction Cost : "<<endl;
+    cout<<"> RM ";
+    getline(cin, productionCost);
+
+    cout<<"\nSelling Price : "<<endl;
+    cout<<"> RM ";
+    getline(cin, sellingPrice);
+
+    cout<<"\nCategory : "<<endl;
+    int i = 1;
+
+    vector<map<string, string>> categoryList = menu.categoryList();
+    map<int, int> mappedIDs;
+
+    for (auto& category : categoryList){
+        mappedIDs[i] = stoi(category.at("id"));
+        cout<<"   ["<<i<<"] "<<category.at("category")<<endl;
+        i++;
+    }
+    cout<<"\nNote: You can add new category in Manage Category."<<endl;
+
     cout<<"> ";
-    getline(cin, role);
+    getline(cin, category);
 
     cout<<endl<<string(UIManager::getlineLength(), '-')<<endl;
     cout<<"Actions:"<<endl;
@@ -378,25 +493,29 @@ void MenuUI::addMenu(){
 
     if (toUpperCase(input) == "S"){ // Submit
         bool isValid = true;
-        if (!Validation::validateName(name)){
-            logInfo("Name: " + name);
-            UIManager::addErrorMessage("Name must be between 3 and 300 characters.");
+        if (!Validation::validateMenuName(name)){
+            UIManager::addErrorMessage("Name must be between 3 and 200 characters.");
             isValid = false;
         }
 
-        if (role != "1" && role != "2"){
-            UIManager::addErrorMessage("Invalid role.");
+        if (!isFloat(productionCost) || !isFloat(sellingPrice)){
+            UIManager::addErrorMessage("Invalid pricing format.");
+            isValid = false;
+        }
+
+        if (!mappedIDs.count(stoi(category)) > 0){
+            UIManager::addErrorMessage("Invalid category's option.");
             isValid = false;
         }
 
         if (isValid){
-            if (users.registerUser(name, ((role == "1") ? "Admin" : "Employee"))){
-                UIManager::addInfoMessage("New user has been successfully added.");
+            if (menu.addMenu(name, stod(productionCost), stod(sellingPrice), mappedIDs.at(stoi(category)))){
+                UIManager::addInfoMessage("New menu has been successfully added.");
                 UIManager::clearParams();
                 UIManager::goTo(3);
             }
             else{
-                UIManager::addErrorMessage("Failed to register new user.");
+                UIManager::addErrorMessage("Failed to add new menu.");
             }
         }
     }
@@ -409,8 +528,6 @@ void MenuUI::addMenu(){
     else{
         UIManager::addErrorMessage("Invalid Option.");
     }
-
-    */
 }
 
 void MenuUI::manageCategory(){

@@ -9,7 +9,7 @@ using namespace std;
 void OrderUI::main() {
     Page page = UIManager::currentPageDetails();
 
-    UIManager::header("Users Management");
+    UIManager::header("Order System");
     UIManager::errorMessages(page.errorMessages, false);
     UIManager::infoMessages(page.infoMessages, false);
 

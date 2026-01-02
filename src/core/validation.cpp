@@ -28,6 +28,14 @@ bool Validation::validateMenuCategoryName(string name){
     return (name.length() >= 3 && name.length() <= 100);
 }
 
+bool Validation::validateStoreName(string name){
+    /*
+    Min: 10 Characters
+    Max: 100 Characters
+    */
+    return (name.length() >= 10 && name.length() <= 100);
+}
+
 bool Validation::validatePassword(string password){
     /*
     1. Length > 8 characters.

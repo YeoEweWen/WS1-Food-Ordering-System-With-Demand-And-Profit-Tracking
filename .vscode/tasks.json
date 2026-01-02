@@ -13,6 +13,7 @@
                 "src/core/database.cpp",
                 "src/core/menu.cpp",
                 "src/core/order.cpp",
+                "src/core/store.cpp",
                 "src/core/users.cpp",
                 "src/core/validation.cpp",
                 // User Interface (UI)
@@ -21,6 +22,7 @@
                 "src/ui/menu.cpp",
                 "src/ui/order.cpp",
                 "src/ui/profile.cpp",
+                "src/ui/reports.cpp",
                 "src/ui/store.cpp",
                 "src/ui/transaction_history.cpp",
                 "src/ui/ui_manager.cpp",

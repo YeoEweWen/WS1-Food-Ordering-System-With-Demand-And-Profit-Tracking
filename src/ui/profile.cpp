@@ -124,7 +124,7 @@ void ProfileUI::main() {
             // Re-render the UI
         }
         else if (toUpperCase(input) == "X"){ // Back
-            UIManager::goTo(7);
+            UIManager::goTo(8);
         }
         else{
             UIManager::addErrorMessage("Invalid Option.");

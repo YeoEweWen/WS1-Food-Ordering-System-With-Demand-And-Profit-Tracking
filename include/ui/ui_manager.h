@@ -35,10 +35,12 @@ class UIManager {
 protected:
     static int lineLength;
     static Page page;
+    static std::string storeName;
 
 public:
     static int getlineLength();
     static Page currentPageDetails();
+    static void refreshStoreName();
     static void goTo(int id, int subID=0);
     static void clearParams();
     static void clearErrorMessages();

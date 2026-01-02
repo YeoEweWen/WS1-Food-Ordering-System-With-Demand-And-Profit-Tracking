@@ -1,8 +1,5 @@
 // Core
 #include "core/auth.h"
-#include "core/menu.h"
-#include "core/order.h"
-#include "core/users.h"
 
 // UIManager
 #include "ui/auth.h"
@@ -59,18 +56,22 @@ int main() {
                 break;
 
             case 4:
-                UIManager::emptyPage();
+                OrderUI::main();
                 break;
 
             case 5:
-                UIManager::emptyPage();
+                TransactionHistoryUI::main();
                 break;
 
             case 6:
-                UIManager::emptyPage();
+                TransactionHistoryUI::main();
                 break;
 
             case 7:
+                StoreUI::main();
+                break;
+
+            case 8:
                 ProfileUI::main();
                 break;
 

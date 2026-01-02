@@ -1,11 +1,17 @@
 #include "ui/ui_manager.h"
 #include "core/auth.h"
+#include "core/store.h"
 #include "utils/functions.h"
 
 using namespace std;
 
 Page UIManager::page = {0, 0, {}, {}};
 int UIManager::lineLength = 120;
+string UIManager::storeName = Store::details().name;
+
+void UIManager::refreshStoreName(){
+    storeName = Store::details().name;
+}
 
 // ---------- Pages & Navigation ----------
 int UIManager::getlineLength(){
@@ -73,7 +79,6 @@ void UIManager::header(const string& pageName){
     system("cls");
 
     int space;
-    string storeName = "Ahmad Cafe";
 
     cout<<string(lineLength, '-')<<endl<<endl;
     space = (lineLength-11-countStringLength(storeName))/2;
