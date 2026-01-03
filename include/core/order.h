@@ -2,6 +2,7 @@
 #define ORDER_H
 
 #include "core/database.h"
+#include "utils/functions.h"
 #include <string>
 #include <vector>
 #include <map>
@@ -38,10 +39,10 @@ public:
     void removeItems(int id);
     const std::vector<Item>& itemsList() const;
 
-    // Order
+    // Order / Transaction
     bool createOrder();
     bool cancelOrder(int id);
-    std::vector<std::map<std::string, std::string>> orderList(int createdBy = 0);
+    TableList orderList(std::string search="", std::string sortColumn="", bool sortAsc=true, int page=1, int limitRowPerPage=25);
     OrderDetails orderDetails(int id);
 
 private:

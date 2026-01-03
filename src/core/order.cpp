@@ -127,20 +127,52 @@ bool Order::cancelOrder(int id) {
     return db.runQuery(query, params);
 }
 
-vector<map<string, string>> Order::orderList(int createdBy) {
+TableList Order::orderList(string search, string sortColumn, bool sortAsc, int page, int limitRowPerPage) {
     Database db;
+    Auth auth;
 
-    string query = "SELECT o.id, o.transaction_status, o.created_by AS created_by_id, u.name AS created_by, o.created_at, o.cancelled_at "
-                   "FROM `order` o "
-                   "LEFT JOIN user AS u ON u.id = o.created_by "
-                   "WHERE o.created_by = :created_by OR :created_by = 0 "
-                   "ORDER BY o.transaction_status DESC, o.created_at DESC;";
+    Auth::UserDetails userDetails = Auth::retrieveLoggedUserDetails();
+
+    vector<string> sortableColumnKeys = {"created_at", "created_by", "transaction_status", "total_items"};
+
+    string orderQuery = "ORDER BY o.created_at DESC, o.cancelled_at DESC ";
+    if (find(sortableColumnKeys.begin(), sortableColumnKeys.end(), sortColumn) != sortableColumnKeys.end()){
+        if (sortColumn == "created_by"){
+            sortColumn = "u.name";
+        }
+        else{
+            sortColumn = "o." + sortColumn;
+        }
+
+        orderQuery = "ORDER BY " + sortColumn + " " + ((sortAsc) ? "ASC " : "DESC ");
+    }
     
+    int offset = limitRowPerPage * (page - 1);
+    string limitOffsetQuery = "LIMIT " + to_string(limitRowPerPage) + " OFFSET " + to_string(offset) + ";";
+
+    string additionalFilter = (toLowerCase(userDetails.role) != "admin") ? "AND o.created_by = " + to_string(userDetails.id) + " " : "";
+
+    // Retrieve the total of row (Without limit)
+    string query = "SELECT COUNT(*) AS total FROM `order` o "
+                   "LEFT JOIN user AS u ON u.id = o.created_by "
+                   "WHERE (o.created_at LIKE :search OR u.name LIKE :search OR o.transaction_status LIKE :search OR o.total_items LIKE :search) "
+                   + additionalFilter;
+
     map<string, string> params = {
-        {"created_by", to_string(createdBy)}
+        {"search", "%" + search + "%"}
     };
 
-    return db.fetchData(query, params);
+    int total = stoi(db.fetchData(query, params)[0].at("total"));
+
+    // Retrieve the rows (With limit)
+    query = "SELECT o.id, o.created_at, u.name AS created_by, o.transaction_status, o.total_items FROM `order` o "
+            "LEFT JOIN user AS u ON u.id = o.created_by "
+            "WHERE (o.created_at LIKE :search OR u.name LIKE :search OR o.transaction_status LIKE :search OR o.total_items LIKE :search) "
+            + additionalFilter + orderQuery + limitOffsetQuery;
+
+    vector<map<string, string>> list = db.fetchData(query, params);
+
+    return {list, total};
 }
 
 Order::OrderDetails Order::orderDetails(int id) {
