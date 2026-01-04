@@ -338,10 +338,9 @@ Menu::MenuDetails Menu::menuDetails(int id){
 vector<map<string, string>> Menu::menuPriceList(){
     Database db;
 
-    string query = "SELECT m.id, m.name, m.selling_price, mc.name AS category FROM menu m "
+    string query = "SELECT m.id, m.name, m.production_cost, m.selling_price, mc.category AS category, mc.type FROM menu m "
                    "LEFT JOIN menu_category AS mc ON mc.id = m.category_id "
-                   "WHERE m.availability = 'Available' "
-                   "ORDER BY m.name ASC";
+                   "WHERE m.availability = 'Available' ORDER BY m.name ASC, mc.category ASC;";
 
-    return {};
+    return db.fetchData(query);
 }

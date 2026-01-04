@@ -51,11 +51,11 @@ void MainMenuUI::main(){
         // Analysis & Reports
         UIManager::goTo(6);
     }
-    else if (option == "5" && Auth::isAdmin()){
+    else if (option == "6" && Auth::isAdmin()){
         // Store
         UIManager::goTo(7);
     }
-    else if ((option == "6" && Auth::isAdmin()) || (option == "3" && !Auth::isAdmin())){
+    else if ((option == "7" && Auth::isAdmin()) || (option == "3" && !Auth::isAdmin())){
         // Profile
         UIManager::goTo(8);
     }

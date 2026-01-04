@@ -10,6 +10,8 @@
 #include <iostream>
 #include <fstream>
 #include <ctime>
+#include <sstream>
+#include <iomanip>
 
 // Global Stuctures
 struct OperationResult {
@@ -38,5 +40,6 @@ std::string toUpperCase(const std::string& input);
 std::string toLowerCase(const std::string& input);
 std::vector<std::string> split(const std::string &text, char delimiter);
 std::string trim(const std::string& s);
+std::string formatDecimalPoints(double value, int precision);
 
 #endif

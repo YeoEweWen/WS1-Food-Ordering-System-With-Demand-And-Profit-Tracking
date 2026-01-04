@@ -1,6 +1,7 @@
 #include "ui/transaction_history.h"
 #include "ui/ui_manager.h"
 #include "core/order.h"
+#include "core/auth.h"
 #include "core/validation.h"
 #include "utils/functions.h"
 
@@ -80,7 +81,7 @@ void TransactionHistoryUI::list(string search, Sort sort, int pageNum, int maxPe
         i++;
     }
 
-    UIManager::dataTable("", attributes, transactionList.list, transactionList.totalRows, search, sort, pageNum, maxPerPage);
+    UIManager::dataTable("Transaction List", attributes, transactionList.list, transactionList.totalRows, search, sort, pageNum, maxPerPage);
 
     cout<<"\n[X] Back"<<endl;
 
@@ -183,80 +184,68 @@ void TransactionHistoryUI::list(string search, Sort sort, int pageNum, int maxPe
 }
 
 void TransactionHistoryUI::details(int id){
-    /*
-    Users users;
+    Order order;
 
-    Users::UserDetails details = users.userDetails(id);
+    Order::OrderDetails details = order.orderDetails(id);
 
-    cout<<"User Details"<<endl;
+    cout<<"Transaction Details"<<endl;
     cout<<string(UIManager::getlineLength(), '-')<<endl;
     if (details.id == -1){
-        cout<<"User not Found."<<endl;
+        cout<<"Transaction not Found."<<endl;
     }
     else{
-        cout<<"Name           : "<<details.name<<endl;
-        cout<<"Username       : "<<details.username<<endl;
-        cout<<"Role           : "<<details.role<<endl;
         cout<<"Status         : "<<details.status<<endl;
-        cout<<"Registered By  : "<<details.registeredByName<<endl;
-        cout<<"Registered At  : "<<details.registeredAt<<endl;
-        cout<<"Last Logged In : "<<details.lastLoggedIn<<endl;
-    }
-    cout<<string(UIManager::getlineLength(), '-')<<endl;;
+        cout<<"Created By     : "<<details.createdBy<<endl;
+        cout<<"Created At     : "<<details.createdAt<<endl;
+        if (details.status == "Cancelled"){
+            cout<<"Cancelled By   : "<<details.cancelledBy<<endl;
+            cout<<"Cancelled At   : "<<details.cancelledAt<<endl;
+        }
 
+        UIManager::baseTable(
+            "Items List",
+            {
+                {"name", "Item"},
+                {"price", "Price", "RM "},
+                {"quantity", "Quantity"},
+                {"sub_total", "Sub Total", "RM "},
+            },
+            details.itemsList
+        );
+
+        string totalPrice = "Total: RM " + formatDecimalPoints(details.total, 2) + "   |";
+        cout<<"|"<<string((UIManager::getlineLength() - countStringLength(totalPrice) - 1), ' ')<<totalPrice<<endl;
+        cout<<string(UIManager::getlineLength(), '-')<<endl;
+    }
     cout<<"Actions:"<<endl;
     if (details.id != -1){
-        cout<<"[U] Update Role"<<endl;
-        if (toLowerCase(details.status) == "active"){
-            cout<<"[D] Deactivate"<<endl;
+        if (Auth::isAdmin()){
+            if (details.status == "Completed"){
+                cout<<"[C] Cancel Transaction"<<endl;
+            }
+            else{
+                cout<<"[M] Mark as Completed"<<endl;
+            }
         }
-        else{
-            cout<<"[A] Activate"<<endl;
-        }
-        cout<<"[R] Reset Password"<<endl<<endl;
     }
     cout<<"[X] Back"<<endl;
 
     string input;
+    cout<<"\nOption > ";
+    input = UIManager::checkPresetInput();
 
-    cout<<"\nCommand > ";
-    cin>>input;
-
-    if (toUpperCase(input) == "U"){ // Update Role
-        cout<<"\nAvailable Roles: "<<endl;
-        cout<<"   [1] Administrator"<<endl;
-        cout<<"   [2] Employee"<<endl<<endl;
-        cout<<"[X] Cancel"<<endl;
-
-        cout<<"\nSelect Option > ";
-        cin>>input;
-
-        if (input == "1" || input == "2"){
-            if (users.updateRole(details.id, ((input == "1") ? "Admin" : "Employee"))){
-                UIManager::addInfoMessage("User's role has been successfully updated.");
-            }
-            else{
-                UIManager::addErrorMessage("Failed to update the user's role.");
-            }
-        }
-        else if (toUpperCase(input) == "X"){
-            // Re-render the UI
-        }
-        else{
-            UIManager::addErrorMessage("Invalid Option.");
-        }
-    }
-    else if (toUpperCase(input) == "D" && toLowerCase(details.status) == "active"){ // Deactivate
-        cout<<"\nAre you sure you want to deactivate this user?"<<endl;
+    if (toUpperCase(input) == "C" && Auth::isAdmin() && details.status == "Completed"){ // Cancel Transaction
+        cout<<"\nAre you sure you want to cancel this transaction?"<<endl;
         cout<<"Select Option (Y/N) > ";
-        cin>>input;
+        getline(cin, input);
 
         if (toUpperCase(input) == "Y"){
-            if (users.deactivate(details.id)){
-                UIManager::addInfoMessage("The user has been successfully deactivated.");
+            if (order.cancelOrder(details.id)){
+                UIManager::addInfoMessage("The transaction has been successfully cancelled.");
+                UIManager::goTo(6);
             }
             else{
-                UIManager::addErrorMessage("Failed to deactivate the user.");
+                UIManager::addErrorMessage("Failed to cancel the transaction.");
             }
         }
         else if (toUpperCase(input) == "N"){
@@ -264,19 +253,21 @@ void TransactionHistoryUI::details(int id){
         }
         else{
             UIManager::addErrorMessage("Invalid Option.");
+            UIManager::addPresetInput("D");
         }
     }
-    else if (toUpperCase(input) == "A" && toLowerCase(details.status) == "inactive"){ // Activate
-        cout<<"\nAre you sure you want to activate this user?"<<endl;
+    else if (toUpperCase(input) == "M" && Auth::isAdmin() && details.status == "Cancelled"){ // Mark as Completed
+        cout<<"\nAre you sure you want to mark this transaction as completed?"<<endl;
         cout<<"Select Option (Y/N) > ";
-        cin>>input;
+        getline(cin, input);
 
         if (toUpperCase(input) == "Y"){
-            if (users.activate(details.id)){
-                UIManager::addInfoMessage("The user has been successfully activated.");
+            if (order.markOrderAsCompleted(details.id)){
+                UIManager::addInfoMessage("The transaction has been successfully marked as completed.");
+                UIManager::goTo(6);
             }
             else{
-                UIManager::addErrorMessage("Failed to activate the user.");
+                UIManager::addErrorMessage("Failed to mark the transaction as completed.");
             }
         }
         else if (toUpperCase(input) == "N"){
@@ -284,35 +275,14 @@ void TransactionHistoryUI::details(int id){
         }
         else{
             UIManager::addErrorMessage("Invalid Option.");
-        }
-    }
-    else if (toUpperCase(input) == "R"){ // Reset Password
-        cout<<"\nAre you sure you want to reset this user's password?"<<endl;
-        cout<<"Select Option (Y/N) > ";
-
-        cin>>input;
-
-        if (toUpperCase(input) == "Y"){
-            if (users.resetPassword(details.id)){
-                UIManager::addInfoMessage("The user's password has been successfully reset.");
-            }
-            else{
-                UIManager::addErrorMessage("Failed to reset the user's password.");
-            }
-        }
-        else if (toUpperCase(input) == "N"){
-            // Re-render the UI
-        }
-        else{
-            UIManager::addErrorMessage("Invalid Option.");
+            UIManager::addPresetInput("D");
         }
     }
     else if (toUpperCase(input) == "X"){ // Back
         UIManager::clearParams();
-        UIManager::goTo(2);
+        UIManager::goTo(6);
     }
     else{
         UIManager::addErrorMessage("Invalid Option.");
     }
-        */
 }

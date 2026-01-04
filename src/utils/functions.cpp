@@ -147,3 +147,10 @@ string trim(const string& s) {
 
     return string(start, end + 1);
 }
+
+string formatDecimalPoints(double value, int precision) {
+    std::ostringstream oss;
+    oss << std::fixed << std::setprecision(precision) << value;
+    return oss.str();
+}
+

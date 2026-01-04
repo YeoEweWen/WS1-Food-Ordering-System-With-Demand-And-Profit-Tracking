@@ -5,9 +5,7 @@
 
 using namespace std;
 
-Order::Order() {
-    clearItems();
-}
+vector<Order::Item> Order::items = {};
 
 // Items
 void Order::clearItems() {
@@ -48,7 +46,7 @@ void Order::updateQuantity(int id, int newQuantity){
     }
 }
 
-void Order::removeItems(int id) {
+void Order::removeItem(int id) {
     auto it = std::remove_if(items.begin(), items.end(), [id](const Item& item) {
             return item.id == id;  
         }
@@ -80,9 +78,10 @@ bool Order::createOrder() {
     }
 
     // Create new order
-    query = "INSERT INTO `order` (created_by) VALUES (:created_by);";
+    query = "INSERT INTO `order` (created_by, total_items) VALUES (:created_by, :total_items);";
     params = {
-        {"created_by", to_string(userDetails.id)}
+        {"created_by", to_string(userDetails.id)},
+        {"total_items", to_string(items.size())}
     };
 
     if (!db.runQuery(query, params)){
@@ -118,10 +117,26 @@ bool Order::createOrder() {
 
 bool Order::cancelOrder(int id) {
     Database db;
+    Auth auth;
 
-    string query = "UPDATE `order` SET transaction_status = 'Cancelled' WHERE id = :id AND transaction_status = 'Completed';";
+    Auth::UserDetails userDetails = Auth::retrieveLoggedUserDetails();
+
+    string query = "UPDATE `order` SET transaction_status = 'Cancelled', cancelled_by = :cancelled_by, cancelled_at = :cancelled_at WHERE id = :id AND transaction_status = 'Completed';";
     map<string, string> params = {
-        {"id", to_string(id)}
+        {"id", to_string(id)},
+        {"cancelled_by", to_string(userDetails.id)},
+        {"cancelled_at", timestamp()}
+    };
+
+    return db.runQuery(query, params);
+}
+
+bool Order::markOrderAsCompleted(int id){
+    Database db;
+
+    string query = "UPDATE `order` SET transaction_status = 'Completed', cancelled_by = NULL, cancelled_at = NULL WHERE id = :id AND transaction_status = 'Cancelled';";
+    map<string, string> params = {
+        {"id", to_string(id)},
     };
 
     return db.runQuery(query, params);
@@ -178,24 +193,16 @@ TableList Order::orderList(string search, string sortColumn, bool sortAsc, int p
 Order::OrderDetails Order::orderDetails(int id) {
     Database db;
     Order::OrderDetails details;
-    Order::Item item;
 
     string query;
     map<string, string> params;
     vector<map<string, string>> result; 
 
-    // Default value
-    details.id = -1;
-    details.createdBy = "";
-    details.createdAt = "";
-    details.isCompleted = false;
-    details.cancelledAt = "";
-    details.itemsList = {};
-
     // Details
-    query = "SELECT o.id, o.transaction_status, o.created_by AS created_by_id, u.name AS created_by, o.created_at, o.cancelled_at "
+    query = "SELECT o.id, o.transaction_status, u.name AS created_by, o.created_at, u2.name AS cancelled_by, o.cancelled_at "
             "FROM `order` o "
             "LEFT JOIN user AS u ON u.id = o.created_by "
+            "LEFT JOIN user AS u2 ON u2.id = o.cancelled_by "
             "WHERE o.id = :id LIMIT 1;";
     params = {
         {"id", to_string(id)}
@@ -205,17 +212,18 @@ Order::OrderDetails Order::orderDetails(int id) {
 
     if (result.empty()){
         logError("Failed to retrieve order details (ID: " + to_string(id) + ").");
-        return details;
+        return {-1};
     }
 
     details.id = id;
+    details.status = result[0].at("transaction_status");
     details.createdBy = result[0].at("created_by");
     details.createdAt = result[0].at("created_at");
-    details.isCompleted = (result[0].at("transaction_status") == "Completed");
-    details.cancelledAt = result[0].at("cancelled_at");
+    details.cancelledBy = ((result[0].at("cancelled_by") == "NULL") ? "-" : result[0].at("cancelled_by"));
+    details.cancelledAt = ((result[0].at("cancelled_at") == "NULL") ? "-" : result[0].at("cancelled_at"));
 
     // Item list
-    query = "SELECT * FROM order_items WHERE order_id = :order_id;";
+    query = "SELECT name, selling_price AS price, quantity FROM order_items WHERE order_id = :order_id;";
     params = {
         {"order_id", to_string(id)}
     };
@@ -227,13 +235,9 @@ Order::OrderDetails Order::orderDetails(int id) {
         return details;
     }
 
-    for (const auto& item_ : result) {
-        item.id = stoi(item_.at("id"));
-        item.name = item_.at("name");
-        item.productionCost = stod(item_.at("production_cost"));
-        item.sellingPrice = stod(item_.at("selling_price"));
-        item.quantity = stoi(item_.at("quantity"));
-
+    for (auto item : result) {
+        details.total += stod(item.at("price")) * stoi(item.at("quantity"));
+        item["sub_total"] = formatDecimalPoints(stod(item.at("price")) * stoi(item.at("quantity")), 2);
         details.itemsList.push_back(item);
     }
 
