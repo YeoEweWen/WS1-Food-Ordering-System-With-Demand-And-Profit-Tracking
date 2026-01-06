@@ -1,5 +1,6 @@
 // Core
 #include "core/auth.h"
+#include "core/analytics.h"
 
 // UIManager
 #include "ui/auth.h"
@@ -22,6 +23,8 @@
 using namespace std;
 
 int main() {
+
+    /*
     Page page;
 
     while (true){
@@ -70,6 +73,7 @@ int main() {
                 MainMenuUI::main();
         }
     }
+        */
     
     return 0;
 }
@@ -89,9 +93,9 @@ int main() {
 using namespace std;
 
 
-int endDay = 31;
-int month = 12;
-int year = 2025;
+int endDay = 6;
+int month = 1;
+int year = 2026;
 int maxOperationTime = 600; // 10 Hours (8am - 6pm)
 int currentMinute = 0; // In minutes
 
@@ -174,6 +178,7 @@ void transactionSeeding(){
         cout<<"Day "<<i<<" Completed..."<<endl;
     }
 
+    cout<<"Task Completed!"<<endl;
     string temp;
     cin>>temp;
 }

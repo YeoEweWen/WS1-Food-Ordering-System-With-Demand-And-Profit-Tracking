@@ -60,7 +60,6 @@ void MenuUI::main() {
             if (!params.empty()){
                 if (params.count("search")){
                     search = params.at("search");
-                    pageNum = 1;
                 }
                 if (params.count("sort_column_index") > 0){
                     int columnIndex = stoi(params.at("sort_column_index"));
@@ -145,6 +144,7 @@ void MenuUI::list(string search, Sort sort, int pageNum, int maxPerPage){
         }
         else{
             UIManager::addParam("search", input);
+            UIManager::addParam("page_num", "1");
         }
     }
     else if (toUpperCase(input) == "O"){ // Sort

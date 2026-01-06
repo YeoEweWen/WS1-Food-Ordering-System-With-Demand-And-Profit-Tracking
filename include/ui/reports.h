@@ -10,11 +10,12 @@ public:
     static void main();
 
 private:
-    static void overall();
-    static void mostDemands();
-    static void mostProfitable();
-    static void monthlySalesReport();
-    static void categoryPerformance();
+    static void overallSummary();
+    static void monthlySalesReports();
+    static void mostDemands(std::string yearMonth = "");
+    static void mostProfitable(std::string yearMonth = "");
+    static void categoryPerformance(std::string yearMonth = "");
+    static void employeePerformance(std::string yearMonth = "");
 };
 
 #endif

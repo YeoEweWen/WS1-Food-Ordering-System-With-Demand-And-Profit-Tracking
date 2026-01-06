@@ -39,7 +39,6 @@ void TransactionHistoryUI::main() {
             if (!params.empty()){
                 if (params.count("search")){
                     search = params.at("search");
-                    pageNum = 1;
                 }
                 if (params.count("sort_column_index") > 0){
                     int columnIndex = stoi(params.at("sort_column_index"));
@@ -89,7 +88,7 @@ void TransactionHistoryUI::list(string search, Sort sort, int pageNum, int maxPe
     // Commands
     string input;
     cout<<"\nSelect Option > ";
-    cin>>input;
+    getline(cin, input);
     cout<<endl;
 
     if (isInteger(input) && mappedIDs.count(stoi(input)) > 0){ // View Details
@@ -118,13 +117,14 @@ void TransactionHistoryUI::list(string search, Sort sort, int pageNum, int maxPe
     else if (toUpperCase(input) == "S"){ // Search
         cout<<"[X] Cancel"<<endl;
         cout<<"\nSearch > ";
-        cin>>input;
+        getline(cin, input);
 
         if (toUpperCase(input) == "X"){
             // Re-render the UI
         }
         else{
             UIManager::addParam("search", input);
+            UIManager::addParam("page_num", "1");
         }
     }
     else if (toUpperCase(input) == "O"){ // Sort
@@ -135,7 +135,7 @@ void TransactionHistoryUI::list(string search, Sort sort, int pageNum, int maxPe
         cout<<"\n[X] Cancel"<<endl;
 
         cout<<"\nSelect Option > ";
-        cin>>input;
+        getline(cin, input);
 
         if (isInteger(input)){
             int option = stoi(input);
@@ -238,7 +238,7 @@ void TransactionHistoryUI::details(int id){
     if (toUpperCase(input) == "C" && Auth::isAdmin() && details.status == "Completed"){ // Cancel Transaction
         cout<<"\nAre you sure you want to cancel this transaction?"<<endl;
         cout<<"Select Option (Y/N) > ";
-        getline(cin, input);
+        getline(cin, input);;
 
         if (toUpperCase(input) == "Y"){
             if (order.cancelOrder(details.id)){
@@ -260,7 +260,7 @@ void TransactionHistoryUI::details(int id){
     else if (toUpperCase(input) == "M" && Auth::isAdmin() && details.status == "Cancelled"){ // Mark as Completed
         cout<<"\nAre you sure you want to mark this transaction as completed?"<<endl;
         cout<<"Select Option (Y/N) > ";
-        getline(cin, input);
+        getline(cin, input);;
 
         if (toUpperCase(input) == "Y"){
             if (order.markOrderAsCompleted(details.id)){
