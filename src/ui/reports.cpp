@@ -1,5 +1,6 @@
 #include "ui/reports.h"
 #include "ui/ui_manager.h"
+#include "core/analytics.h"
 #include "core/validation.h"
 #include "utils/functions.h"
 

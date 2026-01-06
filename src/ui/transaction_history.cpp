@@ -26,7 +26,7 @@ void TransactionHistoryUI::main() {
             }
             else{
                 UIManager::addErrorMessage("Invalid transaction's ID!");
-                UIManager::goTo(6);
+                UIManager::goTo(5);
             }
             break;
 
@@ -39,6 +39,7 @@ void TransactionHistoryUI::main() {
             if (!params.empty()){
                 if (params.count("search")){
                     search = params.at("search");
+                    pageNum = 1;
                 }
                 if (params.count("sort_column_index") > 0){
                     int columnIndex = stoi(params.at("sort_column_index"));
@@ -94,7 +95,7 @@ void TransactionHistoryUI::list(string search, Sort sort, int pageNum, int maxPe
     if (isInteger(input) && mappedIDs.count(stoi(input)) > 0){ // View Details
         UIManager::clearParams();
         UIManager::addParam("id", to_string(mappedIDs.at(stoi(input))));
-        UIManager::goTo(6, 1);
+        UIManager::goTo(5, 1);
     }
     else if (toUpperCase(input) == "P"){ // Previous
         int prevPage = pageNum - 1;
@@ -105,7 +106,7 @@ void TransactionHistoryUI::list(string search, Sort sort, int pageNum, int maxPe
     else if (toUpperCase(input) == "N"){ // Next
         int nextPage = pageNum + 1;
 
-        int lastPage = (transactionList.list.size() + maxPerPage - 1) / maxPerPage;
+        int lastPage = (transactionList.totalRows + maxPerPage - 1) / maxPerPage;
         lastPage = (lastPage == 0) ? 1 : lastPage;
         nextPage = (nextPage > lastPage) ? lastPage : nextPage;
 
@@ -242,7 +243,7 @@ void TransactionHistoryUI::details(int id){
         if (toUpperCase(input) == "Y"){
             if (order.cancelOrder(details.id)){
                 UIManager::addInfoMessage("The transaction has been successfully cancelled.");
-                UIManager::goTo(6);
+                UIManager::goTo(5);
             }
             else{
                 UIManager::addErrorMessage("Failed to cancel the transaction.");
@@ -264,7 +265,7 @@ void TransactionHistoryUI::details(int id){
         if (toUpperCase(input) == "Y"){
             if (order.markOrderAsCompleted(details.id)){
                 UIManager::addInfoMessage("The transaction has been successfully marked as completed.");
-                UIManager::goTo(6);
+                UIManager::goTo(5);
             }
             else{
                 UIManager::addErrorMessage("Failed to mark the transaction as completed.");
@@ -280,7 +281,7 @@ void TransactionHistoryUI::details(int id){
     }
     else if (toUpperCase(input) == "X"){ // Back
         UIManager::clearParams();
-        UIManager::goTo(6);
+        UIManager::goTo(5);
     }
     else{
         UIManager::addErrorMessage("Invalid Option.");

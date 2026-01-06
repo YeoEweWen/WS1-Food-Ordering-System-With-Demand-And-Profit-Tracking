@@ -17,7 +17,7 @@ void AuthUI::login() {
     getline(cin, username);
 
     cout<<"Enter your password > "; // Maybe can hide password in future
-    getline(cin, password);
+    password = UIManager::inputPassword();
 
     Auth::LoginStatus status = Auth::login(username, password);
 

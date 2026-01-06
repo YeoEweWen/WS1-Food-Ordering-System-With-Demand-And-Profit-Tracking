@@ -42,6 +42,7 @@ void UsersUI::main() {
             if (!params.empty()){
                 if (params.count("search")){
                     search = params.at("search");
+                    pageNum = 1;
                 }
                 if (params.count("sort_column_index") > 0){
                     int columnIndex = stoi(params.at("sort_column_index"));
@@ -106,7 +107,7 @@ void UsersUI::list(string search, Sort sort, int pageNum, int maxPerPage){
     else if (toUpperCase(input) == "N"){ // Next
         int nextPage = pageNum + 1;
 
-        int lastPage = (userList.list.size() + maxPerPage - 1) / maxPerPage;
+        int lastPage = (userList.totalRows + maxPerPage - 1) / maxPerPage;
         lastPage = (lastPage == 0) ? 1 : lastPage;
         nextPage = (nextPage > lastPage) ? lastPage : nextPage;
 

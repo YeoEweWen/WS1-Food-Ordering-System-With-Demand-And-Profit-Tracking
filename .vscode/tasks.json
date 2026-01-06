@@ -8,6 +8,7 @@
             "args": [
                 "src/main.cpp",
                 // Core
+                "src/core/analytics.cpp",
                 "src/core/auth.cpp",
                 "src/core/config.cpp",
                 "src/core/database.cpp",

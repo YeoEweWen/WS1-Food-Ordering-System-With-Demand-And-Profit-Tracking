@@ -55,7 +55,7 @@ void UIManager::addInfoMessage(string infoMessage){
     page.infoMessages.push_back(infoMessage);
 }
 
-void UIManager::addPresetInput(std::string input){
+void UIManager::addPresetInput(string input){
     page.presetInputs.push_back(input);
 }
 
@@ -73,6 +73,25 @@ string UIManager::checkPresetInput(){
     return input;
 }
 
+string UIManager::inputPassword(){
+    string password;
+    char ch;
+
+    while ((ch = _getch()) != '\r') { // read until Enter
+        if (ch == '\b') {             // handle backspace
+            if (!password.empty()) {
+                password.pop_back();
+                cout << "\b \b";
+            }
+        } 
+        else {
+            password += ch;
+            cout << '*';         // show *
+        }
+    }
+    cout << endl;
+    return password;
+}
 
 // ---------- Components ----------
 void UIManager::header(const string& pageName){
@@ -186,7 +205,7 @@ void UIManager::dataTable(string title, vector<Attribute> columns, vector<map<st
     int numOfRows, lastPage;
 
     numOfRows = rows.size();
-    lastPage = (numOfRows + maxRowPerPage - 1) / maxRowPerPage;
+    lastPage = (totalRows + maxRowPerPage - 1) / maxRowPerPage;
     lastPage = (lastPage == 0) ? 1 : lastPage;
 
     // Search & Filter

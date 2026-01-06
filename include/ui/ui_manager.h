@@ -7,6 +7,7 @@
 #include <map>
 #include <cstdlib>
 #include <cmath>
+#include <conio.h>
 #include "utils/functions.h"
 
 struct Page {
@@ -51,6 +52,7 @@ public:
     static void addInfoMessage(std::string infoMessage);
     static void addPresetInput(std::string input);
     static std::string checkPresetInput();
+    static std::string inputPassword();
     
     static void header(const std::string& pageName = "");
     static void baseTable(std::string title, std::vector<Attribute> columns, std::vector<std::map<std::string, std::string>> rows, std::string noRecordMessage="No record found.");

@@ -78,10 +78,10 @@ bool Order::createOrder() {
     }
 
     // Create new order
-    query = "INSERT INTO `order` (created_by, total_items) VALUES (:created_by, :total_items);";
+    query = "INSERT INTO `order` (created_by, total_items, created_at) VALUES (:created_by, :total_items, :created_at);";
     params = {
         {"created_by", to_string(userDetails.id)},
-        {"total_items", to_string(items.size())}
+        {"total_items", to_string(items.size())},
     };
 
     if (!db.runQuery(query, params)){

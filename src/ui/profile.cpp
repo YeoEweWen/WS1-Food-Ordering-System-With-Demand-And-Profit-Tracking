@@ -63,10 +63,10 @@ void ProfileUI::main() {
 
             cout<<"\nNew Password : "<<endl;
             cout<<"> ";
-            getline(cin, newPassword);
+            newPassword = UIManager::inputPassword();
             cout<<"\nConfirm Password : "<<endl;
             cout<<"> ";
-            getline(cin, confirmPassword);
+            confirmPassword = UIManager::inputPassword();
         }
         
         cout<<endl<<string(UIManager::getlineLength(), '-')<<endl;

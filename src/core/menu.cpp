@@ -150,8 +150,8 @@ bool Menu::addMenu(string name, double productionCost, double sellingPrice, int 
     string query = "INSERT INTO menu (name, production_cost, selling_price, category_id, created_by) VALUES (:name, :production_cost, :selling_price, :category_id, :created_by);";
     map<string, string> params = {
         {"name", name},
-        {"production_cost", to_string(productionCost)},
-        {"selling_price", to_string(sellingPrice)},
+        {"production_cost", formatDecimalPoints(productionCost, 2)},
+        {"selling_price", formatDecimalPoints(sellingPrice, 2)},
         {"category_id", to_string(categoryID)},
         {"created_by", to_string(userDetails.id)},
     };
@@ -183,8 +183,8 @@ bool Menu::updateMenuCostAndPrice(int id, double productionCost, double sellingP
                    "WHERE id = :id AND availability = 'Available';";
     map<string, string> params = {
         {"id", to_string(id)},
-        {"production_cost", to_string(productionCost)},
-        {"selling_price", to_string(sellingPrice)},
+        {"production_cost", formatDecimalPoints(productionCost, 2)},
+        {"selling_price", formatDecimalPoints(sellingPrice, 2)},
         {"updated_by", to_string(userDetails.id)},
         {"updated_at", timestamp()},
     };
