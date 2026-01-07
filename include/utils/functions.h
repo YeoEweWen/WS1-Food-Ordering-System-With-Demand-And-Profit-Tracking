@@ -41,5 +41,8 @@ std::string toLowerCase(const std::string& input);
 std::vector<std::string> split(const std::string &text, char delimiter);
 std::string trim(const std::string& s);
 std::string formatDecimalPoints(double value, int precision);
+std::string getProperMonthYear(std::string yearMonth);
+std::string getPreviousMonth(const std::string& yearMonth);
+std::string getNextMonth(const std::string& yearMonth);
 
 #endif

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-vector<map<string, string>> Analytics::overallSummary() {
+map<string, string> Analytics::overallSummary() {
     Database db;
 
     string query = "SELECT COUNT(DISTINCT o.id) AS total_orders, "
@@ -18,7 +18,7 @@ vector<map<string, string>> Analytics::overallSummary() {
                    "JOIN order_items AS oi ON oi.order_id = o.id "
                    "WHERE o.created_at >= DATE_FORMAT(CURDATE(), '%Y-%m-01');";
 
-    return db.fetchData(query);
+    return db.fetchData(query)[0];
 }
 
 vector<map<string, string>> Analytics::monthlySalesReports() {
@@ -122,31 +122,4 @@ vector<map<string, string>> Analytics::employeePerformance(string yearMonth) {
     };
 
     return db.fetchData(query, params);
-}
-
-string Analytics::getProperMonthYear(string yearMonth){
-    map<string, string> months = {
-        {"01", "Jan"},
-        {"02", "Feb"},
-        {"03", "Mar"},
-        {"04", "Apr"},
-        {"05", "May"},
-        {"06", "Jun"},
-        {"07", "Jul"},
-        {"08", "Aug"},
-        {"09", "Sep"},
-        {"10", "Oct"},
-        {"11", "Nov"},
-        {"12", "Dec"},
-    };
-
-    string year, month;
-    stringstream ss(yearMonth);
-
-    // Split by '-'
-    if (getline(ss, year, '-') && getline(ss, month)) {
-        return ((months.count(month) > 0) ? (months.at(month) + " ") : " ") + year;
-    }
-
-    return yearMonth;
 }

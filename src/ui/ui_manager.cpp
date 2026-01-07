@@ -120,7 +120,7 @@ void UIManager::header(const string& pageName){
 
 void UIManager::baseTable(string title, vector<Attribute> columns, vector<map<string, string>> rows, string noRecordMessage){
     // Calculate the maximum length per column
-    int reservedSpace = 1;
+    int reservedSpace = 3;
     int reservedSpaceEachColumn = 2;
     int numOfColumns = columns.size();
     int availableSpace = lineLength - 6 - reservedSpace - (reservedSpaceEachColumn * numOfColumns);

@@ -154,3 +154,68 @@ string formatDecimalPoints(double value, int precision) {
     return oss.str();
 }
 
+string getProperMonthYear(string yearMonth){
+    map<string, string> months = {
+        {"01", "Jan"},
+        {"02", "Feb"},
+        {"03", "Mar"},
+        {"04", "Apr"},
+        {"05", "May"},
+        {"06", "Jun"},
+        {"07", "Jul"},
+        {"08", "Aug"},
+        {"09", "Sep"},
+        {"10", "Oct"},
+        {"11", "Nov"},
+        {"12", "Dec"},
+    };
+
+    string year, month;
+    stringstream ss(yearMonth);
+
+    // Split by '-'
+    if (getline(ss, year, '-') && getline(ss, month)) {
+        return ((months.count(month) > 0) ? (months.at(month) + " ") : " ") + year;
+    }
+
+    return yearMonth;
+}
+
+string getPreviousMonth(const string& yearMonth) {
+    int year, month;
+    char dash;
+
+    std::istringstream iss(yearMonth);
+    iss >> year >> dash >> month;
+
+    if (month == 1) {
+        month = 12;
+        year--;
+    } else {
+        month--;
+    }
+
+    std::ostringstream oss;
+    oss << year << "-" << std::setw(2) << std::setfill('0') << month;
+    return oss.str();
+}
+
+string getNextMonth(const string& yearMonth)
+{
+    int year, month;
+    char dash;
+
+    std::istringstream iss(yearMonth);
+    iss >> year >> dash >> month;
+
+    if (month == 12) {
+        month = 1;
+        year++;
+    } else {
+        month++;
+    }
+
+    std::ostringstream oss;
+    oss << year << "-" << std::setw(2) << std::setfill('0') << month;
+    return oss.str();
+}
