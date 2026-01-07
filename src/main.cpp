@@ -23,8 +23,6 @@
 using namespace std;
 
 int main() {
-
-    /*
     Page page;
 
     while (true){
@@ -73,7 +71,6 @@ int main() {
                 MainMenuUI::main();
         }
     }
-        */
     
     return 0;
 }
@@ -93,10 +90,10 @@ int main() {
 using namespace std;
 
 
-int endDay = 6;
+int endDay = 7;
 int month = 1;
 int year = 2026;
-int maxOperationTime = 600; // 10 Hours (8am - 6pm)
+int maxOperationTime = 600; // 10 Hours (7am - 5pm)
 int currentMinute = 0; // In minutes
 
 int randomUserID(){
@@ -115,7 +112,7 @@ string runningDatetime(int day, vector<int> skipPeriods){
 
     currentMinute += skip;
 
-    int hour = 8 + currentMinute/60;
+    int hour = 7 + currentMinute/60;
     int minute = currentMinute%60;
 
     string date = to_string(year) + ((month < 10) ? "-0" : "-") + to_string(month) + ((day < 10) ? "-0" : "-") + to_string(day);
@@ -135,11 +132,11 @@ void transactionSeeding(){
     int i, j;
 
     vector<vector<int>> skipPeriodPaterns = {
-        {1, 2, 3, 4},
-        {1, 2, 5, 10},
-        {1, 4, 5, 4},
-        {3, 4, 5, 6},
-        {4, 6, 8, 15}
+        {11, 12, 3, 40},
+        {10, 22, 50, 10},
+        {51, 14, 15, 14},
+        {30, 14, 5, 60},
+        {14, 6, 18, 15}
     };
 
     for (i=1; i<=endDay; i++){
