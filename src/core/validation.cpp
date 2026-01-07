@@ -11,6 +11,31 @@ bool Validation::validateName(string name){
     return (name.length() >= 3 && name.length() <= 300);
 }
 
+
+bool Validation::validateMenuName(string name){
+    /*
+    Min: 3 Characters
+    Max: 200 Characters
+    */
+    return (name.length() >= 3 && name.length() <= 200);
+}
+
+bool Validation::validateMenuCategoryName(string name){
+    /*
+    Min: 3 Characters
+    Max: 100 Characters
+    */
+    return (name.length() >= 3 && name.length() <= 100);
+}
+
+bool Validation::validateStoreName(string name){
+    /*
+    Min: 10 Characters
+    Max: 100 Characters
+    */
+    return (name.length() >= 10 && name.length() <= 100);
+}
+
 bool Validation::validatePassword(string password){
     /*
     1. Length > 8 characters.

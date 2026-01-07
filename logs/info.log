@@ -1,2 +1,0 @@
-[2025-12-14 16:45:07]   MYSQL Query: SELECT o.id, o.transaction_status, o.created_by AS created_by_id, u.name AS created_by, o.created_at, o.cancelled_at FROM `order` o LEFT JOIN user AS u ON u.id = o.created_by WHERE o.id = 2 LIMIT 1;
-[2025-12-14 16:45:07]   MYSQL Query: SELECT * FROM order_items WHERE order_id = 2;

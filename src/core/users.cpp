@@ -59,7 +59,7 @@ bool Users::isValidRole(string role){
 }
 
 /*---------- ADMIN ONLY ----------*/
-map<string, string> Users::registerUser(string name, string role){
+bool Users::registerUser(string name, string role){
     Database db;
 
     string username = generateUsername(name);
@@ -77,19 +77,7 @@ map<string, string> Users::registerUser(string name, string role){
         {"created_by", to_string(userDetails.id)},
     };
 
-    if (!db.runQuery(query, params)){
-        logError("Failed to register new user.");
-        return {
-            {"status", "fail"}
-        };
-    }
-
-    return {
-        {"name", name},
-        {"username", username},
-        {"role", role},
-        {"status", "success"}
-    };
+    return db.runQuery(query, params);
 }
 
 bool Users::updateRole(int id, string newRole){
@@ -173,15 +161,72 @@ bool Users::resetPassword(int id){
     return db.runQuery(query, params);
 }
 
-vector<map<string, string>> Users::userList(){
+TableList Users::userList(string search, string sortColumn, bool sortAsc, int page, int limitRowPerPage){
+    Database db;
+    Auth auth;
+
+    Auth::UserDetails userDetails = Auth::retrieveLoggedUserDetails();
+
+    vector<string> sortableColumnKeys = {"name", "role", "status", "last_logged_in"};
+
+    string orderQuery = "ORDER BY status ASC, created_at DESC, last_logged_in DESC ";
+    if (find(sortableColumnKeys.begin(), sortableColumnKeys.end(), sortColumn) != sortableColumnKeys.end()){
+        orderQuery = "ORDER BY " + sortColumn + " " + ((sortAsc) ? "ASC " : "DESC ");
+    }
+    
+    int offset = limitRowPerPage * (page - 1);
+    string limitOffsetQuery = "LIMIT " + to_string(limitRowPerPage) + " OFFSET " + to_string(offset) + ";";
+
+    // Retrieve the total of row (Without limit)
+    string query = "SELECT COUNT(*) AS total FROM user "
+                   "WHERE id != :id AND (name LIKE :search OR role LIKE :search OR status LIKE :search OR last_logged_in LIKE :search);";
+
+    map<string, string> params = {
+        {"id", to_string(userDetails.id)},
+        {"search", "%" + search + "%"},
+    };
+
+    int total = stoi(db.fetchData(query, params)[0].at("total"));
+
+    // Retrieve the rows (With limit)
+    query = "SELECT id, name, role, status, last_logged_in FROM user "
+            "WHERE id != :id AND (name LIKE :search OR role LIKE :search OR status LIKE :search OR last_logged_in LIKE :search) "
+             + orderQuery + limitOffsetQuery;
+
+    vector<map<string, string>> list = db.fetchData(query, params);
+
+    return {list, total};
+}
+
+Users::UserDetails Users::userDetails(int id){
     Database db;
 
-    string query = "SELECT u.id, u.name, u.username, u.role, u.created_by AS created_by_id, u2.name AS created_by, u.created_at, u.last_logged_in, u.status "
+    string query = "SELECT u.id, u.name, u.username, u.role, u.status, u.last_logged_in, u.created_at AS registered_at, "
+                   "u.created_by AS registered_by_id, u2.name AS registered_by_name "
                    "FROM user u "
                    "LEFT JOIN user AS u2 ON u2.id = u.created_by "
-                   "ORDER BY u.status ASC, u.last_logged_in DESC;";
+                   "WHERE u.id = :id;";
+    map<string, string> params = {{"id", to_string(id)}};
 
-    return db.fetchData(query);
+    vector<map<string, string>> result = db.fetchData(query, params);
+
+    if (result.empty()){
+        return {-1};
+    }
+
+    map<string, string> details = result[0];
+
+    return {
+        stoi(details.at("id")),
+        details.at("name"),
+        details.at("username"),
+        ((details.at("role") == "Admin") ? "Administrator" : details.at("role")),
+        details.at("status"),
+        ((details.at("last_logged_in") == "NULL") ? "-" : details.at("last_logged_in")),
+        details.at("registered_at"),
+        ((details.at("registered_by_id") == "NULL") ? -1 : stoi(details.at("registered_by_id"))),
+        ((details.at("registered_by_name") == "NULL") ? "System" : details.at("registered_by_name"))
+    };
 }
 
 /*---------- ALL USERS ----------*/

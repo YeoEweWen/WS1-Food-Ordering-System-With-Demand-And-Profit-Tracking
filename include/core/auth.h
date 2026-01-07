@@ -44,6 +44,7 @@ public:
     static bool isLoggedIn();
     static UserDetails retrieveLoggedUserDetails();
     static bool isAdmin();
+    static void updateName(std::string name);
 };
 
 #endif

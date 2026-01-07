@@ -10,12 +10,19 @@
 #include <iostream>
 #include <fstream>
 #include <ctime>
+#include <sstream>
+#include <iomanip>
 
 // Global Stuctures
 struct OperationResult {
     bool success = false;        // true if operation succeeded
     std::string message;         // descriptive message
     int errorCode = -1;          // error code = -1, mean no error.
+};
+
+struct TableList {
+    std::vector<std::map<std::string, std::string>> list;
+    int totalRows;
 };
 
 // ----- Logger -----
@@ -26,8 +33,16 @@ void logInfo(std::string message);
 std::string timestamp();
 bool isInteger(const std::string& s);
 bool isFloat(const std::string& s);
+int countStringLength(const std::string& text);
 void printVectorValues(const std::vector<std::map<std::string, std::string>>& mapValue);
 std::string toProperCase(const std::string& input);
+std::string toUpperCase(const std::string& input);
+std::string toLowerCase(const std::string& input);
 std::vector<std::string> split(const std::string &text, char delimiter);
+std::string trim(const std::string& s);
+std::string formatDecimalPoints(double value, int precision);
+std::string getProperMonthYear(std::string yearMonth);
+std::string getPreviousMonth(const std::string& yearMonth);
+std::string getNextMonth(const std::string& yearMonth);
 
 #endif

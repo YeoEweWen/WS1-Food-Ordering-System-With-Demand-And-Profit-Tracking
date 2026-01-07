@@ -54,6 +54,11 @@ bool isFloat(const string& s) {
     }
 }
 
+int countStringLength(const string& text){
+    size_t len = text.length();
+    return static_cast<int>(len);
+}
+
 void printVectorValues(const vector<map<string, string>>& mapValue){
     // Display the retrieved rows
     int i = 0;
@@ -94,6 +99,22 @@ string toProperCase(const string& input) {
     return result;
 }
 
+string toUpperCase(const string& input) {
+    string result = input;
+    for (auto& c : result) {
+        c = toupper(static_cast<unsigned char>(c));
+    }
+    return result;
+}
+
+string toLowerCase(const string& input) {
+    string result = input;
+    for (auto& c : result) {
+        c = tolower(static_cast<unsigned char>(c));
+    }
+    return result;
+}
+
 vector<string> split(const string &text, char delimiter) {
     vector<string> result;
     string temp;
@@ -111,4 +132,90 @@ vector<string> split(const string &text, char delimiter) {
     result.push_back(temp);
 
     return result;
+}
+
+string trim(const string& s) {
+    auto start = s.begin();
+    while (start != s.end() && isspace(static_cast<unsigned char>(*start))) {
+        ++start;
+    }
+
+    auto end = s.end();
+    do {
+        --end;
+    } while (end != start && isspace(static_cast<unsigned char>(*end)));
+
+    return string(start, end + 1);
+}
+
+string formatDecimalPoints(double value, int precision) {
+    std::ostringstream oss;
+    oss << std::fixed << std::setprecision(precision) << value;
+    return oss.str();
+}
+
+string getProperMonthYear(string yearMonth){
+    map<string, string> months = {
+        {"01", "Jan"},
+        {"02", "Feb"},
+        {"03", "Mar"},
+        {"04", "Apr"},
+        {"05", "May"},
+        {"06", "Jun"},
+        {"07", "Jul"},
+        {"08", "Aug"},
+        {"09", "Sep"},
+        {"10", "Oct"},
+        {"11", "Nov"},
+        {"12", "Dec"},
+    };
+
+    string year, month;
+    stringstream ss(yearMonth);
+
+    // Split by '-'
+    if (getline(ss, year, '-') && getline(ss, month)) {
+        return ((months.count(month) > 0) ? (months.at(month) + " ") : " ") + year;
+    }
+
+    return yearMonth;
+}
+
+string getPreviousMonth(const string& yearMonth) {
+    int year, month;
+    char dash;
+
+    std::istringstream iss(yearMonth);
+    iss >> year >> dash >> month;
+
+    if (month == 1) {
+        month = 12;
+        year--;
+    } else {
+        month--;
+    }
+
+    std::ostringstream oss;
+    oss << year << "-" << std::setw(2) << std::setfill('0') << month;
+    return oss.str();
+}
+
+string getNextMonth(const string& yearMonth)
+{
+    int year, month;
+    char dash;
+
+    std::istringstream iss(yearMonth);
+    iss >> year >> dash >> month;
+
+    if (month == 12) {
+        month = 1;
+        year++;
+    } else {
+        month++;
+    }
+
+    std::ostringstream oss;
+    oss << year << "-" << std::setw(2) << std::setfill('0') << month;
+    return oss.str();
 }

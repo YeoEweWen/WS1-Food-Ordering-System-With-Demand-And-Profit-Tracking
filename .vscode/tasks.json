@@ -8,14 +8,26 @@
             "args": [
                 "src/main.cpp",
                 // Core
+                "src/core/analytics.cpp",
                 "src/core/auth.cpp",
                 "src/core/config.cpp",
                 "src/core/database.cpp",
                 "src/core/menu.cpp",
                 "src/core/order.cpp",
+                "src/core/store.cpp",
                 "src/core/users.cpp",
                 "src/core/validation.cpp",
                 // User Interface (UI)
+                "src/ui/auth.cpp",
+                "src/ui/main_menu.cpp",
+                "src/ui/menu.cpp",
+                "src/ui/order.cpp",
+                "src/ui/profile.cpp",
+                "src/ui/reports.cpp",
+                "src/ui/store.cpp",
+                "src/ui/transaction_history.cpp",
+                "src/ui/ui_manager.cpp",
+                "src/ui/users.cpp",
 
                 // Utils
                 "src/utils/functions.cpp",

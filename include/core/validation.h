@@ -6,9 +6,12 @@
 
 class Validation {    
 public:
-    bool validateName(std::string name);
-    bool validatePassword(std::string password);
-    bool validateConfirmPassword(std::string password, std::string confirmPassword);
+    static bool validateName(std::string name);
+    static bool validateMenuName(std::string name);
+    static bool validateMenuCategoryName(std::string name);
+    static bool validateStoreName(std::string name);
+    static bool validatePassword(std::string password);
+    static bool validateConfirmPassword(std::string password, std::string confirmPassword);
 };
 
 #endif

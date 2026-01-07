@@ -4,9 +4,9 @@
 
 using namespace std;
 
-int Auth::userID = 14; // Default value, -1 = Guest
-string Auth::userName = "Ali bin Abu"; // Default Value
-string Auth::userRole = "Admin"; // Default Value
+int Auth::userID = -1; // Default value, -1 = Guest
+string Auth::userName = "Guest"; // Default Value
+string Auth::userRole = "Guest"; // Default Value
 
 string Auth::toHexString(const unsigned char* data, size_t length) {
     stringstream ss;
@@ -102,10 +102,14 @@ Auth::LoginStatus Auth::login(string username, string password){
     loginStatus.description = "Login successfully!";
     loginStatus.usingPresetPassword = verifyPassword(username, salt, hashedPassword);
 
+    logInfo(name + " (ID: " + to_string(id) + ") is logged in.");
+
     return loginStatus;
 }
 
 void Auth::logout(){
+    logInfo(userName + " (ID: " + to_string(userID) + ") is logged out.");
+
     userID = -1;
     userName = "Guest";
     userRole = "Guest";
@@ -135,4 +139,8 @@ bool Auth::isAdmin() {
         return false;
     }
     return (userRole == "Admin");
+}
+
+void Auth::updateName(string name){
+    userName = name;
 }
