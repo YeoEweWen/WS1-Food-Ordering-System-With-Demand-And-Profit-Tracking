@@ -332,12 +332,20 @@ void MenuUI::menuDetails(int id){
                 }
                 else if (selectedOption == "2"){
                     if (isFloat(productionCost) && isFloat(sellingPrice)){
-                        if (menu.updateMenuCostAndPrice(id, stod(productionCost), stod(sellingPrice))){
-                            UIManager::addInfoMessage("Menu production cost and selling price has been successfully updated.");
-                            UIManager::clearPresetInputs();
+                        double cost = stod(productionCost);
+                        double price = stod(sellingPrice);
+
+                        if (price >= cost){
+                            if (menu.updateMenuCostAndPrice(id, cost, price)){
+                                UIManager::addInfoMessage("Menu production cost and selling price has been successfully updated.");
+                                UIManager::clearPresetInputs();
+                            }
+                            else{
+                                UIManager::addErrorMessage("Failed to update menu production cost and selling price.");
+                            }
                         }
-                        else{
-                            UIManager::addErrorMessage("Failed to update menu production cost and selling price.");
+                        else {
+                            UIManager::addErrorMessage("Selling price must exceed production cost.");
                         }
                     }
                     else{
@@ -510,13 +518,21 @@ void MenuUI::addMenu(){
         }
 
         if (isValid){
-            if (menu.addMenu(name, stod(productionCost), stod(sellingPrice), mappedIDs.at(stoi(category)))){
-                UIManager::addInfoMessage("New menu has been successfully added.");
-                UIManager::clearParams();
-                UIManager::goTo(3);
+            double cost = stod(productionCost);
+            double price = stod(sellingPrice);
+
+            if (price >= cost){
+                if (menu.addMenu(name, cost, price, mappedIDs.at(stoi(category)))){
+                    UIManager::addInfoMessage("New menu has been successfully added.");
+                    UIManager::clearParams();
+                    UIManager::goTo(3);
+                }
+                else{
+                    UIManager::addErrorMessage("Failed to add new menu.");
+                }
             }
-            else{
-                UIManager::addErrorMessage("Failed to add new menu.");
+            else {
+                UIManager::addErrorMessage("Selling price must exceed production cost.");
             }
         }
     }

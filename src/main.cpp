@@ -1,6 +1,5 @@
 // Core
 #include "core/auth.h"
-#include "core/analytics.h"
 
 // UIManager
 #include "ui/auth.h"
