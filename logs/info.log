@@ -1,0 +1,22 @@
+[2026-01-11 17:09:59]   MYSQL Query: SELECT si.store_name, si.created_at, u.name AS created_by, si.updated_at, u2.name AS updated_by FROM store_info si LEFT JOIN user AS u ON u.id = si.created_by LEFT JOIN user AS u2 ON u2.id = si.updated_by WHERE si.id = 1 LIMIT 1;
+[2026-01-11 17:28:24]   MYSQL Query: SELECT si.store_name, si.created_at, u.name AS created_by, si.updated_at, u2.name AS updated_by FROM store_info si LEFT JOIN user AS u ON u.id = si.created_by LEFT JOIN user AS u2 ON u2.id = si.updated_by WHERE si.id = 1 LIMIT 1;
+[2026-01-11 17:28:29]   MYSQL Query: SELECT id, name, role, password, status FROM user WHERE username = 'yeo0022' LIMIT 1;
+[2026-01-11 17:28:29]   MYSQL Query: UPDATE user SET last_logged_in = NOW() WHERE id = 1 AND status = 'Active';
+[2026-01-11 17:28:29]   Yeo Ewe Wen (ID: 1) is logged in.
+[2026-01-11 17:28:43]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
+[2026-01-11 17:28:43]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
+[2026-01-11 17:28:49]   MYSQL Query: SELECT id, category, type FROM menu_category ORDER BY category ASC;
+[2026-01-11 17:28:52]   MYSQL Query: INSERT INTO menu (name, production_cost, selling_price, category_id, created_by) VALUES ('Test', 10.00, 20.00, 2, 1);
+[2026-01-11 17:28:52]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
+[2026-01-11 17:28:52]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
+[2026-01-11 17:28:59]   MYSQL Query: SELECT m.id, m.name, m.production_cost, m.selling_price, mc.category AS category, mc.type, m.availability, m.created_at, m.created_by AS created_by_id, u.name AS created_by_name, m.updated_at, m.updated_by AS updated_by_id, u2.name AS updated_by_name FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id LEFT JOIN user AS u ON u.id = m.created_by LEFT JOIN user AS u2 ON u2.id = m.updated_by WHERE m.id = 46;
+[2026-01-11 17:28:59]   MYSQL Query: SELECT menu_id FROM order_items WHERE menu_id = 46 LIMIT 1;
+[2026-01-11 17:29:05]   MYSQL Query: SELECT menu_id FROM order_items WHERE menu_id = 46 LIMIT 1;
+[2026-01-11 17:29:05]   MYSQL Query: DELETE FROM menu WHERE id = 46;
+[2026-01-11 17:29:05]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
+[2026-01-11 17:29:05]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
+[2026-01-11 17:29:12]   MYSQL Query: SELECT id, category, type FROM menu_category ORDER BY category ASC;
+[2026-01-11 17:29:22]   MYSQL Query: SELECT id, category, type FROM menu_category ORDER BY category ASC;
+[2026-01-11 17:29:27]   MYSQL Query: SELECT COUNT(*) AS total FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%');
+[2026-01-11 17:29:27]   MYSQL Query: SELECT m.id, m.name, m.selling_price AS price, mc.category AS category, m.availability FROM menu m LEFT JOIN menu_category AS mc ON mc.id = m.category_id WHERE (m.name LIKE '%%' OR m.selling_price LIKE '%%' OR mc.category LIKE '%%' OR m.availability LIKE '%%') ORDER BY m.created_at DESC, m.updated_at DESC LIMIT 25 OFFSET 0;
+[2026-01-11 17:29:29]   Yeo Ewe Wen (ID: 1) is logged out.
